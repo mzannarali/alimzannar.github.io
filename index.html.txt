@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computational Design Portfolio</title>
+    <style>
+        /* --- UTENSIL/SOFTWARE INTERFACE AESTHETIC --- */
+        :root {
+            --bg-color: #0c0c0e;
+            --panel-bg: #141417;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --border-color: #27272a;
+            
+            /* Logic-based Color Coding */
+            --color-optimization: #3b82f6; /* Blueprint Blue */
+            --color-fabrication: #f97316;  /* Safety Orange */
+            --color-automation: #10b981;   /* Laser Green */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            overflow-x: hidden;
+            padding-bottom: 100px;
+        }
+
+        /* --- STARK HEADER --- */
+        header {
+            padding: 40px 20px;
+            border-bottom: 1px solid var(--border-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+        }
+
+        .brand p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        /* --- CONTROL MATRIX / FILTERS --- */
+        .filter-matrix {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        .filter-btn.active[data-filter="all"] { border-color: var(--text-primary); color: var(--text-primary); background: rgba(255,255,255,0.05); }
+        .filter-btn.active[data-filter="optimization"] { border-color: var(--color-optimization); color: var(--color-optimization); }
+        .filter-btn.active[data-filter="fabrication"] { border-color: var(--color-fabrication); color: var(--color-fabrication); }
+        .filter-btn.active[data-filter="automation"] { border-color: var(--color-automation); color: var(--color-automation); }
+
+        /* --- TIMELINE CANVAS --- */
+        .timeline-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        /* Center line of the timeline */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: var(--border-color);
+            transform: translateX(-50%);
+        }
+
+        .timeline-node {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 80px;
+            position: relative;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        /* Left/Right distribution */
+        .timeline-node:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-spacer {
+            width: 45%;
+        }
+
+        /* The actual project block */
+        .project-card {
+            width: 45%;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            position: relative;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        /* Meta indicators mimicking a CAD viewport */
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .project-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /* Dynamic border highlighting on hover based on category class */
+        .timeline-node[data-category="optimization"] .project-card:hover { border-color: var(--color-optimization); }
+        .timeline-node[data-category="fabrication"] .project-card:hover { border-color: var(--color-fabrication); }
+        .timeline-node[data-category="automation"] .project-card:hover { border-color: var(--color-automation); }
+
+        /* --- HOVER TO PLAY CONTAINER --- */
+        .media-viewport {
+            width: 100%;
+            height: 200px;
+            background: #1c1c21;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .media-viewport video, .media-viewport img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        /* On hover, increase opacity of media simulating activation */
+        .project-card:hover .media-viewport video,
+        .project-card:hover .media-viewport img {
+            opacity: 1;
+        }
+
+        .placeholder-mesh {
+            position: absolute;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            pointer-events: none;
+            border: 1px dashed rgba(255,255,255,0.1);
+            padding: 4px 8px;
+        }
+
+        /* Node dot on the center timeline line */
+        .node-dot {
+            position: absolute;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        /* Dynamic color tags for dots */
+        .timeline-node[data-category="optimization"] .node-dot { background-color: var(--color-optimization); }
+        .timeline-node[data-category="fabrication"] .node-dot { background-color: var(--color-fabrication); }
+        .timeline-node[data-category="automation"] .node-dot { background-color: var(--color-automation); }
+
+        /* Hidden class for filtering */
+        .timeline-node.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            position: absolute;
+            width: 0;
+            height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* --- RESPONSIVE MOBILE FALLBACK --- */
+        @media (max-width: 768px) {
+            .timeline-container::before { left: 20px; }
+            .timeline-node, .timeline-node:nth-child(even) { flex-direction: column; align-items: flex-start; }
+            .project-card, .timeline-spacer { width: 100%; padding-left: 40px; }
+            .project-card { margin-left: 20px; width: calc(100% - 20px); }
+            .node-dot { left: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <h1>System Index</h1>
+            <p>Computational Design & Architectural Optimization Workflows</p>
+        </div>
+        <div class="filter-matrix">
+            <button class="filter-btn active" data-filter="all">// All Systems</button>
+            <button class="filter-btn" data-filter="optimization">// Optimization</button>
+            <button class="filter-btn" data-filter="fabrication">// Fabrication</button>
+            <button class="filter-btn" data-filter="automation">// Automation</button>
+        </div>
+    </header>
+
+    <main class="timeline-container" id="timelineCanvas">
+        </main>
+
+    <script>
+        /* --- STRUCTURED DATA INVERSION (JSON ENGINE) --- */
+        const projectData = [
+            {
+                id: "001",
+                title: "Simultaneous Global Massing Optimization",
+                date: "2026.03",
+                category: "optimization",
+                metric: "ENV_VAL: 94.2%",
+                desc: "Replacing sequential optimization pipelines with a global simultaneous parametric grid layout to maximize envelope yield.",
+                mediaSrc: "" // Add your loop.mp4 or preview.gif here
+            },
+            {
+                id: "002",
+                title: "Interactive Smart Hardware Actuator",
+                date: "2026.05",
+                category: "fabrication",
+                metric: "BAUD_RATE: 9600",
+                desc: "Integrating dynamic hardware sensor arrays with physical micro-controllers executing closed-loop sorting variations.",
+                mediaSrc: ""
+            },
+            {
+                id: "003",
+                title: "Fragmented Elevation Facade Scripting",
+                date: "2026.05",
+                category: "automation",
+                metric: "ITERATIONS: 12k",
+                desc: "An algorithmic model designed to execute micro-stepping multi-level panel structures omitting full-story transitions.",
+                mediaSrc: ""
+            },
+            {
+                id: "004",
+                title: "Algorithmic Geometries of Gathering",
+                date: "2026.02",
+                category: "optimization",
+                metric: "STRUCT_ELEM: Pure Circle",
+                desc: "Large scale masterplanning driven by clean cultural node definitions and non-linear mathematical clustering logic.",
+                mediaSrc: ""
+            }
+        ];
+
+        const container = document.getElementById('timelineCanvas');
+
+        // Render projects automatically from JSON
+        function renderTimeline() {
+            container.innerHTML = '';
+            projectData.forEach(project => {
+                const node = document.createElement('div');
+                node.className = 'timeline-node';
+                node.setAttribute('data-category', project.category);
+
+                node.innerHTML = `
+                    <div class="node-dot"></div>
+                    <div class="project-card">
+                        <div class="project-meta">
+                            <span>[ID:${project.id}] // ${project.category.toUpperCase()}</span>
+                            <span>${project.date}</span>
+                        </div>
+                        <div class="project-title">${project.title}</div>
+                        <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.4;">${project.desc}</p>
+                        <div class="media-viewport">
+                            <span class="placeholder-mesh">${project.metric}</span>
+                            <video src="${project.mediaSrc || '#'}" loop muted playsinline></video>
+                        </div>
+                    </div>
+                    <div class="timeline-spacer"></div>
+                `;
+
+                // Add simple event listener to trigger playback on hover for video formats
+                const card = node.querySelector('.project-card');
+                const video = node.querySelector('video');
+                
+                card.addEventListener('mouseenter', () => { if(video.src !== window.location.href) video.play().catch(()=>{}); });
+                card.addEventListener('mouseleave', () => { if(video.src !== window.location.href) video.pause(); });
+
+                container.appendChild(node);
+            });
+        }
+
+        // Filtering engine logic
+        const buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const filterValue = btn.getAttribute('data-filter');
+                const nodes = document.querySelectorAll('.timeline-node');
+                
+                nodes.forEach(node => {
+                    if (filterValue === 'all' || node.getAttribute('data-category') === filterValue) {
+                        node.classList.remove('hidden');
+                    } else {
+                        node.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // Initialize view
+        renderTimeline();
+    </script>
+</body>
+</html>
