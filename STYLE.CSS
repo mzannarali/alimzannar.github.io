@@ -213,3 +213,51 @@ nav {
     .project-meta { grid-template-columns: 1fr; gap: 20px; }
     .project-brief { font-size: 1.5rem; max-width: 100%; }
 }
+
+/* =========================================
+   CONTACT & FOOTER SECTION
+   ========================================= */
+.contact-section {
+    padding: 10vh 30px;
+    border-top: 1px solid #000;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    background-color: var(--bg-color);
+    position: relative;
+    z-index: 10; /* Keeps it above the floating cursor media */
+}
+
+.contact-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #666;
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-size: 4vw; 
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.contact-links a {
+    color: #000;
+    text-decoration: none;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.contact-links a:hover {
+    opacity: 0.4;
+}
+
+/* --- Mobile Responsiveness for Contact --- */
+@media (max-width: 768px) {
+    .contact-section { grid-template-columns: 1fr; padding-bottom: 15vh; }
+    .contact-links { font-size: 2.5rem; }
+}
