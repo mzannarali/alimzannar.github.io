@@ -8,42 +8,28 @@ This repository contains the front-end code and lightweight media assets for my 
 
 ---
 
-## 🏗️ System Architecture
+# System Index | Ali Mzannar
 
-This portfolio operates on a "Headless-Style JSON Engine" contained within a single-file architecture. 
+This repository contains the front-end code and lightweight media assets for my computational design and architectural optimization portfolio. 
 
-* **The Front-End:** A custom infinite-scroll timeline with node-based UI, built entirely in vanilla CSS and JavaScript.
-* **The Data:** Projects are not hard-coded into the HTML. They are rendered dynamically via a JSON object array located at the bottom of the `index.html` file. 
+Engineered with a Brutalist, MIT Media Lab aesthetic, the site relies on massive typography, strict spatial alignments, and custom physics-based cursor tracking to reveal architectural media on hover. It is built entirely with zero external dependencies (Vanilla HTML, CSS, JavaScript) to ensure maximum performance, instant global load times, and frictionless maintenance.
 
-
-
-**CRITICAL NOTE FOR REPOSITORY MANAGEMENT:** This repository is strictly the **Live Stage**. It is designed for maximum speed and global CDN deployment via GitHub Pages. 
-
-Heavy AEC source files must never be committed to this repository. 
-* **Zone A (Archive):** Raw `.3dm`, `.gh`, `.py`, and 4K renders remain on external/cloud storage.
-* **Zone B (This Repo):** Only the `index.html` file and optimized web media (Media files must be `.mp4` or `.webp` and strictly **under 5MB**). 
-
-A `.gitignore` file is actively enforcing these limits to prevent repository corruption from heavy CAD files.
+🌐 **Live System:** [alimzannar.com]
 
 ---
 
-## 🔄 How to Add a New Project
+## 🏗️ Architecture & Directory Structure
 
-To publish a new workflow or project to the live timeline, follow this two-step process:
+The portfolio operates on a split-level architecture. The main canvas utilizes a localized JSON data engine and dynamic DOM routing, while specific projects are housed in dedicated sub-directories.
 
-### 1. Add the Media
-Drop your optimized looping video (`.mp4`) or thumbnail (`.jpg`/`.webp`) into the repository's media folder. Remember to use machine-readable naming conventions (e.g., `005-facade-optimization.mp4`).
-
-### 2. Update the Data Engine
-Open `index.html`, scroll to the `projectData` array in the `<script>` section, and append a new JSON block:
-
-```json
-{
-    "id": "005",
-    "title": "Project Title Here",
-    "date": "2026.07",
-    "category": "optimization", 
-    "metric": "CUSTOM_METRIC: 100%",
-    "desc": "A concise, technical description of the computational problem and algorithm used.",
-    "mediaSrc": "005-facade-optimization.mp4"
-}
+```text
+📦 repository-root
+ ┣ 📂 assets
+ ┃ ┣ 📂 videos               (Optimized .mp4 loops strictly < 5MB)
+ ┃ ┗ 📂 images               (Optimized .jpg/.webp static renders)
+ ┣ 📂 projects               (Dedicated deep-dive routing pages)
+ ┃ ┣ 📜 00-project.html      
+ ┃ ┣ 📜 01-project.html
+ ┣ 📜 style.css              (Unified Master Stylesheet)
+ ┣ 📜 index.html             (Main Canvas & Data Engine)
+ ┗ 📜 .gitignore             (Security protocol preventing CAD uploads)
