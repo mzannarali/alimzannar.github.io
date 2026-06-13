@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Computational Design Portfolio</title>
     <style>
-        /* --- UTENSIL/SOFTWARE INTERFACE AESTHETIC --- */
+        /* --- UTENSIL/SOFTWARE INTERFACE AESTHETIC (LIGHT MODE) --- */
         :root {
-            --bg-color: #0c0c0e;
-            --panel-bg: #141417;
-            --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
-            --border-color: #27272a;
+            --bg-color: #ffffff;
+            --panel-bg: #f8f8fa;
+            --text-primary: #0c0c0e;
+            --text-secondary: #6b7280;
+            --border-color: #e4e4e7;
             
-            /* Logic-based Color Coding */
-            --color-optimization: #3b82f6; /* Blueprint Blue */
-            --color-fabrication: #f97316;  /* Safety Orange */
-            --color-automation: #10b981;   /* Laser Green */
+            /* Calibrated Accent Colors for Light Background Contrast */
+            --color-optimization: #1d4ed8; /* Cobalt Blue */
+            --color-fabrication: #ea580c;  /* International Orange */
+            --color-automation: #047857;   /* Emerald Green */
         }
 
         * {
@@ -83,10 +83,10 @@
             color: var(--text-primary);
         }
 
-        .filter-btn.active[data-filter="all"] { border-color: var(--text-primary); color: var(--text-primary); background: rgba(255,255,255,0.05); }
-        .filter-btn.active[data-filter="optimization"] { border-color: var(--color-optimization); color: var(--color-optimization); }
-        .filter-btn.active[data-filter="fabrication"] { border-color: var(--color-fabrication); color: var(--color-fabrication); }
-        .filter-btn.active[data-filter="automation"] { border-color: var(--color-automation); color: var(--color-automation); }
+        .filter-btn.active[data-filter="all"] { border-color: var(--text-primary); color: var(--text-primary); background: rgba(0,0,0,0.05); }
+        .filter-btn.active[data-filter="optimization"] { border-color: var(--color-optimization); color: var(--color-optimization); background: rgba(29,78,216,0.05); }
+        .filter-btn.active[data-filter="fabrication"] { border-color: var(--color-fabrication); color: var(--color-fabrication); background: rgba(234,88,12,0.05); }
+        .filter-btn.active[data-filter="automation"] { border-color: var(--color-automation); color: var(--color-automation); background: rgba(4,120,87,0.05); }
 
         /* --- TIMELINE CANVAS --- */
         .timeline-container {
@@ -135,7 +135,7 @@
             padding: 24px;
             position: relative;
             cursor: pointer;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         /* Meta indicators mimicking a CAD viewport */
@@ -156,15 +156,15 @@
         }
 
         /* Dynamic border highlighting on hover based on category class */
-        .timeline-node[data-category="optimization"] .project-card:hover { border-color: var(--color-optimization); }
-        .timeline-node[data-category="fabrication"] .project-card:hover { border-color: var(--color-fabrication); }
-        .timeline-node[data-category="automation"] .project-card:hover { border-color: var(--color-automation); }
+        .timeline-node[data-category="optimization"] .project-card:hover { border-color: var(--color-optimization); box-shadow: 0 4px 20px rgba(29,78,216,0.04); }
+        .timeline-node[data-category="fabrication"] .project-card:hover { border-color: var(--color-fabrication); box-shadow: 0 4px 20px rgba(234,88,12,0.04); }
+        .timeline-node[data-category="automation"] .project-card:hover { border-color: var(--color-automation); box-shadow: 0 4px 20px rgba(4,120,87,0.04); }
 
         /* --- HOVER TO PLAY CONTAINER --- */
         .media-viewport {
             width: 100%;
             height: 200px;
-            background: #1c1c21;
+            background: #f1f1f4;
             margin-top: 15px;
             border: 1px solid var(--border-color);
             overflow: hidden;
@@ -178,7 +178,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.3;
+            opacity: 0.4;
             transition: opacity 0.3s ease;
         }
 
@@ -194,8 +194,11 @@
             color: var(--text-secondary);
             text-transform: uppercase;
             pointer-events: none;
-            border: 1px dashed rgba(255,255,255,0.1);
+            border: 1px dashed rgba(0,0,0,0.1);
             padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(2px);
+            z-index: 1;
         }
 
         /* Node dot on the center timeline line */
@@ -213,9 +216,9 @@
         }
 
         /* Dynamic color tags for dots */
-        .timeline-node[data-category="optimization"] .node-dot { background-color: var(--color-optimization); }
-        .timeline-node[data-category="fabrication"] .node-dot { background-color: var(--color-fabrication); }
-        .timeline-node[data-category="automation"] .node-dot { background-color: var(--color-automation); }
+        .timeline-node[data-category="optimization"] .node-dot { background-color: var(--color-optimization); border-color: var(--color-optimization); }
+        .timeline-node[data-category="fabrication"] .node-dot { background-color: var(--color-fabrication); border-color: var(--color-fabrication); }
+        .timeline-node[data-category="automation"] .node-dot { background-color: var(--color-automation); border-color: var(--color-automation); }
 
         /* Hidden class for filtering */
         .timeline-node.hidden {
