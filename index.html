@@ -224,59 +224,78 @@
     </section>
 
     <div id="cursor-media">
-        <video id="cursor-video" src="" autoplay loop muted playsinline></video>
-    </div>
+        </div>
 
-    <script>
-        // --- CUSTOM CURSOR MEDIA TRACKER ---
-        const cursorMedia = document.getElementById('cursor-media');
-        const cursorVideo = document.getElementById('cursor-video');
-        const projectRows = document.querySelectorAll('.project-row');
+ <script>
+    // --- CUSTOM CURSOR MEDIA TRACKER ---
+    const cursorMedia = document.getElementById('cursor-media');
+    const projectRows = document.querySelectorAll('.project-row');
 
-        // Variables for smooth interpolation (Lerp)
-        let mouseX = 0;
-        let mouseY = 0;
-        let mediaX = 0;
-        let mediaY = 0;
+    // Variables for smooth interpolation (Lerp)
+    let mouseX = 0;
+    let mouseY = 0;
+    let mediaX = 0;
+    let mediaY = 0;
 
-        // Track raw mouse position
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
+    // Track raw mouse position
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
 
-        // Animation loop for smooth dragging physics
-        function animate() {
-            // Lerp formula: current = current + (target - current) * ease
-            mediaX += (mouseX - mediaX) * 0.15;
-            mediaY += (mouseY - mediaY) * 0.15;
+    // Animation loop for smooth dragging physics
+    function animate() {
+        // Lerp formula: current = current + (target - current) * ease
+        mediaX += (mouseX - mediaX) * 0.15;
+        mediaY += (mouseY - mediaY) * 0.15;
+        
+        // Apply coordinates to the floating div
+        cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px)`;
+        
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Reveal and inject media on row hover
+    projectRows.forEach(row => {
+        row.addEventListener('mouseenter', () => {
+            const mediaSrc = row.getAttribute('data-media');
             
-            // Apply coordinates to the floating div
-            cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px)`;
-            
-            requestAnimationFrame(animate);
-        }
-        animate();
+            if (mediaSrc !== "") {
+                // Only reconstruct the HTML if we are hovering over a NEW project to prevent flickering
+                if (cursorMedia.getAttribute('data-loaded') !== mediaSrc) {
+                    cursorMedia.setAttribute('data-loaded', mediaSrc);
+                    cursorMedia.innerHTML = ''; // Clear the box
 
-        // Reveal media on row hover
-        projectRows.forEach(row => {
-            row.addEventListener('mouseenter', () => {
-                const mediaSrc = row.getAttribute('data-media');
-                
-                // Only load if it's a new source to prevent flickering
-                if(cursorVideo.src !== window.location.origin + '/' + mediaSrc && mediaSrc !== "") {
-                    cursorVideo.src = mediaSrc;
+                    // Check file extension to inject correct HTML tag
+                    const ext = mediaSrc.split('.').pop().toLowerCase();
+                    
+                    if (ext === 'mp4' || ext === 'webm') {
+                        const video = document.createElement('video');
+                        video.src = mediaSrc;
+                        video.autoplay = true;
+                        video.loop = true;
+                        video.muted = true;
+                        video.playsInline = true;
+                        cursorMedia.appendChild(video);
+                    } else {
+                        // Handles .gif, .jpg, .png, .webp
+                        const img = document.createElement('img');
+                        img.src = mediaSrc;
+                        cursorMedia.appendChild(img);
+                    }
                 }
-                
-                cursorMedia.style.opacity = '1';
-                // Slight scale-up effect
-                cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px) scale(1.05)`;
-            });
-
-            row.addEventListener('mouseleave', () => {
-                cursorMedia.style.opacity = '0';
-            });
+            }
+            
+            cursorMedia.style.opacity = '1';
+            // Slight scale-up effect
+            cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px) scale(1.05)`;
         });
-    </script>
+
+        row.addEventListener('mouseleave', () => {
+            cursorMedia.style.opacity = '0';
+        });
+    });
+</script>
 </body>
 </html>
