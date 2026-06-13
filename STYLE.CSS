@@ -134,7 +134,7 @@ nav {
 #cursor-media {
     position: fixed;
     top: 0; left: 0;
-    width: 350px; height: 450px;
+    width: 450px; height: 350px;
     pointer-events: none;
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.9);
