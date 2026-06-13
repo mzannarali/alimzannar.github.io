@@ -1,0 +1,17 @@
+# Ignore heavy CAD and 3D files
+*.3dm
+*.gh
+*.max
+*.rvt
+*.blend
+
+# Ignore heavy raw video and PSDs
+*.mov
+*.avi
+*.psd
+*.psb
+*.tif
+
+# Ignore zip archives
+*.zip
+*.rar
