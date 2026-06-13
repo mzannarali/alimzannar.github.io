@@ -1,184 +1,215 @@
-    /* --- CORE TYPOGRAPHY & COLORS --- */
+/* =========================================
+   CORE TYPOGRAPHY & VARIABLES
+   ========================================= */
 :root {
     --bg-color: #ffffff;
     --text-color: #000000;
     --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: var(--font-stack);
     text-transform: uppercase;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
+::selection {
+    background: #000;
+    color: #fff;
+}
 
-    <style>
-        /* --- MIT MEDIA LAB TYPOGRAPHY & ARISTIDE SPACING --- */
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #000000;
-            --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
+/* =========================================
+   NAVIGATION BARS
+   ========================================= */
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 30px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            cursor: default; /* Aristide sites often remove text cursors for a clean feel */
-        }
+/* Specific to the Home Page Index (Floating & Inverted) */
+.home-nav {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    mix-blend-mode: difference;
+    color: #fff;
+}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-stack);
-            text-transform: uppercase;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+/* Specific to the Project Pages (Static & Bordered) */
+.project-nav {
+    border-bottom: 1px solid #000;
+    color: #000;
+}
 
-        ::selection {
-            background: #000;
-            color: #fff;
-        }
+.project-nav a {
+    color: #000;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
 
-        /* --- MINIMALIST TOP BAR --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px 30px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-            mix-blend-mode: difference;
-            color: #fff; /* Inverts to black on white background */
-        }
+.project-nav a:hover {
+    opacity: 0.5;
+}
 
-        /* --- MASSIVE HERO TYPOGRAPHY --- */
-        .hero {
-            padding: 15vh 30px 10vh 30px;
-            display: flex;
-            flex-direction: column;
-            border-bottom: 1px solid #000;
-        }
+/* =========================================
+   HOME PAGE ELEMENTS (index.html)
+   ========================================= */
+.hero {
+    padding: 15vh 30px 10vh 30px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #000;
+}
 
-        .hero h1 {
-            font-size: 13vw;
-            line-height: 0.82;
-            letter-spacing: -0.04em;
-            font-weight: 700;
-            white-space: nowrap;
-        }
+.hero h1 {
+    font-size: 13vw;
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+    white-space: nowrap;
+}
 
-        .hero h1.indent {
-            margin-left: 10vw;
-        }
+.hero h1.indent {
+    margin-left: 10vw;
+}
 
-        /* --- BIO SECTION --- */
-        .bio-section {
-            padding: 8vh 30px;
-            border-bottom: 1px solid #000;
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 40px;
-        }
+.bio-section {
+    padding: 8vh 30px;
+    border-bottom: 1px solid #000;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+}
 
-        .bio-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
+.bio-label { font-size: 0.75rem; font-weight: 700; }
+.bio-text { font-size: 3vw; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
 
-        .bio-text {
-            font-size: 3vw;
-            line-height: 1.1;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-        }
+.project-list { padding: 5vh 30px 15vh 30px; }
 
-        /* --- INTERACTIVE PROJECT LIST --- */
-        .project-list {
-            padding: 5vh 30px 15vh 30px;
-        }
+.project-header {
+    display: grid;
+    grid-template-columns: 3fr 2fr 1fr;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-bottom: 1px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
 
-        .project-header {
-            display: grid;
-            grid-template-columns: 3fr 2fr 1fr;
-            font-size: 0.75rem;
-            font-weight: 700;
-            border-bottom: 1px solid #000;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
+.project-row {
+    display: grid;
+    grid-template-columns: 3fr 2fr 1fr;
+    padding: 2.5vh 0;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 2.5vw;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    transition: color 0.3s ease;
+    position: relative;
+    z-index: 10;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
 
-        .project-row {
-            display: grid;
-            grid-template-columns: 3fr 2fr 1fr;
-            padding: 2.5vh 0;
-            border-bottom: 1px solid #e5e5e5;
-            font-size: 2.5vw;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            transition: color 0.3s ease;
-            position: relative;
-            z-index: 10;
-        }
+.project-row:hover { color: #000; }
+.project-row span { pointer-events: none; }
+.project-row .desc { font-size: 1rem; font-weight: 400; align-self: center; color: #666; text-transform: none; }
 
-        .project-row:hover {
-            color: #000;
-            cursor: crosshair;
-        }
+#cursor-media {
+    position: fixed;
+    top: 0; left: 0;
+    width: 350px; height: 450px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 5;
+    overflow: hidden;
+    background-color: #f0f0f0;
+}
 
-        .project-row span {
-            pointer-events: none;
-        }
+#cursor-media video, #cursor-media img {
+    width: 100%; height: 100%; object-fit: cover;
+}
 
-        .project-row .desc {
-            font-size: 1rem;
-            font-weight: 400;
-            align-self: center;
-            color: #666;
-            text-transform: none;
-        }
+/* =========================================
+   PROJECT PAGE ELEMENTS (sakura-bay.html)
+   ========================================= */
+.project-hero {
+    padding: 10vh 30px 5vh 30px;
+    border-bottom: 1px solid #000;
+}
 
-        /* --- FLOATING MEDIA REVEAL (ARISTIDE EFFECT) --- */
-        #cursor-media {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 350px;
-            height: 450px;
-            pointer-events: none;
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.9);
-            transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 5;
-            overflow: hidden;
-            will-change: transform, opacity;
-            background-color: #f0f0f0;
-        }
+.project-hero h1 {
+    font-size: 11vw;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+}
 
-        #cursor-media video, 
-        #cursor-media img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.project-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 20px 30px;
+    border-bottom: 1px solid #000;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #666;
+}
 
-        /* --- MOBILE RESPONSIVENESS --- */
-        @media (max-width: 768px) {
-            .bio-section { grid-template-columns: 1fr; }
-            .bio-text { font-size: 1.5rem; }
-            .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
-            .project-row .desc { font-size: 0.85rem; }
-            .project-header { display: none; }
-            #cursor-media { display: none; } /* Disable floating image on mobile */
-        }
-    </style>
+.meta-group span {
+    display: block;
+    color: #000;
+    margin-top: 5px;
+    font-size: 1rem;
+}
+
+.project-brief {
+    padding: 10vh 30px;
+    font-size: 2.5vw;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    max-width: 85%;
+    border-bottom: 1px solid #000;
+}
+
+.media-gallery {
+    padding: 10vh 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.media-item { width: 100%; background: #f4f4f4; }
+.media-item video, .media-item img { width: 100%; height: auto; display: block; }
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 768px) {
+    .bio-section { grid-template-columns: 1fr; }
+    .bio-text { font-size: 1.5rem; }
+    .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
+    .project-row .desc { font-size: 0.85rem; }
+    .project-header { display: none; }
+    #cursor-media { display: none; }
+    .project-meta { grid-template-columns: 1fr; gap: 20px; }
+    .project-brief { font-size: 1.5rem; max-width: 100%; }
+}
