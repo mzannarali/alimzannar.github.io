@@ -3,365 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computational Design Portfolio</title>
+    <title>Ali Mzannar | Computational Designer</title>
     <style>
-        /* --- UTENSIL/SOFTWARE INTERFACE AESTHETIC (LIGHT MODE) --- */
+        /* --- MIT MEDIA LAB TYPOGRAPHY & ARISTIDE SPACING --- */
         :root {
             --bg-color: #ffffff;
-            --panel-bg: #f8f8fa;
-            --text-primary: #0c0c0e;
-            --text-secondary: #6b7280;
-            --border-color: #e4e4e7;
-            
-            /* Calibrated Accent Colors for Light Background Contrast */
-            --color-optimization: #1d4ed8; /* Cobalt Blue */
-            --color-fabrication: #ea580c;  /* International Orange */
-            --color-automation: #047857;   /* Emerald Green */
+            --text-color: #000000;
+            --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            cursor: default; /* Aristide sites often remove text cursors for a clean feel */
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            color: var(--text-color);
+            font-family: var(--font-stack);
+            text-transform: uppercase;
             overflow-x: hidden;
-            padding-bottom: 100px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* --- STARK HEADER --- */
-        header {
-            padding: 40px 20px;
-            border-bottom: 1px solid var(--border-color);
-            max-width: 1200px;
-            margin: 0 auto;
+        ::selection {
+            background: #000;
+            color: #fff;
+        }
+
+        /* --- MINIMALIST TOP BAR --- */
+        nav {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .brand h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.05em;
-            text-transform: uppercase;
-        }
-
-        .brand p {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            margin-top: 5px;
-        }
-
-        /* --- CONTROL MATRIX / FILTERS --- */
-        .filter-matrix {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            padding: 6px 12px;
-            font-family: inherit;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-        }
-
-        .filter-btn:hover {
-            border-color: var(--text-primary);
-            color: var(--text-primary);
-        }
-
-        .filter-btn.active[data-filter="all"] { border-color: var(--text-primary); color: var(--text-primary); background: rgba(0,0,0,0.05); }
-        .filter-btn.active[data-filter="optimization"] { border-color: var(--color-optimization); color: var(--color-optimization); background: rgba(29,78,216,0.05); }
-        .filter-btn.active[data-filter="fabrication"] { border-color: var(--color-fabrication); color: var(--color-fabrication); background: rgba(234,88,12,0.05); }
-        .filter-btn.active[data-filter="automation"] { border-color: var(--color-automation); color: var(--color-automation); background: rgba(4,120,87,0.05); }
-
-        /* --- TIMELINE CANVAS --- */
-        .timeline-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            position: relative;
-        }
-
-        /* Center line of the timeline */
-        .timeline-container::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background-color: var(--border-color);
-            transform: translateX(-50%);
-        }
-
-        .timeline-node {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 80px;
-            position: relative;
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-
-        /* Left/Right distribution */
-        .timeline-node:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .timeline-spacer {
-            width: 45%;
-        }
-
-        /* The actual project block */
-        .project-card {
-            width: 45%;
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            padding: 24px;
-            position: relative;
-            cursor: pointer;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        /* Meta indicators mimicking a CAD viewport */
-        .project-meta {
-            display: flex;
-            justify-content: space-between;
+            padding: 20px 30px;
             font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-            border-bottom: 1px dashed var(--border-color);
-            padding-bottom: 8px;
-        }
-
-        .project-title {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        /* Dynamic border highlighting on hover based on category class */
-        .timeline-node[data-category="optimization"] .project-card:hover { border-color: var(--color-optimization); box-shadow: 0 4px 20px rgba(29,78,216,0.04); }
-        .timeline-node[data-category="fabrication"] .project-card:hover { border-color: var(--color-fabrication); box-shadow: 0 4px 20px rgba(234,88,12,0.04); }
-        .timeline-node[data-category="automation"] .project-card:hover { border-color: var(--color-automation); box-shadow: 0 4px 20px rgba(4,120,87,0.04); }
-
-        /* --- HOVER TO PLAY CONTAINER --- */
-        .media-viewport {
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            position: fixed;
             width: 100%;
-            height: 200px;
-            background: #f1f1f4;
-            margin-top: 15px;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            top: 0;
+            z-index: 100;
+            mix-blend-mode: difference;
+            color: #fff; /* Inverts to black on white background */
         }
 
-        .media-viewport video, .media-viewport img {
+        /* --- MASSIVE HERO TYPOGRAPHY --- */
+        .hero {
+            padding: 15vh 30px 10vh 30px;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid #000;
+        }
+
+        .hero h1 {
+            font-size: 13vw;
+            line-height: 0.82;
+            letter-spacing: -0.04em;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .hero h1.indent {
+            margin-left: 10vw;
+        }
+
+        /* --- BIO SECTION --- */
+        .bio-section {
+            padding: 8vh 30px;
+            border-bottom: 1px solid #000;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+
+        .bio-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .bio-text {
+            font-size: 3vw;
+            line-height: 1.1;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* --- INTERACTIVE PROJECT LIST --- */
+        .project-list {
+            padding: 5vh 30px 15vh 30px;
+        }
+
+        .project-header {
+            display: grid;
+            grid-template-columns: 3fr 2fr 1fr;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-bottom: 1px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .project-row {
+            display: grid;
+            grid-template-columns: 3fr 2fr 1fr;
+            padding: 2.5vh 0;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 2.5vw;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .project-row:hover {
+            color: #000;
+            cursor: crosshair;
+        }
+
+        .project-row span {
+            pointer-events: none;
+        }
+
+        .project-row .desc {
+            font-size: 1rem;
+            font-weight: 400;
+            align-self: center;
+            color: #666;
+            text-transform: none;
+        }
+
+        /* --- FLOATING MEDIA REVEAL (ARISTIDE EFFECT) --- */
+        #cursor-media {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 350px;
+            height: 450px;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+            transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 5;
+            overflow: hidden;
+            will-change: transform, opacity;
+            background-color: #f0f0f0;
+        }
+
+        #cursor-media video, 
+        #cursor-media img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.4;
-            transition: opacity 0.3s ease;
         }
 
-        /* On hover, increase opacity of media simulating activation */
-        .project-card:hover .media-viewport video,
-        .project-card:hover .media-viewport img {
-            opacity: 1;
-        }
-
-        .placeholder-mesh {
-            position: absolute;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            pointer-events: none;
-            border: 1px dashed rgba(0,0,0,0.1);
-            padding: 4px 8px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(2px);
-            z-index: 1;
-        }
-
-        /* Node dot on the center timeline line */
-        .node-dot {
-            position: absolute;
-            left: 50%;
-            width: 12px;
-            height: 12px;
-            background-color: var(--bg-color);
-            border: 2px solid var(--border-color);
-            border-radius: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            transition: all 0.3s ease;
-        }
-
-        /* Dynamic color tags for dots */
-        .timeline-node[data-category="optimization"] .node-dot { background-color: var(--color-optimization); border-color: var(--color-optimization); }
-        .timeline-node[data-category="fabrication"] .node-dot { background-color: var(--color-fabrication); border-color: var(--color-fabrication); }
-        .timeline-node[data-category="automation"] .node-dot { background-color: var(--color-automation); border-color: var(--color-automation); }
-
-        /* Hidden class for filtering */
-        .timeline-node.hidden {
-            opacity: 0;
-            transform: scale(0.95);
-            pointer-events: none;
-            position: absolute;
-            width: 0;
-            height: 0;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        /* --- RESPONSIVE MOBILE FALLBACK --- */
+        /* --- MOBILE RESPONSIVENESS --- */
         @media (max-width: 768px) {
-            .timeline-container::before { left: 20px; }
-            .timeline-node, .timeline-node:nth-child(even) { flex-direction: column; align-items: flex-start; }
-            .project-card, .timeline-spacer { width: 100%; padding-left: 40px; }
-            .project-card { margin-left: 20px; width: calc(100% - 20px); }
-            .node-dot { left: 20px; }
+            .bio-section { grid-template-columns: 1fr; }
+            .bio-text { font-size: 1.5rem; }
+            .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
+            .project-row .desc { font-size: 0.85rem; }
+            .project-header { display: none; }
+            #cursor-media { display: none; } /* Disable floating image on mobile */
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand">
-            <h1>System Index</h1>
-            <p>Computational Design & Architectural Optimization Workflows</p>
-        </div>
-        <div class="filter-matrix">
-            <button class="filter-btn active" data-filter="all">// All Systems</button>
-            <button class="filter-btn" data-filter="optimization">// Optimization</button>
-            <button class="filter-btn" data-filter="fabrication">// Fabrication</button>
-            <button class="filter-btn" data-filter="automation">// Automation</button>
-        </div>
+    <nav>
+        <span>Ali Mzannar © 2026</span>
+        <span>Stuttgart, DE ↗</span>
+    </nav>
+
+    <header class="hero">
+        <h1>ALI MZANNAR</h1>
+        <h1 class="indent">COMPUTATIONAL</h1>
+        <h1>DESIGNER</h1>
     </header>
 
-    <main class="timeline-container" id="timelineCanvas">
-        </main>
+    <section class="bio-section">
+        <div class="bio-label">INDEX / PROFILE</div>
+        <div class="bio-text">
+            Architect and Computational Designer operating at the intersection of algorithmic logic and the built environment. Focused on fabrication-oriented research, multi-objective optimization, and data-driven systems.
+        </div>
+    </section>
+
+    <section class="project-list">
+        <div class="project-header">
+            <span>PROJECT</span>
+            <span>TYPOLOGY / ALGORITHM</span>
+            <span>YEAR</span>
+        </div>
+
+        <div class="project-row" data-media="assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif">
+            <span>SAKURA BAY</span>
+            <span class="desc">Standalone Masterplan / Cultural Landmarks</span>
+            <span>2026</span>
+        </div>
+
+        <div class="project-row" data-media="assets/videos/gerbert-bin.mp4">
+            <span>GERBERT THE GARBAGE BIN</span>
+            <span class="desc">Hardware Actuation / Sensor Logic</span>
+            <span>2026</span>
+        </div>
+
+        <div class="project-row" data-media="assets/videos/raouche-towers.mp4">
+            <span>RAOUCHE TOWERS</span>
+            <span class="desc">Voxel-Based Massing / View Optimization</span>
+            <span>2026</span>
+        </div>
+
+        <div class="project-row" data-media="assets/videos/gabon-tower.mp4">
+            <span>GABON RESIDENTIAL</span>
+            <span class="desc">Parametric Tower Generation</span>
+            <span>2026</span>
+        </div>
+    </section>
+
+    <div id="cursor-media">
+        <video id="cursor-video" src="" autoplay loop muted playsinline></video>
+    </div>
 
     <script>
-        /* --- STRUCTURED DATA INVERSION (JSON ENGINE) --- */
-        const projectData = [
-            {
-                id: "001",
-                title: "Simultaneous Global Massing Optimization",
-                date: "2026.03",
-                category: "optimization",
-                metric: "ENV_VAL: 94.2%",
-                desc: "Replacing sequential optimization pipelines with a global simultaneous parametric grid layout to maximize envelope yield.",
-                mediaSrc: ""assests\videos\20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif"" // Add your loop.mp4 or preview.gif here
-            },
-            {
-                id: "002",
-                title: "Interactive Smart Hardware Actuator",
-                date: "2026.05",
-                category: "fabrication",
-                metric: "BAUD_RATE: 9600",
-                desc: "Integrating dynamic hardware sensor arrays with physical micro-controllers executing closed-loop sorting variations.",
-                mediaSrc: ""
-            },
-            {
-                id: "003",
-                title: "Fragmented Elevation Facade Scripting",
-                date: "2026.05",
-                category: "automation",
-                metric: "ITERATIONS: 12k",
-                desc: "An algorithmic model designed to execute micro-stepping multi-level panel structures omitting full-story transitions.",
-                mediaSrc: ""
-            },
-            {
-                id: "004",
-                title: "Algorithmic Geometries of Gathering",
-                date: "2026.02",
-                category: "optimization",
-                metric: "STRUCT_ELEM: Pure Circle",
-                desc: "Large scale masterplanning driven by clean cultural node definitions and non-linear mathematical clustering logic.",
-                mediaSrc: ""
-            }
-        ];
+        // --- CUSTOM CURSOR MEDIA TRACKER ---
+        const cursorMedia = document.getElementById('cursor-media');
+        const cursorVideo = document.getElementById('cursor-video');
+        const projectRows = document.querySelectorAll('.project-row');
 
-        const container = document.getElementById('timelineCanvas');
+        // Variables for smooth interpolation (Lerp)
+        let mouseX = 0;
+        let mouseY = 0;
+        let mediaX = 0;
+        let mediaY = 0;
 
-        // Render projects automatically from JSON
-        function renderTimeline() {
-            container.innerHTML = '';
-            projectData.forEach(project => {
-                const node = document.createElement('div');
-                node.className = 'timeline-node';
-                node.setAttribute('data-category', project.category);
-
-                node.innerHTML = `
-                    <div class="node-dot"></div>
-                    <div class="project-card">
-                        <div class="project-meta">
-                            <span>[ID:${project.id}] // ${project.category.toUpperCase()}</span>
-                            <span>${project.date}</span>
-                        </div>
-                        <div class="project-title">${project.title}</div>
-                        <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.4;">${project.desc}</p>
-                        <div class="media-viewport">
-                            <span class="placeholder-mesh">${project.metric}</span>
-                            <video src="${project.mediaSrc || '#'}" loop muted playsinline></video>
-                        </div>
-                    </div>
-                    <div class="timeline-spacer"></div>
-                `;
-
-                // Add simple event listener to trigger playback on hover for video formats
-                const card = node.querySelector('.project-card');
-                const video = node.querySelector('video');
-                
-                card.addEventListener('mouseenter', () => { if(video.src !== window.location.href) video.play().catch(()=>{}); });
-                card.addEventListener('mouseleave', () => { if(video.src !== window.location.href) video.pause(); });
-
-                container.appendChild(node);
-            });
-        }
-
-        // Filtering engine logic
-        const buttons = document.querySelectorAll('.filter-btn');
-        buttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                buttons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                const filterValue = btn.getAttribute('data-filter');
-                const nodes = document.querySelectorAll('.timeline-node');
-                
-                nodes.forEach(node => {
-                    if (filterValue === 'all' || node.getAttribute('data-category') === filterValue) {
-                        node.classList.remove('hidden');
-                    } else {
-                        node.classList.add('hidden');
-                    }
-                });
-            });
+        // Track raw mouse position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
-        // Initialize view
-        renderTimeline();
+        // Animation loop for smooth dragging physics
+        function animate() {
+            // Lerp formula: current = current + (target - current) * ease
+            mediaX += (mouseX - mediaX) * 0.15;
+            mediaY += (mouseY - mediaY) * 0.15;
+            
+            // Apply coordinates to the floating div
+            cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px)`;
+            
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Reveal media on row hover
+        projectRows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                const mediaSrc = row.getAttribute('data-media');
+                
+                // Only load if it's a new source to prevent flickering
+                if(cursorVideo.src !== window.location.origin + '/' + mediaSrc && mediaSrc !== "") {
+                    cursorVideo.src = mediaSrc;
+                }
+                
+                cursorMedia.style.opacity = '1';
+                // Slight scale-up effect
+                cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px) scale(1.05)`;
+            });
+
+            row.addEventListener('mouseleave', () => {
+                cursorMedia.style.opacity = '0';
+            });
+        });
     </script>
 </body>
 </html>
