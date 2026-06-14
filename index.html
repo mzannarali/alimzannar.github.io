@@ -156,7 +156,7 @@
                 const grid = document.createElement('span');
                 grid.className = 'voxel-grid';
                 
-                for(let i=0; i<4; i++){
+                for(let i=0; i<24; i++){
                     const b = document.createElement('b');
                     b.innerText = chars[Math.floor(Math.random() * chars.length)];
                     grid.appendChild(b);
@@ -184,7 +184,7 @@
                 if (dist < 150) { 
                     charEl.classList.add('is-fractured');
                     
-                    if(Math.random() > 0.65) {
+                    if(Math.random() > 0.85) {
                         const voxels = charEl.querySelectorAll('b');
                         voxels.forEach(v => {
                             v.innerText = chars[Math.floor(Math.random() * chars.length)];
