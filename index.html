@@ -21,6 +21,7 @@
 
     <nav class="home-nav">
         <span>Ali Mzannar © 2026</span>
+        <span>Stuttgart, DE</span> 
         <a href="#contact" style="color: inherit; text-decoration: none;">CONTACT ↓</a>
     </nav>
 
@@ -70,19 +71,16 @@
         const cursorMedia = document.getElementById('cursor-media');
         const projectRows = document.querySelectorAll('.project-row');
 
-        // Variables for smooth interpolation (Lerp)
         let mouseX = -1000;
         let mouseY = -1000;
         let mediaX = 0;
         let mediaY = 0;
 
-        // Master Mouse Tracker (Feeds both the Video and the Voxel Engine)
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
 
-        // Animation loop for smooth dragging physics
         function animateMedia() {
             mediaX += (mouseX - mediaX) * 0.15;
             mediaY += (mouseY - mediaY) * 0.15;
@@ -91,13 +89,11 @@
         }
         animateMedia();
 
-        // Reveal and inject media on row hover
         projectRows.forEach(row => {
             row.addEventListener('mouseenter', () => {
                 const mediaSrc = row.getAttribute('data-media');
                 
                 if (mediaSrc !== "") {
-                    // Only reconstruct HTML if hovering over a NEW project to prevent flickering
                     if (cursorMedia.getAttribute('data-loaded') !== mediaSrc) {
                         cursorMedia.setAttribute('data-loaded', mediaSrc);
                         cursorMedia.innerHTML = ''; 
@@ -129,65 +125,62 @@
             });
         });
 
-    // =========================================
-            // 2. PROXIMITY VOXEL ENGINE
-            // =========================================
-            const chars = "█▓▒░#@%&01";
-            const headers = document.querySelectorAll('.hero h1');
+        // =========================================
+        // 2. GRADIENT PROXIMITY VOXEL ENGINE
+        // =========================================
+        const chars = "█▓▒░#@%&01";
+        const headers = document.querySelectorAll('.hero h1');
 
-            // Deconstruct the text into dynamic, mathematically square grids
-            headers.forEach(h1 => {
-                const text = h1.innerText;
-                h1.innerHTML = ''; 
+        // Deconstruct the text into dynamic, mathematically square grids
+        headers.forEach(h1 => {
+            const text = h1.innerText;
+            h1.innerHTML = ''; 
+            
+            text.split('').forEach(char => {
+                if (char === ' ') {
+                    h1.appendChild(document.createTextNode(' '));
+                    return;
+                }
                 
-                text.split('').forEach(char => {
-                    if (char === ' ') {
-                        h1.appendChild(document.createTextNode(' '));
-                        return;
-                    }
-                    
-                    const wrapper = document.createElement('span');
-                    wrapper.className = 'char-voxel';
+                const wrapper = document.createElement('span');
+                wrapper.className = 'char-voxel';
 
-                    const base = document.createElement('span');
-                    base.className = 'base';
-                    base.innerText = char;
+                const base = document.createElement('span');
+                base.className = 'base';
+                base.innerText = char;
 
-                    // 1. We must append the base letter to the page FIRST so the browser can measure it
-                    wrapper.appendChild(base);
-                    h1.appendChild(wrapper);
+                wrapper.appendChild(base);
+                h1.appendChild(wrapper);
 
-                    // 2. Read the physical pixel dimensions of the rendered letter
-                    const rect = base.getBoundingClientRect();
-                    const width = rect.width || 10;
-                    const height = rect.height || 20;
+                const rect = base.getBoundingClientRect();
+                const width = rect.width || 10;
+                const height = rect.height || 20;
 
-                    // 3. The Math: Choose column density, then dynamically calculate required rows
-                    const cols = 10; // 5 columns across the letter
-                    const rows = Math.max(1, Math.round(cols * (height / width))); // Calculates perfect squares
+                const cols = 10; 
+                const rows = Math.max(1, Math.round(cols * (height / width))); 
 
-                    // 4. Build the grid using the dynamic math
-                    const grid = document.createElement('span');
-                    grid.className = 'voxel-grid';
-                    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-                    grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-                    
-                    // 5. Fill the grid with the exact number of symbols needed (cols * rows)
-                    const totalVoxels = cols * rows;
-                    for(let i=0; i < totalVoxels; i++){
-                        const b = document.createElement('b');
-                        b.innerText = chars[Math.floor(Math.random() * chars.length)];
-                        grid.appendChild(b);
-                    }
+                const grid = document.createElement('span');
+                grid.className = 'voxel-grid';
+                grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+                grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+                
+                const totalVoxels = cols * rows;
+                for(let i=0; i < totalVoxels; i++){
+                    const b = document.createElement('b');
+                    b.innerText = chars[Math.floor(Math.random() * chars.length)];
+                    grid.appendChild(b);
+                }
 
-                    wrapper.appendChild(grid);
-                });
+                wrapper.appendChild(grid);
             });
+        });
 
         const allChars = document.querySelectorAll('.char-voxel');
 
-        // The Render Loop (60fps collision detection)
+        // The Render Loop (60fps Gradient Engine)
         function animateVoxels() {
+            const maxRadius = 300; // Total size of the impact area
+
             allChars.forEach(charEl => {
                 const rect = charEl.getBoundingClientRect();
                 
@@ -196,18 +189,23 @@
 
                 const dist = Math.hypot(mouseX - charX, mouseY - charY);
 
-                // Smashes the letter into 4 symbols if the mouse is within 100px
-                if (dist < 150) { 
-                    charEl.classList.add('is-fractured');
+                if (dist < maxRadius) { 
+                    // Calculate intensity (1.0 at center, 0.0 at edge)
+                    const intensity = 1 - (dist / maxRadius);
                     
-                    if(Math.random() > 0.85) {
+                    // Pass the math to CSS for smooth fading
+                    charEl.style.setProperty('--intensity', intensity.toFixed(3));
+                    
+                    // The closer the mouse, the faster the symbols swap
+                    if(Math.random() < (intensity * 0.6)) {
                         const voxels = charEl.querySelectorAll('b');
                         voxels.forEach(v => {
                             v.innerText = chars[Math.floor(Math.random() * chars.length)];
                         });
                     }
                 } else {
-                    charEl.classList.remove('is-fractured');
+                    // Reset to pure text when the mouse is far away
+                    charEl.style.setProperty('--intensity', '0');
                 }
             });
             requestAnimationFrame(animateVoxels);
