@@ -19,7 +19,7 @@
             <meta property="og:url" content="https://alimzannar.com/">
     </title>
     <link rel="stylesheet" href="STYLE.CSS">
-
+    
 </head>
 <body>
 
@@ -32,6 +32,7 @@
         <h1>ALI MZANNAR</h1>
         <h1 class="indent">COMPUTATIONAL</h1>
         <h1>DESIGNER</h1>
+        <div id="micro-matrix"></div>
     </header>
 
     <section class="bio-section">
@@ -166,42 +167,53 @@
         });
     });
 
-    // --- ALGORITHMIC TEXT SCRAMBLE ENGINE ---
-    const letters = "+-\\/_[]<>01"; // The mosaic character set
-    const heroHeaders = document.querySelectorAll('.hero h1');
+    // --- MICRO-MATRIX VOXEL ENGINE ---
+    const matrixBox = document.getElementById('micro-matrix');
+    const heroSection = document.querySelector('.hero');
+    const chars = "+-\\/_[]<>01";
 
-    heroHeaders.forEach(header => {
-        // Store the original text inside a data attribute so we don't lose it
-        header.dataset.value = header.innerText;
-        
-        header.addEventListener('mouseenter', event => {
-            let iterations = 0;
-            
-            // Clear any running interval to prevent stuttering
-            clearInterval(header.dataset.interval);
-            
-            header.dataset.interval = setInterval(() => {
-                event.target.innerText = event.target.innerText
-                    .split("")
-                    .map((letter, index) => {
-                        // Reveal the correct letter systematically from left to right
-                        if(index < iterations) {
-                            return event.target.dataset.value[index];
-                        }
-                        // Keep scrambling the remaining letters
-                        return letters[Math.floor(Math.random() * letters.length)];
-                    })
-                    .join("");
-                
-                // Speed of the reveal (lower number = faster completion)
-                if(iterations >= event.target.dataset.value.length){ 
-                    clearInterval(header.dataset.interval);
-                }
-                
-                iterations += 1 / 3; // The fraction controls the glitch density
-            }, 30); // 30ms per frame
-        });
-    });       
+    // Pre-render 5 massive blocks of random characters to ensure maximum performance
+    const frames = [];
+    for (let f = 0; f < 5; f++) {
+        let text = '';
+        for(let i=0; i<8000; i++) {
+            text += chars[Math.floor(Math.random() * chars.length)];
+        }
+        frames.push(text);
+    }
+
+    let glitchInterval;
+    let isHovering = false;
+
+    heroSection.addEventListener('mouseenter', () => {
+        isHovering = true;
+        let frameIndex = 0;
+        let tick = 0;
+
+        // Reveal the stencil
+        matrixBox.style.opacity = '1';
+
+        clearInterval(glitchInterval);
+        glitchInterval = setInterval(() => {
+            // Cycle through the pre-rendered frames rapidly
+            matrixBox.textContent = frames[frameIndex];
+            frameIndex = (frameIndex + 1) % frames.length;
+
+            tick++;
+            // After ~1.2 seconds, automatically resolve the matrix back into solid letters
+            if (tick > 25 && isHovering) {
+                clearInterval(glitchInterval);
+                matrixBox.style.opacity = '0';
+            }
+        }, 40); // Speed of the glitch (40ms)
+    });
+
+    // Immediately resolve to solid letters if the mouse leaves early
+    heroSection.addEventListener('mouseleave', () => {
+        isHovering = false;
+        clearInterval(glitchInterval);
+        matrixBox.style.opacity = '0';
+    });    
 </script>
 </body>
 </html>
