@@ -39,13 +39,33 @@ body {
     letter-spacing: 0.05em;
 }
 
-.nav-left {
+.nav-right {
     display: flex;
-    gap: 40px;
     align-items: center;
+    gap: 20px; /* Creates stark separation between text and the logo */
 }
 
-.nav-right {
+.nav-left a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.nav-left a:hover { opacity: 0.5; }
+
+/* The Logo Injection */
+.nav-logo {
+    height: 18px; /* Perfectly scales the logo to match the 0.75rem text height */
+    width: auto;
+    
+    /* CRITICAL: Inverts your black SVG to white so the parent mix-blend-mode can process it */
+    filter: invert(1); 
+    
+    /* Prevents the logo from interfering with any mouse sweeps */
+    pointer-events: none; 
+}
+
+.nav-left {
     display: flex;
     align-items: center;
 }
