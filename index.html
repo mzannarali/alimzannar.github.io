@@ -15,24 +15,25 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mzannar.io/">
     
-    <link rel="stylesheet" href="STYLE.CSS">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <nav class="home-nav">
         <div class="nav-left">
-            <span>Ali Mzannar © 2026</span>
+            <span>STUTTGART, DE</span>
         </div>
         <div class="nav-right">
-            <span>STUTTGART, DE</span>
-            <a href="#contact">CONTACT ↓</a>
+            <span>ALI MZANNAR © 2026</span>
+            <a href="#contact" class="nav-link">CONTACT ↓</a>
         </div>
     </nav>
 
     <header class="hero">
-        <h1>ALI MZANNAR</h1>
-        <h1 class="indent">COMPUTATIONAL</h1>
-        <h1>DESIGNER</h1>
+        <canvas id="bg-wave"></canvas>
+        <div class="hero-text-mask"><h1>ALI MZANNAR</h1></div>
+        <div class="hero-text-mask"><h1 class="indent">COMPUTATIONAL</h1></div>
+        <div class="hero-text-mask"><h1>DESIGNER</h1></div>
     </header>
 
     <section class="bio-section">
@@ -50,156 +51,187 @@
         </div>
 
         <a href="projects/robotic-fabrication.html" class="project-row" data-media="assets/videos/fibre-winding-preview.mp4">
-            <span>Robotic Fabrication & Material Systems</span>
+            <span class="row-title">Robotic Fabrication & Material Systems</span>
             <span class="desc">Robotics / Kinematics / Digital Craft</span>
             <span>2024–2026</span>
         </a>
 
         <a href="projects/multi-objective-optimization.html" class="project-row" data-media="assets/videos/massing-opt-preview.mp4">
-            <span>Multi-Objective Optimization</span>
+            <span class="row-title">Multi-Objective Optimization</span>
             <span class="desc">Evolutionary Solvers / Physics / Analytics</span>
             <span>2025–2026</span>
         </a>
 
         <a href="projects/complex-geometry.html" class="project-row" data-media="assets/videos/net-form-finding.mp4">
-            <span>Complex Geometry & Form-Finding</span>
+            <span class="row-title">Complex Geometry & Form-Finding</span>
             <span class="desc">Topology / Physics Simulation / Rationalization</span>
             <span>2024–2026</span>
-        </a>
-
-        <a href="projects/design-automation.html" class="project-row" data-media="assets/videos/rhino-inside-preview.mp4">
-            <span>Interoperability & Design Automation</span>
-            <span class="desc">BIM Workflows / Data Pipelines / Automation</span>
-            <span>2025–2026</span>
-        </a>
-
-        <a href="projects/agentic-systems.html" class="project-row" data-media="assets/videos/swarm-logic-preview.mp4">
-            <span>Agentic Systems & Spatial Computing</span>
-            <span class="desc">Agent-Based Modeling / AI / Generative</span>
-            <span>2026</span>
         </a>
     </section>
 
     <footer class="contact-section" id="contact">
         <div class="contact-label">CONTACT / NETWORK</div>
-        
         <div class="contact-links">
             <a href="mailto:ali_mahmoud_mzannar@outlook.com">EMAIL ↗</a>
-            <a href="tel:+4915207628651">PHONE [DE] ↗</a>
-            <a href="tel:+96171722662">PHONE [LB] ↗</a>
+            <a href="tel:+4915100000000">PHONE [DE] ↗</a> 
+            <a href="tel:+96100000000">PHONE [LB] ↗</a>
             <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank">LINKEDIN ↗</a>
             <a href="https://www.instagram.com/ali_mzannar" target="_blank">INSTAGRAM ↗</a>
         </div>
     </footer>
 
     <div id="cursor-media">
-        <div id="media-border-data"></div>
         <div class="media-container" id="media-container"></div>
+        <div id="media-glitch-mask"></div>
     </div>
 
     <script>
         const chars = "█▓▒░#@%&01";
-
-        // =========================================
-        // 1. HOVER MEDIA & GLITCH BORDER ENGINE
-        // =========================================
-        const cursorMedia = document.getElementById('cursor-media');
-        const mediaContainer = document.getElementById('media-container');
-        const mediaBorder = document.getElementById('media-border-data');
-        const projectRows = document.querySelectorAll('.project-row');
-
-        // Pre-render chaotic data frames for the image border to save CPU
-        const borderFrames = [];
-        for (let f = 0; f < 5; f++) {
-            let str = "";
-            for (let i = 0; i < 1500; i++) str += chars[Math.floor(Math.random() * chars.length)];
-            borderFrames.push(str);
-        }
-
         let mouseX = -1000;
         let mouseY = -1000;
-        let mediaX = 0;
-        let mediaY = 0;
-        let borderFrameCounter = 0;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
 
-        // The Master Render Loop
-        function animateEngine() {
-            // 1. Interpolate Media Position
+        // =========================================
+        // 1. BACKGROUND CANVAS WAVE ENGINE
+        // =========================================
+        const canvas = document.getElementById('bg-wave');
+        const ctx = canvas.getContext('2d');
+        const hero = document.querySelector('.hero');
+        let cols, rows;
+        const fontSize = 14;
+
+        function resizeCanvas() {
+            canvas.width = hero.clientWidth;
+            canvas.height = hero.clientHeight;
+            cols = Math.floor(canvas.width / fontSize);
+            rows = Math.floor(canvas.height / fontSize);
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let waveTime = 0;
+        function drawWave() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = `${fontSize}px "Courier New", Courier, monospace`;
+            ctx.fillStyle = '#000000';
+
+            for(let i=0; i<cols; i++) {
+                for(let j=0; j<rows; j++) {
+                    let x = i * fontSize;
+                    let y = j * fontSize;
+                    let dist = Math.hypot(mouseX - x, mouseY - y);
+                    
+                    // Spread the effect wider across the white space
+                    if(dist < 450) {
+                        // Procedural Sine Wave Math
+                        let wave = Math.sin(dist * 0.03 - waveTime);
+                        let intensity = (1 - dist / 450) * wave;
+                        
+                        // Only draw characters that hit the peak of the wave
+                        if(intensity > 0.3 && Math.random() > 0.6) {
+                            ctx.globalAlpha = intensity * 0.3; // Keeps the background subtle
+                            ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y);
+                        }
+                    }
+                }
+            }
+            waveTime += 0.08; // Speed of the wave ripple
+            requestAnimationFrame(drawWave);
+        }
+        drawWave();
+
+        // =========================================
+        // 2. CURSOR MEDIA & SHAPE MASKING ENGINE
+        // =========================================
+        const cursorMedia = document.getElementById('cursor-media');
+        const mediaContainer = document.getElementById('media-container');
+        const maskGrid = document.getElementById('media-glitch-mask');
+        const projectRows = document.querySelectorAll('.project-row');
+
+        // Build the 12x12 grid overlay to act as the destructive mask
+        const maskCells = [];
+        for(let i=0; i<144; i++) {
+            let cell = document.createElement('div');
+            let row = Math.floor(i / 12);
+            let col = i % 12;
+            // Only add glitch logic to the outer borders to keep the center of the video visible
+            if(row < 3 || row > 8 || col < 3 || col > 8) {
+                maskCells.push(cell);
+            }
+            maskGrid.appendChild(cell);
+        }
+
+        let mediaX = 0;
+        let mediaY = 0;
+
+        function animateMedia() {
             mediaX += (mouseX - mediaX) * 0.15;
             mediaY += (mouseY - mediaY) * 0.15;
             cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px)`;
 
-            // 2. Glitch the Image Boundary (Only when visible)
-            if (cursorMedia.style.opacity === '1') {
-                // Slower effect: Updates the border data 15% of the time
-                if (Math.random() > 0.85) {
-                    mediaBorder.innerText = borderFrames[borderFrameCounter % 5];
-                    borderFrameCounter++;
-                }
+            // Aggressively toggle the mask cells to 'bite' into the video
+            if (cursorMedia.style.opacity === '1' && Math.random() > 0.4) {
+                maskCells.forEach(cell => {
+                    if (Math.random() > 0.8) {
+                        // White matches the background, turning the cell "invisible"
+                        cell.style.backgroundColor = '#ffffff';
+                        cell.style.opacity = Math.random() > 0.5 ? '1' : '0';
+                    }
+                });
             }
-
-            requestAnimationFrame(animateEngine);
+            requestAnimationFrame(animateMedia);
         }
-        animateEngine();
+        animateMedia();
 
-        // Inject Media on Hover
         projectRows.forEach(row => {
             row.addEventListener('mouseenter', () => {
                 const mediaSrc = row.getAttribute('data-media');
-                
-                if (mediaSrc !== "") {
-                    if (mediaContainer.getAttribute('data-loaded') !== mediaSrc) {
-                        mediaContainer.setAttribute('data-loaded', mediaSrc);
-                        mediaContainer.innerHTML = ''; 
-
-                        const ext = mediaSrc.split('.').pop().toLowerCase();
-                        if (ext === 'mp4' || ext === 'webm') {
-                            const video = document.createElement('video');
-                            video.src = mediaSrc;
-                            video.autoplay = true;
-                            video.loop = true;
-                            video.muted = true;
-                            video.playsInline = true;
-                            mediaContainer.appendChild(video);
-                        } else {
-                            const img = document.createElement('img');
-                            img.src = mediaSrc;
-                            mediaContainer.appendChild(img);
-                        }
+                if (mediaSrc !== "" && mediaContainer.getAttribute('data-loaded') !== mediaSrc) {
+                    mediaContainer.setAttribute('data-loaded', mediaSrc);
+                    mediaContainer.innerHTML = ''; 
+                    const ext = mediaSrc.split('.').pop().toLowerCase();
+                    if (ext === 'mp4' || ext === 'webm') {
+                        const video = document.createElement('video');
+                        video.src = mediaSrc;
+                        video.autoplay = true; video.loop = true; video.muted = true; video.playsInline = true;
+                        mediaContainer.appendChild(video);
+                    } else {
+                        const img = document.createElement('img');
+                        img.src = mediaSrc;
+                        mediaContainer.appendChild(img);
                     }
                 }
-                
                 cursorMedia.style.opacity = '1';
                 cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px) scale(1.05)`;
             });
-
             row.addEventListener('mouseleave', () => {
                 cursorMedia.style.opacity = '0';
             });
         });
 
         // =========================================
-        // 2. BINARY VOXEL ENGINE (Full Opacity, Slowed Down)
+        // 3. BINARY TEXT VOXEL ENGINE & ANIMATIONS
         // =========================================
         const headers = document.querySelectorAll('.hero h1');
+        let totalCharCount = 0;
 
         headers.forEach(h1 => {
             const text = h1.innerText;
             h1.innerHTML = ''; 
             
-            text.split('').forEach(char => {
-                if (char === ' ') {
-                    h1.appendChild(document.createTextNode(' '));
-                    return;
-                }
+            text.split('').forEach((char) => {
+                if (char === ' ') { h1.appendChild(document.createTextNode(' ')); return; }
                 
                 const wrapper = document.createElement('span');
                 wrapper.className = 'char-voxel';
+                
+                // STAGGERED ENTRANCE ANIMATION MATH
+                wrapper.style.animationDelay = `${(totalCharCount * 0.03)}s`;
+                totalCharCount++;
 
                 const base = document.createElement('span');
                 base.className = 'base';
@@ -226,7 +258,6 @@
                     b.innerText = chars[Math.floor(Math.random() * chars.length)];
                     grid.appendChild(b);
                 }
-
                 wrapper.appendChild(grid);
             });
         });
@@ -234,34 +265,26 @@
         const allChars = document.querySelectorAll('.char-voxel');
 
         function animateTextVoxels() {
-            const hardRadius = 350; // The fixed radius of the cut-out
-
+            const hardRadius = 150; 
             allChars.forEach(charEl => {
                 const rect = charEl.getBoundingClientRect();
                 const charX = rect.left + rect.width / 2;
-                const charY = rect.top + rect.height / 2;
-
+                const charY = rect.top + rect.height / 3;
                 const dist = Math.hypot(mouseX - charX, mouseY - charY);
 
                 if (dist < hardRadius) { 
-                    // Binary switch on (Full Opacity)
                     charEl.classList.add('is-fractured');
-                    
-                    // MUCH SLOWER SPEED: Only updates 5% of the frames
-                    if(Math.random() > 0.85) {
+                    // SLOWER, HARSHER GLITCH (Only updates 5% of the time)
+                    if(Math.random() > 0.95) {
                         const voxels = charEl.querySelectorAll('b');
-                        voxels.forEach(v => {
-                            v.innerText = chars[Math.floor(Math.random() * chars.length)];
-                        });
+                        voxels.forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
                     }
                 } else {
-                    // Binary switch off
                     charEl.classList.remove('is-fractured');
                 }
             });
             requestAnimationFrame(animateTextVoxels);
         }
-        
         animateTextVoxels();
     </script>
 </body>
