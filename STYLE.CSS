@@ -152,7 +152,7 @@ body {
 .char-voxel.is-fractured .voxel-grid { opacity: 1; }
 
 /* =========================================
-   BIO & PROJECTS
+   BIO & PROJECTS (UPDATED LOGO ALIGNMENT)
    ========================================= */
 .bio-section {
     padding: 8vh 30px;
@@ -167,15 +167,27 @@ body {
 
 .bio-content {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 4vw; 
+    justify-content: flex-start;
+    align-items: stretch; /* Forces the logo and text block to be the same height */
+    gap: 3vw; 
+}
+
+.bio-logo {
+    height: auto; /* Uses the stretched height from flexbox */
+    width: auto;
+    max-width: 15vw; /* Safety constraint so it doesn't take over the screen */
+    object-fit: contain;
+    object-position: left center; /* Anchors it cleanly beside the text */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: starkReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
 }
 
 .bio-text-group {
     display: flex;
     flex-direction: column;
     gap: 2vh;
+    flex: 1; /* Allows text to fill the remaining space naturally */
 }
 
 .bio-text { 
@@ -198,15 +210,6 @@ body {
     opacity: 0;
     transform: translateY(20px);
     animation: starkReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
-}
-
-.bio-logo {
-    height: 3vw; 
-    width: auto;
-    object-fit: contain;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: starkReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
 }
 
 @keyframes starkReveal {
@@ -292,7 +295,7 @@ body {
     padding: 8vh 30px;
     border-top: 1px solid #000;
     display: grid;
-    grid-template-columns: 1fr 2.5fr; /* Structurally aligns with Bio Section */
+    grid-template-columns: 1fr 2.5fr; 
     gap: 40px;
     background-color: var(--bg-color);
     position: relative;
@@ -308,7 +311,7 @@ body {
 .contact-links {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Aligns flush to the left of the content column */
+    align-items: flex-start; 
     gap: 1.5vh;
 }
 
@@ -351,10 +354,10 @@ body {
     .home-nav { padding: 15px; }
     .nav-left { flex-direction: row; flex-wrap: wrap; gap: 15px; }
     .bio-section { grid-template-columns: 1fr; }
-    .bio-content { flex-direction: column; gap: 20px; }
+    .bio-content { flex-direction: column; align-items: flex-start; gap: 20px; }
     .bio-text { font-size: 1.5rem; }
     .bio-subtext { font-size: 0.85rem; max-width: 100%; }
-    .bio-logo { height: 1.5rem; } 
+    .bio-logo { height: 50px; max-width: 100%; object-position: left center; } 
     
     .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
     .project-row:hover .row-title { transform: translateX(5vw); }
