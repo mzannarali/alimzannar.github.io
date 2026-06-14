@@ -108,12 +108,32 @@
         const chars = "█▓▒░#@%&01";
         const GRID_SIZE = 14; 
         
-        let mouseX = -1000;
+     let mouseX = -1000;
         let mouseY = -1000;
 
+        // 1. Standard Desktop Mouse Tracker
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
+        });
+
+        // 2. Mobile Touch Trackers
+        // {passive: true} ensures the browser scrolling doesn't lag while tracking the finger
+        document.addEventListener('touchstart', (e) => {
+            mouseX = e.touches[0].clientX;
+            mouseY = e.touches[0].clientY;
+        }, {passive: true});
+
+        document.addEventListener('touchmove', (e) => {
+            mouseX = e.touches[0].clientX;
+            mouseY = e.touches[0].clientY;
+        }, {passive: true});
+
+        // 3. Touch Release 
+        document.addEventListener('touchend', () => {
+            // Shoots the coordinates off-screen when the finger lifts to kill the glitch
+            mouseX = -1000;
+            mouseY = -1000;
         });
 
         // =========================================
