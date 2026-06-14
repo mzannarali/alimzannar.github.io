@@ -228,7 +228,13 @@
             const text = element.innerText;
             element.innerHTML = ''; 
             
-            text.split('').forEach((char) => {
+            // 1. Detect Arabic characters using Unicode ranges
+            const isArabic = /[\u0600-\u06FF]/.test(text);
+            
+            // 2. If Arabic, keep the word intact. If European/Asian, split into characters.
+            const pieces = isArabic ? [text] : text.split('');
+            
+            pieces.forEach((char) => {
                 if (char === ' ') { element.appendChild(document.createTextNode(' ')); return; }
                 
                 const wrapper = document.createElement('span');
@@ -236,6 +242,7 @@
 
                 const base = document.createElement('span');
                 base.className = 'base';
+                // Arabic text will render here perfectly connected
                 base.innerText = char;
 
                 wrapper.appendChild(base);
@@ -245,6 +252,7 @@
                 const width = rect.width || 10;
                 const height = rect.height || 20;
 
+                // 3. The math automatically adapts to the width of the entire Arabic word
                 const cols = Math.ceil(width / GRID_SIZE);
                 const rows = Math.ceil(height / GRID_SIZE);
 
