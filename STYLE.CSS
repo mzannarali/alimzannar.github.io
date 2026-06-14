@@ -106,10 +106,10 @@ nav {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    /* We removed the hardcoded columns/rows here! */
     opacity: 0;
     pointer-events: none;
+    overflow: hidden; /* Prevents symbols from bleeding outside the voxel */
 }
 
 .char-voxel .voxel-grid b {

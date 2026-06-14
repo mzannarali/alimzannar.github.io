@@ -129,44 +129,60 @@
             });
         });
 
-        // =========================================
-        // 2. PROXIMITY VOXEL ENGINE
-        // =========================================
-        const chars = "█▓▒░#@%&01";
-        const headers = document.querySelectorAll('.hero h1');
+    // =========================================
+            // 2. PROXIMITY VOXEL ENGINE
+            // =========================================
+            const chars = "█▓▒░#@%&01";
+            const headers = document.querySelectorAll('.hero h1');
 
-        // Deconstruct the text into structural grids
-        headers.forEach(h1 => {
-            const text = h1.innerText;
-            h1.innerHTML = ''; 
-            
-            text.split('').forEach(char => {
-                if (char === ' ') {
-                    h1.appendChild(document.createTextNode(' '));
-                    return;
-                }
+            // Deconstruct the text into dynamic, mathematically square grids
+            headers.forEach(h1 => {
+                const text = h1.innerText;
+                h1.innerHTML = ''; 
                 
-                const wrapper = document.createElement('span');
-                wrapper.className = 'char-voxel';
+                text.split('').forEach(char => {
+                    if (char === ' ') {
+                        h1.appendChild(document.createTextNode(' '));
+                        return;
+                    }
+                    
+                    const wrapper = document.createElement('span');
+                    wrapper.className = 'char-voxel';
 
-                const base = document.createElement('span');
-                base.className = 'base';
-                base.innerText = char;
+                    const base = document.createElement('span');
+                    base.className = 'base';
+                    base.innerText = char;
 
-                const grid = document.createElement('span');
-                grid.className = 'voxel-grid';
-                
-                for(let i=0; i<24; i++){
-                    const b = document.createElement('b');
-                    b.innerText = chars[Math.floor(Math.random() * chars.length)];
-                    grid.appendChild(b);
-                }
+                    // 1. We must append the base letter to the page FIRST so the browser can measure it
+                    wrapper.appendChild(base);
+                    h1.appendChild(wrapper);
 
-                wrapper.appendChild(base);
-                wrapper.appendChild(grid);
-                h1.appendChild(wrapper);
+                    // 2. Read the physical pixel dimensions of the rendered letter
+                    const rect = base.getBoundingClientRect();
+                    const width = rect.width || 10;
+                    const height = rect.height || 20;
+
+                    // 3. The Math: Choose column density, then dynamically calculate required rows
+                    const cols = 10; // 5 columns across the letter
+                    const rows = Math.max(1, Math.round(cols * (height / width))); // Calculates perfect squares
+
+                    // 4. Build the grid using the dynamic math
+                    const grid = document.createElement('span');
+                    grid.className = 'voxel-grid';
+                    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+                    grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+                    
+                    // 5. Fill the grid with the exact number of symbols needed (cols * rows)
+                    const totalVoxels = cols * rows;
+                    for(let i=0; i < totalVoxels; i++){
+                        const b = document.createElement('b');
+                        b.innerText = chars[Math.floor(Math.random() * chars.length)];
+                        grid.appendChild(b);
+                    }
+
+                    wrapper.appendChild(grid);
+                });
             });
-        });
 
         const allChars = document.querySelectorAll('.char-voxel');
 
