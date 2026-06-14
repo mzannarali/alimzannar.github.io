@@ -108,12 +108,14 @@ nav {
     z-index: 10;
 }
 
-/* --- SVG DITHER TRIGGER (This was missing!) --- */
+/* --- SVG DITHER TRIGGER --- */
 .dither-active h1 {
-    filter: url(#edge-dither);
+    /* Added quotes around the ID to prevent browser routing errors */
+    filter: url("#edge-dither"); 
+    /* Forces the computer's Graphics Card to handle the glitch */
     transform: translateZ(0); 
+    will-change: filter;
 }
-
 .bio-section {
     padding: 8vh 30px;
     border-bottom: 1px solid #000;

@@ -22,14 +22,14 @@
     
 </head>
 <body>
-<svg style="width: 0; height: 0; position: absolute;">
-    <defs>
-        <filter id="edge-dither">
-            <feTurbulence id="dither-noise" type="fractalNoise" baseFrequency="1.5" numOctaves="1" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-    </defs>
-</svg>
+    <svg width="0" height="0" style="position: absolute; pointer-events: none;" aria-hidden="true">
+        <defs>
+            <filter id="edge-dither" x="-50%" y="-50%" width="200%" height="200%">
+                <feTurbulence id="dither-noise" type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="60" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
     <nav>
         <span>Ali Mzannar © 2026</span>
         <span>Stuttgart, DE ↗</span>
