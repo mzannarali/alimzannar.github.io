@@ -39,33 +39,13 @@ body {
     letter-spacing: 0.05em;
 }
 
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 20px; /* Creates stark separation between text and the logo */
-}
-
-.nav-left a {
-    color: inherit;
-    text-decoration: none;
-    transition: opacity 0.2s ease;
-}
-
-.nav-left a:hover { opacity: 0.5; }
-
-/* The Logo Injection */
-.nav-logo {
-    height: 18px; /* Perfectly scales the logo to match the 0.75rem text height */
-    width: auto;
-    
-    /* CRITICAL: Inverts your black SVG to white so the parent mix-blend-mode can process it */
-    filter: invert(1); 
-    
-    /* Prevents the logo from interfering with any mouse sweeps */
-    pointer-events: none; 
-}
-
 .nav-left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-right {
     display: flex;
     align-items: center;
 }
@@ -77,6 +57,26 @@ body {
 }
 
 .home-nav a:hover { opacity: 0.5; }
+
+.nav-divider {
+    opacity: 0.3;
+    font-weight: 300;
+}
+
+.nav-logo {
+    height: 16px; 
+    width: auto;
+    filter: invert(1); 
+    pointer-events: none;
+    animation: dataPulse 6s infinite alternate; 
+}
+
+@keyframes dataPulse {
+    0%, 90%, 100% { opacity: 1; }
+    92% { opacity: 0.4; }
+    94% { opacity: 0.8; }
+    96% { opacity: 0.2; }
+}
 
 /* =========================================
    HERO SECTION & CANVAS
@@ -158,13 +158,60 @@ body {
     padding: 8vh 30px;
     border-bottom: 1px solid #000;
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 2.5fr; 
     gap: 40px;
     background-color: var(--bg-color);
 }
 
 .bio-label { font-size: 0.75rem; font-weight: 700; }
-.bio-text { font-size: 3vw; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+
+.bio-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 4vw; 
+}
+
+.bio-text-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+.bio-text { 
+    font-size: 3vw; 
+    line-height: 1.1; 
+    font-weight: 600; 
+    letter-spacing: -0.02em; 
+    opacity: 0;
+    transform: translateY(20px);
+    animation: starkReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+.bio-subtext {
+    font-family: "Courier New", Courier, monospace; 
+    font-size: 1vw;
+    line-height: 1.4;
+    color: #666;
+    text-transform: none; 
+    max-width: 85%;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: starkReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+
+.bio-logo {
+    height: 3vw; 
+    width: auto;
+    object-fit: contain;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: starkReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+}
+
+@keyframes starkReveal {
+    to { transform: translateY(0); opacity: 1; }
+}
 
 .project-list { 
     padding: 5vh 30px 15vh 30px; 
@@ -239,14 +286,14 @@ body {
 }
 
 /* =========================================
-   VERTICAL CONTACT FOOTER (LEFT ALIGN, RIGHT REVEAL)
+   GRID-ALIGNED CONTACT FOOTER
    ========================================= */
 .contact-section {
     padding: 8vh 30px;
     border-top: 1px solid #000;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 2.5fr; /* Structurally aligns with Bio Section */
+    gap: 40px;
     background-color: var(--bg-color);
     position: relative;
     z-index: 10;
@@ -258,11 +305,10 @@ body {
     color: #666;
 }
 
-/* Stacked vertically on the left side of its column */
 .contact-links {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-start; /* Aligns flush to the left of the content column */
     gap: 1.5vh;
 }
 
@@ -280,11 +326,10 @@ body {
     letter-spacing: -0.02em;
 }
 
-/* The hidden data that pulls out to the right */
 .contact-links a .link-reveal {
-    font-size: 2vw; /* Matched size */
+    font-size: 2vw; 
     font-weight: 700;
-    color: #999;    /* Stark Brutalist Grey */
+    color: #999;    
     max-width: 0;
     opacity: 0;
     overflow: hidden;
@@ -293,11 +338,10 @@ body {
     transition: max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, padding-left 0.4s ease;
 }
 
-/* Hover Mechanics */
 .contact-links a:hover .link-reveal {
-    max-width: 800px; /* Expands to fit long emails */
+    max-width: 800px; 
     opacity: 1;
-    padding-left: 20px; /* Pushes away from the title */
+    padding-left: 20px; 
 }
 
 /* =========================================
@@ -305,18 +349,22 @@ body {
    ========================================= */
 @media (max-width: 768px) {
     .home-nav { padding: 15px; }
-    .nav-left { flex-direction: column; align-items: flex-start; gap: 5px; }
+    .nav-left { flex-direction: row; flex-wrap: wrap; gap: 15px; }
     .bio-section { grid-template-columns: 1fr; }
+    .bio-content { flex-direction: column; gap: 20px; }
     .bio-text { font-size: 1.5rem; }
+    .bio-subtext { font-size: 0.85rem; max-width: 100%; }
+    .bio-logo { height: 1.5rem; } 
+    
     .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
     .project-row:hover .row-title { transform: translateX(5vw); }
     .project-row .desc { font-size: 0.85rem; }
     .project-header { display: none; }
     #cursor-media { display: none; }
     
-    .contact-section { flex-direction: column; align-items: flex-start; gap: 30px; padding-bottom: 15vh;}
+    .contact-section { grid-template-columns: 1fr; gap: 30px; padding-bottom: 15vh;}
     .contact-links { align-items: flex-start; gap: 15px; width: 100%; }
-    .contact-links a { flex-direction: column; gap: 5px; } /* Stack on mobile */
+    .contact-links a { flex-direction: column; gap: 5px; } 
     .contact-links a .link-title { font-size: 1.5rem; }
-    .contact-links a .link-reveal { font-size: 1rem; max-width: 100%; opacity: 1; padding-left: 0;} /* Always reveal on mobile */
+    .contact-links a .link-reveal { font-size: 1rem; max-width: 100%; opacity: 1; padding-left: 0;} 
 }

@@ -19,15 +19,15 @@
 </head>
 <body>
 
-<nav class="home-nav">
+    <nav class="home-nav">
         <div class="nav-left">
-            <img src="assets/logo/am-logo.svg" alt="AMz Logo" class="nav-logo">
+            <span>ALI MZANNAR © 2026</span>
             <a href="#contact" class="nav-link">CONTACT ↓</a>
+            <span class="nav-divider">|</span>
+            <img src="assets/logo/am-logo.svg" alt="AMz Logo" class="nav-logo">
         </div>
         <div class="nav-right">
             <span>STUTTGART, DE</span>
-            <span>ALI MZANNAR © 2026</span>
-            
         </div>
     </nav>
 
@@ -44,8 +44,16 @@
 
     <section class="bio-section">
         <div class="bio-label">INDEX / PROFILE</div>
-        <div class="bio-text">
-            Advanced Data-Driven Workflows in Research and Practice
+        <div class="bio-content">
+            <div class="bio-text-group">
+                <div class="bio-text">
+                    Advanced Data-Driven Workflows in Research and Practice
+                </div>
+                <div class="bio-subtext">
+                    leveraging computational methodologies to solve complex spatial, structural, and environmental challenges, transforming data into intelligent built environments.
+                </div>
+            </div>
+            <img src="assets/logo/am-logo.svg" alt="AMz Logo" class="bio-logo">
         </div>
     </section>
  
@@ -110,17 +118,16 @@
         const chars = "█▓▒░#@%&01";
         const GRID_SIZE = 14; 
         
-     let mouseX = -1000;
+        let mouseX = -1000;
         let mouseY = -1000;
 
-        // 1. Standard Desktop Mouse Tracker
+        // Desktop Mouse
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
 
-        // 2. Mobile Touch Trackers
-        // {passive: true} ensures the browser scrolling doesn't lag while tracking the finger
+        // Mobile Touch Optimization
         document.addEventListener('touchstart', (e) => {
             mouseX = e.touches[0].clientX;
             mouseY = e.touches[0].clientY;
@@ -131,9 +138,7 @@
             mouseY = e.touches[0].clientY;
         }, {passive: true});
 
-        // 3. Touch Release 
         document.addEventListener('touchend', () => {
-            // Shoots the coordinates off-screen when the finger lifts to kill the glitch
             mouseX = -1000;
             mouseY = -1000;
         });
@@ -145,7 +150,7 @@
         const ctx = canvas.getContext('2d');
         const hero = document.querySelector('.hero');
         let cols, rows;
-        let canvasGrid = []; // Persistent memory grid
+        let canvasGrid = []; 
 
         function resizeCanvas() {
             canvas.width = hero.clientWidth;
@@ -153,7 +158,6 @@
             cols = Math.floor(canvas.width / GRID_SIZE);
             rows = Math.floor(canvas.height / GRID_SIZE);
             
-            // Build the memory grid
             canvasGrid = [];
             for(let i=0; i<cols; i++) {
                 canvasGrid[i] = [];
@@ -183,13 +187,11 @@
                     if(dist < 350) {
                         let probability = Math.pow(1 - (dist / 350), 2); 
                         
-                        // EXACT MATCH: Updates at the same 5% frame rate as the typography
                         if(Math.random() > 0.95) {
                             canvasGrid[i][j].char = chars[Math.floor(Math.random() * chars.length)];
                             canvasGrid[i][j].active = Math.random() < probability * 0.4;
                         }
                         
-                        // Draw from memory to stop flickering
                         if(canvasGrid[i][j].active) {
                             ctx.globalAlpha = 1; 
                             ctx.fillText(canvasGrid[i][j].char, x, y);
@@ -250,10 +252,8 @@
             const text = element.innerText;
             element.innerHTML = ''; 
             
-            // 1. Detect Arabic characters using Unicode ranges
+            // Contextual Arabic Unicode Detection
             const isArabic = /[\u0600-\u06FF]/.test(text);
-            
-            // 2. If Arabic, keep the word intact. If European/Asian, split into characters.
             const pieces = isArabic ? [text] : text.split('');
             
             pieces.forEach((char) => {
@@ -264,7 +264,6 @@
 
                 const base = document.createElement('span');
                 base.className = 'base';
-                // Arabic text will render here perfectly connected
                 base.innerText = char;
 
                 wrapper.appendChild(base);
@@ -274,7 +273,6 @@
                 const width = rect.width || 10;
                 const height = rect.height || 20;
 
-                // 3. The math automatically adapts to the width of the entire Arabic word
                 const cols = Math.ceil(width / GRID_SIZE);
                 const rows = Math.ceil(height / GRID_SIZE);
 
@@ -296,16 +294,15 @@
 
         document.querySelectorAll('.hero-title').forEach(h1 => buildVoxels(h1));
 
-        // NATIVE INDUSTRY TRANSLATIONS
         const langs = [
-            "COMPUTATIONAL",  // English
-            "ALGORITHMISCH",  // German
-            "خوارزمية",       // Arabic (Algorithmic)
-            "ALGORITHMIQUE",  // French
-            "COMPUTACIONAL",  // Spanish
-            "ВЫЧИСЛИТЕЛЬНЫЙ", // Russian
-            "计算化",          // Chinese
-            "アルゴリズム"       // Japanese (Algorithm)
+            "COMPUTATIONAL",  
+            "ALGORITHMISCH",  
+            "خوارزمية",       
+            "ALGORITHMIQUE",  
+            "COMPUTACIONAL",  
+            "ВЫЧИСЛИТЕЛЬНЫЙ", 
+            "计算化",          
+            "アルゴリズム"       
         ];
         
         let langIndex = 0;
@@ -327,7 +324,7 @@
         }, 4000); 
 
         function animateTextVoxels() {
-            const hardRadius = 300; 
+            const hardRadius = 200; 
             allChars.forEach(charEl => {
                 const rect = charEl.getBoundingClientRect();
                 const charX = rect.left + rect.width / 2;
@@ -337,7 +334,6 @@
 
                 if (dist < hardRadius) { 
                     charEl.classList.add('is-fractured');
-                    // EXACT MATCH: 5% Update Rate
                     if(Math.random() > 0.95) {
                         const voxels = charEl.querySelectorAll('b');
                         voxels.forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
@@ -350,7 +346,6 @@
         }
         animateTextVoxels();
 
-        // Project Row Hover Logic
         projectRows.forEach(row => {
             row.addEventListener('mouseenter', () => {
                 const mediaSrc = row.getAttribute('data-media');
