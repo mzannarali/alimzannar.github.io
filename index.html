@@ -210,12 +210,12 @@
         const allChars = document.querySelectorAll('.char-voxel');
 
         function animateTextVoxels() {
-            const hardRadius = 150; // The fixed radius of the cut-out
+            const hardRadius = 350; // The fixed radius of the cut-out
 
             allChars.forEach(charEl => {
                 const rect = charEl.getBoundingClientRect();
                 const charX = rect.left + rect.width / 2;
-                const charY = rect.top + rect.height / 3;
+                const charY = rect.top + rect.height / 2;
 
                 const dist = Math.hypot(mouseX - charX, mouseY - charY);
 
@@ -224,7 +224,7 @@
                     charEl.classList.add('is-fractured');
                     
                     // MUCH SLOWER SPEED: Only updates 5% of the frames
-                    if(Math.random() > 0.95) {
+                    if(Math.random() > 0.85) {
                         const voxels = charEl.querySelectorAll('b');
                         voxels.forEach(v => {
                             v.innerText = chars[Math.floor(Math.random() * chars.length)];
