@@ -1,45 +1,33 @@
 <!DOCTYPE html>
-<nav class="home-nav">
-    <span>Ali Mzannar © 2026</span>
-    
-    <a href="#contact" style="color: inherit; text-decoration: none;">CONTACT ↓</a>
-</nav>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ali Mzannar | Computational Designer
-            <meta name="description" content="Ali Mzannar: Architectural and Computational Designer. Portfolio featuring multi-objective optimization, spatial computing, and fabrication-oriented research at ITECH.">
-            <meta name="author" content="Ali Mzannar">
-            <meta name="keywords" content="Ali Mzannar, Computational Design, Architecture, Grasshopper, ITECH, BAD, Built by Associative Data, Stuttgart">
-
-            <meta property="og:title" content="Ali Mzannar | Computational Designer">
-            <meta property="og:description" content="Portfolio of architectural algorithms and data-driven material systems.">
-            <meta property="og:type" content="website">
-            <meta property="og:url" content="https://alimzannar.com/">
-    </title>
-    <link rel="stylesheet" href="STYLE.CSS">
     
+    <title>Ali Mzannar | Computational Designer</title>
+
+    <meta name="description" content="Ali Mzannar: Architectural and Computational Designer. Portfolio featuring multi-objective optimization, spatial computing, and fabrication-oriented research at ITECH.">
+    <meta name="author" content="Ali Mzannar">
+    <meta name="keywords" content="Ali Mzannar, Computational Design, Architecture, Grasshopper, ITECH, BAD, Built by Associative Data, Stuttgart">
+
+    <meta property="og:title" content="Ali Mzannar | Computational Designer">
+    <meta property="og:description" content="Portfolio of architectural algorithms and data-driven material systems.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://alimzannar.com/">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <svg width="0" height="0" style="position: absolute; pointer-events: none;" aria-hidden="true">
-        <defs>
-            <filter id="edge-dither" x="-50%" y="-50%" width="200%" height="200%">
-                <feTurbulence id="dither-noise" type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="60" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-        </defs>
-    </svg>
-    <nav>
+
+    <nav class="home-nav">
         <span>Ali Mzannar © 2026</span>
-        <span>Stuttgart, DE ↗</span>
+        <a href="#contact" style="color: inherit; text-decoration: none;">CONTACT ↓</a>
     </nav>
 
     <header class="hero">
         <h1>ALI MZANNAR</h1>
         <h1 class="indent">COMPUTATIONAL</h1>
         <h1>DESIGNER</h1>
-        <div id="micro-matrix"></div>
     </header>
 
     <section class="bio-section">
@@ -56,177 +44,160 @@
             <span>YEAR</span>
         </div>
 
-
-
-
-        <a href="projects/01_geomtery-memeory-consumption.HTML" class="project-row" data-media="assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif">
+        <a href="projects/01_geomtery-memeory-consumption.html" class="project-row" data-media="assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif">
             <span>Geometry Memory Consumption</span>
-            <span class="desc">Standalone Masterplan / Cultural Landmarks</span>
+            <span class="desc">Algorithmic Auditing / Data Trees</span>
             <span>2026</span>
         </a>
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </section>
 
     <footer class="contact-section" id="contact">
         <div class="contact-label">CONTACT / NETWORK</div>
         
         <div class="contact-links">
-            <a href="ali_mahmoud_mzannar@outlook.com">EMAIL ↗</a>
-            
+            <a href="mailto:ali_mahmoud_mzannar@outlook.com">EMAIL ↗</a>
             <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank">LINKEDIN ↗</a>
-    
             <a href="https://www.instagram.com/ali_mzannar" target="_blank">INSTAGRAM ↗</a>
         </div>
     </footer>
 
-    <div id="cursor-media">
-        </div>
+    <div id="cursor-media"></div>
 
- <script>
-    // --- CUSTOM CURSOR MEDIA TRACKER ---
-    const cursorMedia = document.getElementById('cursor-media');
-    const projectRows = document.querySelectorAll('.project-row');
+    <script>
+        // =========================================
+        // 1. CUSTOM CURSOR MEDIA TRACKER
+        // =========================================
+        const cursorMedia = document.getElementById('cursor-media');
+        const projectRows = document.querySelectorAll('.project-row');
 
-    // Variables for smooth interpolation (Lerp)
-    let mouseX = 0;
-    let mouseY = 0;
-    let mediaX = 0;
-    let mediaY = 0;
+        // Variables for smooth interpolation (Lerp)
+        let mouseX = -1000;
+        let mouseY = -1000;
+        let mediaX = 0;
+        let mediaY = 0;
 
-    // Track raw mouse position
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
+        // Master Mouse Tracker (Feeds both the Video and the Voxel Engine)
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
 
-    // Animation loop for smooth dragging physics
-    function animate() {
-        // Lerp formula: current = current + (target - current) * ease
-        mediaX += (mouseX - mediaX) * 0.15;
-        mediaY += (mouseY - mediaY) * 0.15;
-        
-        // Apply coordinates to the floating div
-        cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px)`;
-        
-        requestAnimationFrame(animate);
-    }
-    animate();
+        // Animation loop for smooth dragging physics
+        function animateMedia() {
+            mediaX += (mouseX - mediaX) * 0.15;
+            mediaY += (mouseY - mediaY) * 0.15;
+            cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px)`;
+            requestAnimationFrame(animateMedia);
+        }
+        animateMedia();
 
-    // Reveal and inject media on row hover
-    projectRows.forEach(row => {
-        row.addEventListener('mouseenter', () => {
-            const mediaSrc = row.getAttribute('data-media');
-            
-            if (mediaSrc !== "") {
-                // Only reconstruct the HTML if we are hovering over a NEW project to prevent flickering
-                if (cursorMedia.getAttribute('data-loaded') !== mediaSrc) {
-                    cursorMedia.setAttribute('data-loaded', mediaSrc);
-                    cursorMedia.innerHTML = ''; // Clear the box
+        // Reveal and inject media on row hover
+        projectRows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                const mediaSrc = row.getAttribute('data-media');
+                
+                if (mediaSrc !== "") {
+                    // Only reconstruct HTML if hovering over a NEW project to prevent flickering
+                    if (cursorMedia.getAttribute('data-loaded') !== mediaSrc) {
+                        cursorMedia.setAttribute('data-loaded', mediaSrc);
+                        cursorMedia.innerHTML = ''; 
 
-                    // Check file extension to inject correct HTML tag
-                    const ext = mediaSrc.split('.').pop().toLowerCase();
-                    
-                    if (ext === 'mp4' || ext === 'webm') {
-                        const video = document.createElement('video');
-                        video.src = mediaSrc;
-                        video.autoplay = true;
-                        video.loop = true;
-                        video.muted = true;
-                        video.playsInline = true;
-                        cursorMedia.appendChild(video);
-                    } else {
-                        // Handles .gif, .jpg, .png, .webp
-                        const img = document.createElement('img');
-                        img.src = mediaSrc;
-                        cursorMedia.appendChild(img);
+                        const ext = mediaSrc.split('.').pop().toLowerCase();
+                        
+                        if (ext === 'mp4' || ext === 'webm') {
+                            const video = document.createElement('video');
+                            video.src = mediaSrc;
+                            video.autoplay = true;
+                            video.loop = true;
+                            video.muted = true;
+                            video.playsInline = true;
+                            cursorMedia.appendChild(video);
+                        } else {
+                            const img = document.createElement('img');
+                            img.src = mediaSrc;
+                            cursorMedia.appendChild(img);
+                        }
                     }
                 }
-            }
+                
+                cursorMedia.style.opacity = '1';
+                cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px) scale(1.05)`;
+            });
+
+            row.addEventListener('mouseleave', () => {
+                cursorMedia.style.opacity = '0';
+            });
+        });
+
+        // =========================================
+        // 2. PROXIMITY VOXEL ENGINE
+        // =========================================
+        const chars = "+-\\/_[]<>01";
+        const headers = document.querySelectorAll('.hero h1');
+
+        // Deconstruct the text into structural grids
+        headers.forEach(h1 => {
+            const text = h1.innerText;
+            h1.innerHTML = ''; 
             
-            cursorMedia.style.opacity = '1';
-            // Slight scale-up effect
-            cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px) scale(1.05)`;
+            text.split('').forEach(char => {
+                if (char === ' ') {
+                    h1.appendChild(document.createTextNode(' '));
+                    return;
+                }
+                
+                const wrapper = document.createElement('span');
+                wrapper.className = 'char-voxel';
+
+                const base = document.createElement('span');
+                base.className = 'base';
+                base.innerText = char;
+
+                const grid = document.createElement('span');
+                grid.className = 'voxel-grid';
+                
+                for(let i=0; i<4; i++){
+                    const b = document.createElement('b');
+                    b.innerText = chars[Math.floor(Math.random() * chars.length)];
+                    grid.appendChild(b);
+                }
+
+                wrapper.appendChild(base);
+                wrapper.appendChild(grid);
+                h1.appendChild(wrapper);
+            });
         });
 
-        row.addEventListener('mouseleave', () => {
-            cursorMedia.style.opacity = '0';
-        });
-    });
+        const allChars = document.querySelectorAll('.char-voxel');
 
-    // --- MICRO-MATRIX + EDGE DITHER ENGINE ---
-    const matrixBox = document.getElementById('micro-matrix');
-    const heroSection = document.querySelector('.hero');
-    const noiseNode = document.getElementById('dither-noise');
-    const chars = "+-\\/_[]<>01";
+        // The Render Loop (60fps collision detection)
+        function animateVoxels() {
+            allChars.forEach(charEl => {
+                const rect = charEl.getBoundingClientRect();
+                
+                const charX = rect.left + rect.width / 2;
+                const charY = rect.top + rect.height / 2;
 
-    // Pre-render noise frames for performance
-    const frames = [];
-    for (let f = 0; f < 5; f++) {
-        let text = '';
-        for(let i=0; i<8000; i++) {
-            text += chars[Math.floor(Math.random() * chars.length)];
+                const dist = Math.hypot(mouseX - charX, mouseY - charY);
+
+                // Smashes the letter into 4 symbols if the mouse is within 100px
+                if (dist < 100) { 
+                    charEl.classList.add('is-fractured');
+                    
+                    if(Math.random() > 0.4) {
+                        const voxels = charEl.querySelectorAll('b');
+                        voxels.forEach(v => {
+                            v.innerText = chars[Math.floor(Math.random() * chars.length)];
+                        });
+                    }
+                } else {
+                    charEl.classList.remove('is-fractured');
+                }
+            });
+            requestAnimationFrame(animateVoxels);
         }
-        frames.push(text);
-    }
-
-    let glitchInterval;
-    let isHovering = false;
-
-    heroSection.addEventListener('mouseenter', () => {
-        isHovering = true;
-        let frameIndex = 0;
-        let tick = 0;
-
-        // Reveal matrix stencil and trigger edge dither
-        matrixBox.style.opacity = '1';
-        heroSection.classList.add('dither-active');
-
-        clearInterval(glitchInterval);
-        glitchInterval = setInterval(() => {
-            // Cycle matrix characters
-            matrixBox.textContent = frames[frameIndex];
-            frameIndex = (frameIndex + 1) % frames.length;
-
-            // Randomize the SVG noise seed to make the edges "boil"
-            noiseNode.setAttribute('seed', Math.floor(Math.random() * 100));
-
-            tick++;
-            // Resolve back to clean text after ~1.2 seconds
-            if (tick > 25 && isHovering) {
-                clearInterval(glitchInterval);
-                matrixBox.style.opacity = '0';
-                heroSection.classList.remove('dither-active');
-            }
-        }, 40); 
-    });
-
-    heroSection.addEventListener('mouseleave', () => {
-        isHovering = false;
-        clearInterval(glitchInterval);
-        matrixBox.style.opacity = '0';
-        heroSection.classList.remove('dither-active');
-    }); 
-</script>
+        
+        animateVoxels();
+    </script>
 </body>
 </html>

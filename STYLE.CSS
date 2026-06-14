@@ -71,7 +71,7 @@ nav {
    ========================================= */
 .hero {
     position: relative;
-    background-color: #ffffff; /* MUST be white for the math to work */
+    background-color: #ffffff; 
     padding: 15vh 30px 10vh 30px;
     display: flex;
     flex-direction: column;
@@ -84,38 +84,55 @@ nav {
     letter-spacing: -0.04em;
     font-weight: 700;
     white-space: nowrap;
+    cursor: crosshair;
 }
 
 .hero h1.indent {
     margin-left: 10vw;
 }
 
-/* --- THE MICRO-MATRIX LAYER --- */
-#micro-matrix {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: #000000;
-    color: #ffffff;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 10px;
-    line-height: 10px;
-    word-break: break-all;
-    overflow: hidden;
-    pointer-events: none;
-    mix-blend-mode: screen;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 10;
+/* --- STRUCTURAL VOXEL FRACTURE ENGINE --- */
+.char-voxel {
+    position: relative;
+    display: inline-block;
 }
 
-/* --- SVG DITHER TRIGGER --- */
-.dither-active h1 {
-    /* Added quotes around the ID to prevent browser routing errors */
-    filter: url("#edge-dither"); 
-    /* Forces the computer's Graphics Card to handle the glitch */
-    transform: translateZ(0); 
-    will-change: filter;
+.char-voxel .base {
+    display: inline-block;
+    transition: opacity 0.1s ease;
 }
+
+.char-voxel .voxel-grid {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.char-voxel .voxel-grid b {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.45em; /* Scales the code symbols to fit the 2x2 grid */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    color: #000;
+}
+
+/* Hover Triggers applied by the JS */
+.char-voxel.is-fractured .base {
+    opacity: 0; 
+}
+
+.char-voxel.is-fractured .voxel-grid {
+    opacity: 1; 
+}
+
+/* --- BIO & PROJECTS --- */
 .bio-section {
     padding: 8vh 30px;
     border-bottom: 1px solid #000;
@@ -229,20 +246,6 @@ nav {
 .media-item video, .media-item img { width: 100%; height: auto; display: block; }
 
 /* =========================================
-   MOBILE RESPONSIVENESS
-   ========================================= */
-@media (max-width: 768px) {
-    .bio-section { grid-template-columns: 1fr; }
-    .bio-text { font-size: 1.5rem; }
-    .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
-    .project-row .desc { font-size: 0.85rem; }
-    .project-header { display: none; }
-    #cursor-media { display: none; }
-    .project-meta { grid-template-columns: 1fr; gap: 20px; }
-    .project-brief { font-size: 1.5rem; max-width: 100%; }
-}
-
-/* =========================================
    CONTACT & FOOTER SECTION
    ========================================= */
 .contact-section {
@@ -284,8 +287,18 @@ nav {
     opacity: 0.4;
 }
 
-/* --- Mobile Responsiveness for Contact --- */
+/* =========================================
+   GLOBAL MOBILE RESPONSIVENESS
+   ========================================= */
 @media (max-width: 768px) {
+    .bio-section { grid-template-columns: 1fr; }
+    .bio-text { font-size: 1.5rem; }
+    .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
+    .project-row .desc { font-size: 0.85rem; }
+    .project-header { display: none; }
+    #cursor-media { display: none; }
+    .project-meta { grid-template-columns: 1fr; gap: 20px; }
+    .project-brief { font-size: 1.5rem; max-width: 100%; }
     .contact-section { grid-template-columns: 1fr; padding-bottom: 15vh; }
     .contact-links { font-size: 2.5rem; }
 }
