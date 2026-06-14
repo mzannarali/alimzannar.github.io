@@ -66,7 +66,6 @@ body {
     border-bottom: 1px solid #000;
 }
 
-/* The Background Wave Canvas */
 #bg-wave {
     position: absolute;
     top: 0; left: 0;
@@ -86,20 +85,18 @@ body {
 
 .hero h1.indent { margin-left: 10vw; }
 
+/* Cinematic Blur wrapper for the Multilingual Loop */
+.loop-wrapper {
+    transition: opacity 0.6s ease, filter 0.6s ease;
+    display: inline-block;
+}
+
 /* =========================================
-   STRUCTURAL VOXEL ENGINE & ANIMATIONS
+   STRUCTURAL VOXEL ENGINE (SYNCHRONIZED)
    ========================================= */
 .char-voxel {
     position: relative;
     display: inline-block;
-    /* The Entry Animation Rules */
-    transform: translateY(40%);
-    opacity: 0;
-    animation: starkReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes starkReveal {
-    to { transform: translateY(0); opacity: 1; }
 }
 
 .char-voxel .base {
@@ -112,21 +109,23 @@ body {
     display: grid;
     pointer-events: none;
     overflow: hidden; 
-    opacity: 0; /* Binary visibility */
+    opacity: 0; 
 }
 
+/* Hardcoded to match the exact 14px Canvas Grid */
 .char-voxel .voxel-grid b {
     font-family: "Courier New", Courier, monospace;
-    font-size: 0.1em; 
+    font-size: 14px; 
+    width: 14px;
+    height: 14px;
     font-weight: 600;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     line-height: 1;
     color: #000;
 }
 
-/* STRICT BINARY CUT-OUT (No smooth gradients) */
 .char-voxel.is-fractured .base { opacity: 0; }
 .char-voxel.is-fractured .voxel-grid { opacity: 1; }
 
@@ -176,7 +175,6 @@ body {
     cursor: pointer;
 }
 
-/* Subtle physical shift on hover */
 .project-row .row-title { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 .project-row:hover .row-title { transform: translateX(1.5vw); }
 .project-row:hover { color: #000; }
@@ -209,14 +207,13 @@ body {
     display: block;
 }
 
-/* The CSS Grid that 'bites' the video corners */
 #media-glitch-mask {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: repeat(12, 1fr);
-    z-index: 2; /* Overlays the video */
+    z-index: 2; 
 }
 
 /* =========================================

@@ -13,9 +13,9 @@
     <meta property="og:title" content="Ali Mzannar | Computational Designer">
     <meta property="og:description" content="Portfolio of architectural algorithms and data-driven material systems.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://alimzannar.com/">
+    <meta property="og:url" content="https://mzannar.io/">
     
-    <link rel="stylesheet" href="STYLE.CSS">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -31,9 +31,13 @@
 
     <header class="hero">
         <canvas id="bg-wave"></canvas>
-        <div class="hero-text-mask"><h1>ALI MZANNAR</h1></div>
-        <div class="hero-text-mask"><h1 class="indent">COMPUTATIONAL</h1></div>
-        <div class="hero-text-mask"><h1>DESIGNER</h1></div>
+        <div class="hero-text-mask"><h1 class="hero-title">ALI MZANNAR</h1></div>
+        
+        <div class="hero-text-mask">
+            <h1 class="indent loop-wrapper hero-title" id="lang-loop">COMPUTATIONAL</h1>
+        </div>
+        
+        <div class="hero-text-mask"><h1 class="hero-title">DESIGNER</h1></div>
     </header>
 
     <section class="bio-section">
@@ -86,7 +90,10 @@
     </div>
 
     <script>
+        // GLOBAL VARIABLES FOR UNIFIED COHERENCE
         const chars = "█▓▒░#@%&01";
+        const GRID_SIZE = 14; // Locks DOM text voxels and Canvas voxels to the exact same scale
+        
         let mouseX = -1000;
         let mouseY = -1000;
 
@@ -96,19 +103,18 @@
         });
 
         // =========================================
-        // 1. BACKGROUND CANVAS WAVE ENGINE
+        // 1. BACKGROUND CANVAS ENGINE (SQUARE SPREAD)
         // =========================================
         const canvas = document.getElementById('bg-wave');
         const ctx = canvas.getContext('2d');
         const hero = document.querySelector('.hero');
         let cols, rows;
-        const fontSize = 14;
 
         function resizeCanvas() {
             canvas.width = hero.clientWidth;
             canvas.height = hero.clientHeight;
-            cols = Math.floor(canvas.width / fontSize);
-            rows = Math.floor(canvas.height / fontSize);
+            cols = Math.floor(canvas.width / GRID_SIZE);
+            rows = Math.floor(canvas.height / GRID_SIZE);
         }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
@@ -116,30 +122,33 @@
         let waveTime = 0;
         function drawWave() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.font = `${fontSize}px "Courier New", Courier, monospace`;
+            ctx.font = `600 ${GRID_SIZE}px "Courier New", Courier, monospace`;
             ctx.fillStyle = '#000000';
+            ctx.textBaseline = 'top';
 
             for(let i=0; i<cols; i++) {
                 for(let j=0; j<rows; j++) {
-                    let x = i * fontSize;
-                    let y = j * fontSize;
-                    let dist = Math.hypot(mouseX - x, mouseY - y);
+                    let x = i * GRID_SIZE;
+                    let y = j * GRID_SIZE;
                     
-                    // Spread the effect wider across the white space
-                    if(dist < 450) {
-                        // Procedural Sine Wave Math
-                        let wave = Math.sin(dist * 0.03 - waveTime);
-                        let intensity = (1 - dist / 450) * wave;
+                    // CHEBYSHEV DISTANCE: Creates a rigid, blocky square expansion
+                    let dist = Math.max(Math.abs(mouseX - x), Math.abs(mouseY - y));
+                    
+                    if(dist < 400) {
+                        // Groups the grid into mathematical blocks for the wave
+                        let step = Math.floor(dist / (GRID_SIZE * 3));
+                        let intensity = (1 - dist / 400);
                         
-                        // Only draw characters that hit the peak of the wave
-                        if(intensity > 0.3 && Math.random() > 0.6) {
-                            ctx.globalAlpha = intensity * 0.3; // Keeps the background subtle
+                        let wave = Math.sin(step * 0.5 - waveTime);
+                        
+                        if(wave > 0 && Math.random() > 0.4) {
+                            ctx.globalAlpha = intensity * 0.3;
                             ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y);
                         }
                     }
                 }
             }
-            waveTime += 0.08; // Speed of the wave ripple
+            waveTime += 0.04; 
             requestAnimationFrame(drawWave);
         }
         drawWave();
@@ -152,32 +161,27 @@
         const maskGrid = document.getElementById('media-glitch-mask');
         const projectRows = document.querySelectorAll('.project-row');
 
-        // Build the 12x12 grid overlay to act as the destructive mask
         const maskCells = [];
         for(let i=0; i<144; i++) {
             let cell = document.createElement('div');
             let row = Math.floor(i / 12);
             let col = i % 12;
-            // Only add glitch logic to the outer borders to keep the center of the video visible
             if(row < 3 || row > 8 || col < 3 || col > 8) {
                 maskCells.push(cell);
             }
             maskGrid.appendChild(cell);
         }
 
-        let mediaX = 0;
-        let mediaY = 0;
+        let mediaX = 0; let mediaY = 0;
 
         function animateMedia() {
             mediaX += (mouseX - mediaX) * 0.15;
             mediaY += (mouseY - mediaY) * 0.15;
             cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px)`;
 
-            // Aggressively toggle the mask cells to 'bite' into the video
             if (cursorMedia.style.opacity === '1' && Math.random() > 0.4) {
                 maskCells.forEach(cell => {
                     if (Math.random() > 0.8) {
-                        // White matches the background, turning the cell "invisible"
                         cell.style.backgroundColor = '#ffffff';
                         cell.style.opacity = Math.random() > 0.5 ? '1' : '0';
                     }
@@ -214,43 +218,40 @@
         });
 
         // =========================================
-        // 3. BINARY TEXT VOXEL ENGINE & ANIMATIONS
+        // 3. UNIFIED DOM VOXEL ENGINE & MULTILINGUAL LOOP
         // =========================================
-        const headers = document.querySelectorAll('.hero h1');
-        let totalCharCount = 0;
+        let allChars = []; // Global array to track text nodes
 
-        headers.forEach(h1 => {
-            const text = h1.innerText;
-            h1.innerHTML = ''; 
+        // Function to mathematically slice a word into the universal GRID_SIZE
+        function buildVoxels(element) {
+            const text = element.innerText;
+            element.innerHTML = ''; 
             
             text.split('').forEach((char) => {
-                if (char === ' ') { h1.appendChild(document.createTextNode(' ')); return; }
+                if (char === ' ') { element.appendChild(document.createTextNode(' ')); return; }
                 
                 const wrapper = document.createElement('span');
                 wrapper.className = 'char-voxel';
-                
-                // STAGGERED ENTRANCE ANIMATION MATH
-                wrapper.style.animationDelay = `${(totalCharCount * 0.03)}s`;
-                totalCharCount++;
 
                 const base = document.createElement('span');
                 base.className = 'base';
                 base.innerText = char;
 
                 wrapper.appendChild(base);
-                h1.appendChild(wrapper);
+                element.appendChild(wrapper);
 
                 const rect = base.getBoundingClientRect();
                 const width = rect.width || 10;
                 const height = rect.height || 20;
 
-                const cols = 10; 
-                const rows = Math.max(1, Math.round(cols * (height / width))); 
+                // Syncs the DOM division perfectly to the Canvas Matrix
+                const cols = Math.ceil(width / GRID_SIZE);
+                const rows = Math.ceil(height / GRID_SIZE);
 
                 const grid = document.createElement('span');
                 grid.className = 'voxel-grid';
-                grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-                grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+                grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`;
+                grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
                 
                 const totalVoxels = cols * rows;
                 for(let i=0; i < totalVoxels; i++){
@@ -260,21 +261,56 @@
                 }
                 wrapper.appendChild(grid);
             });
-        });
+            // Update the global tracker after rebuilding
+            allChars = document.querySelectorAll('.char-voxel');
+        }
 
-        const allChars = document.querySelectorAll('.char-voxel');
+        // Initialize all titles on load
+        document.querySelectorAll('.hero-title').forEach(h1 => buildVoxels(h1));
 
+        // MULTILINGUAL APPLE-STYLE LOOP
+        const langs = [
+            "COMPUTATIONAL", 
+            "ALGORITHMISCH", // German
+            "COMPUTATIONNEL", // French
+            "计算", // Chinese
+            "ВЫЧИСЛИТЕЛЬНЫЙ", // Russian
+            "計算論的" // Japanese
+        ];
+        
+        let langIndex = 0;
+        const loopTarget = document.getElementById('lang-loop');
+
+        setInterval(() => {
+            langIndex = (langIndex + 1) % langs.length;
+            
+            // Blur out
+            loopTarget.style.opacity = 0;
+            loopTarget.style.filter = "blur(8px)";
+            
+            // Swap, Rebuild Voxels, Blur in
+            setTimeout(() => {
+                loopTarget.innerText = langs[langIndex];
+                buildVoxels(loopTarget);
+                loopTarget.style.opacity = 1;
+                loopTarget.style.filter = "blur(0px)";
+            }, 600); // Waits for the CSS fade
+            
+        }, 4000); // Changes language every 4 seconds
+
+        // Glitch Engine (Square Distance)
         function animateTextVoxels() {
-            const hardRadius = 150; 
+            const hardRadius = 200; 
             allChars.forEach(charEl => {
                 const rect = charEl.getBoundingClientRect();
                 const charX = rect.left + rect.width / 2;
-                const charY = rect.top + rect.height / 3;
-                const dist = Math.hypot(mouseX - charX, mouseY - charY);
+                const charY = rect.top + rect.height / 2;
+                
+                // Chebyshev distance for square DOM cut-out
+                const dist = Math.max(Math.abs(mouseX - charX), Math.abs(mouseY - charY));
 
                 if (dist < hardRadius) { 
                     charEl.classList.add('is-fractured');
-                    // SLOWER, HARSHER GLITCH (Only updates 5% of the time)
                     if(Math.random() > 0.95) {
                         const voxels = charEl.querySelectorAll('b');
                         voxels.forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
