@@ -85,7 +85,6 @@ body {
 
 .hero h1.indent { margin-left: 10vw; }
 
-/* Cinematic Blur wrapper for the Multilingual Loop */
 .loop-wrapper {
     transition: opacity 0.6s ease, filter 0.6s ease;
     display: inline-block;
@@ -112,7 +111,6 @@ body {
     opacity: 0; 
 }
 
-/* Hardcoded to match the exact 14px Canvas Grid */
 .char-voxel .voxel-grid b {
     font-family: "Courier New", Courier, monospace;
     font-size: 14px; 
@@ -217,14 +215,14 @@ body {
 }
 
 /* =========================================
-   HORIZONTAL CONTACT FOOTER
+   VERTICAL CONTACT FOOTER (WITH REVEAL)
    ========================================= */
 .contact-section {
     padding: 8vh 30px;
     border-top: 1px solid #000;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     background-color: var(--bg-color);
     position: relative;
     z-index: 10;
@@ -234,28 +232,55 @@ body {
     font-size: 0.75rem;
     font-weight: 700;
     color: #666;
-    flex-shrink: 0;
 }
 
+/* Stacked vertically on the right */
 .contact-links {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 2vw;
-    font-size: 1.5vw; 
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1.5vh;
 }
 
 .contact-links a {
     color: #000;
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
     cursor: pointer;
 }
 
-.contact-links a:hover { opacity: 0.4; }
+/* The hidden data that reveals on hover */
+.contact-links a .link-reveal {
+    font-size: 0.8vw;
+    font-weight: 500;
+    font-family: "Courier New", Courier, monospace;
+    color: #666;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-transform: none; /* Keeps email formatting intact */
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-links a .link-title {
+    font-size: 2vw; 
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    transition: opacity 0.2s ease;
+}
+
+/* Hover Mechanics */
+.contact-links a:hover .link-reveal {
+    max-width: 400px;
+    opacity: 1;
+}
+
+.contact-links a:hover .link-title {
+    opacity: 0.4;
+}
 
 /* =========================================
    GLOBAL MOBILE RESPONSIVENESS
@@ -271,5 +296,7 @@ body {
     #cursor-media { display: none; }
     
     .contact-section { flex-direction: column; align-items: flex-start; gap: 30px; padding-bottom: 15vh;}
-    .contact-links { flex-direction: column; font-size: 1.5rem; gap: 15px; }
+    .contact-links { align-items: flex-start; gap: 15px; }
+    .contact-links a .link-title { font-size: 1.5rem; }
+    .contact-links a .link-reveal { font-size: 0.85rem; max-width: 300px; opacity: 1; } /* Always reveal on mobile */
 }

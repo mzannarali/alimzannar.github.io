@@ -76,11 +76,26 @@
     <footer class="contact-section" id="contact">
         <div class="contact-label">CONTACT / NETWORK</div>
         <div class="contact-links">
-            <a href="mailto:ali_mahmoud_mzannar@outlook.com">EMAIL ↗</a>
-            <a href="tel:+4915100000000">PHONE [DE] ↗</a> 
-            <a href="tel:+96100000000">PHONE [LB] ↗</a>
-            <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank">LINKEDIN ↗</a>
-            <a href="https://www.instagram.com/ali_mzannar" target="_blank">INSTAGRAM ↗</a>
+            <a href="mailto:ali_mahmoud_mzannar@outlook.com">
+                <span class="link-reveal">ali_mahmoud_mzannar@outlook.com</span>
+                <span class="link-title">EMAIL ↗</span>
+            </a>
+            <a href="tel:+4915100000000">
+                <span class="link-reveal">+49 151 000 0000</span>
+                <span class="link-title">PHONE [DE] ↗</span>
+            </a> 
+            <a href="tel:+96100000000">
+                <span class="link-reveal">+961 00 000 000</span>
+                <span class="link-title">PHONE [LB] ↗</span>
+            </a>
+            <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank">
+                <span class="link-reveal">/in/ali-mzannar</span>
+                <span class="link-title">LINKEDIN ↗</span>
+            </a>
+            <a href="https://www.instagram.com/ali_mzannar" target="_blank">
+                <span class="link-reveal">@ali_mzannar</span>
+                <span class="link-title">INSTAGRAM ↗</span>
+            </a>
         </div>
     </footer>
 
@@ -90,9 +105,8 @@
     </div>
 
     <script>
-        // GLOBAL VARIABLES FOR UNIFIED COHERENCE
         const chars = "█▓▒░#@%&01";
-        const GRID_SIZE = 14; // Locks DOM text voxels and Canvas voxels to the exact same scale
+        const GRID_SIZE = 14; 
         
         let mouseX = -1000;
         let mouseY = -1000;
@@ -103,7 +117,7 @@
         });
 
         // =========================================
-        // 1. BACKGROUND CANVAS ENGINE (SQUARE SPREAD)
+        // 1. BACKGROUND CANVAS ENGINE (PURE BLACK NOISE)
         // =========================================
         const canvas = document.getElementById('bg-wave');
         const ctx = canvas.getContext('2d');
@@ -119,8 +133,7 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        let waveTime = 0;
-        function drawWave() {
+        function drawStaticNoise() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.font = `600 ${GRID_SIZE}px "Courier New", Courier, monospace`;
             ctx.fillStyle = '#000000';
@@ -131,27 +144,23 @@
                     let x = i * GRID_SIZE;
                     let y = j * GRID_SIZE;
                     
-                    // CHEBYSHEV DISTANCE: Creates a rigid, blocky square expansion
                     let dist = Math.max(Math.abs(mouseX - x), Math.abs(mouseY - y));
                     
-                    if(dist < 400) {
-                        // Groups the grid into mathematical blocks for the wave
-                        let step = Math.floor(dist / (GRID_SIZE * 3));
-                        let intensity = (1 - dist / 400);
+                    if(dist < 350) {
+                        // Calculates density: Closer = more dense, Further = sparse
+                        let probability = Math.pow(1 - (dist / 350), 2); 
                         
-                        let wave = Math.sin(step * 0.5 - waveTime);
-                        
-                        if(wave > 0 && Math.random() > 0.4) {
-                            ctx.globalAlpha = intensity * 0.3;
+                        // Pure random noise instead of waves
+                        if(Math.random() < probability * 0.3) {
+                            ctx.globalAlpha = 1; // Pure black, full opacity
                             ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y);
                         }
                     }
                 }
             }
-            waveTime += 0.04; 
-            requestAnimationFrame(drawWave);
+            requestAnimationFrame(drawStaticNoise);
         }
-        drawWave();
+        drawStaticNoise();
 
         // =========================================
         // 2. CURSOR MEDIA & SHAPE MASKING ENGINE
@@ -191,6 +200,107 @@
         }
         animateMedia();
 
+        // =========================================
+        // 3. UNIFIED DOM VOXEL ENGINE & MULTILINGUAL LOOP
+        // =========================================
+        let allChars = []; 
+
+        function buildVoxels(element) {
+            const text = element.innerText;
+            element.innerHTML = ''; 
+            
+            text.split('').forEach((char) => {
+                if (char === ' ') { element.appendChild(document.createTextNode(' ')); return; }
+                
+                const wrapper = document.createElement('span');
+                wrapper.className = 'char-voxel';
+
+                const base = document.createElement('span');
+                base.className = 'base';
+                base.innerText = char;
+
+                wrapper.appendChild(base);
+                element.appendChild(wrapper);
+
+                const rect = base.getBoundingClientRect();
+                const width = rect.width || 10;
+                const height = rect.height || 20;
+
+                const cols = Math.ceil(width / GRID_SIZE);
+                const rows = Math.ceil(height / GRID_SIZE);
+
+                const grid = document.createElement('span');
+                grid.className = 'voxel-grid';
+                grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`;
+                grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
+                
+                const totalVoxels = cols * rows;
+                for(let i=0; i < totalVoxels; i++){
+                    const b = document.createElement('b');
+                    b.innerText = chars[Math.floor(Math.random() * chars.length)];
+                    grid.appendChild(b);
+                }
+                wrapper.appendChild(grid);
+            });
+            allChars = document.querySelectorAll('.char-voxel');
+        }
+
+        document.querySelectorAll('.hero-title').forEach(h1 => buildVoxels(h1));
+
+        // EXPANDED MULTILINGUAL ARRAY
+        const langs = [
+            "COMPUTATIONAL",  // English
+            "ALGORITHMISCH",  // German
+            "حوسبة",          // Arabic
+            "COMPUTATIONNEL", // French
+            "COMPUTACIONAL",  // Spanish/Portuguese
+            "ВЫЧИСЛИТЕЛЬНЫЙ", // Russian
+            "计算",            // Chinese
+            "計算論的"         // Japanese
+        ];
+        
+        let langIndex = 0;
+        const loopTarget = document.getElementById('lang-loop');
+
+        setInterval(() => {
+            langIndex = (langIndex + 1) % langs.length;
+            
+            loopTarget.style.opacity = 0;
+            loopTarget.style.filter = "blur(8px)";
+            
+            setTimeout(() => {
+                loopTarget.innerText = langs[langIndex];
+                buildVoxels(loopTarget);
+                loopTarget.style.opacity = 1;
+                loopTarget.style.filter = "blur(0px)";
+            }, 600); 
+            
+        }, 4000); 
+
+        function animateTextVoxels() {
+            const hardRadius = 200; 
+            allChars.forEach(charEl => {
+                const rect = charEl.getBoundingClientRect();
+                const charX = rect.left + rect.width / 2;
+                const charY = rect.top + rect.height / 2;
+                
+                const dist = Math.max(Math.abs(mouseX - charX), Math.abs(mouseY - charY));
+
+                if (dist < hardRadius) { 
+                    charEl.classList.add('is-fractured');
+                    if(Math.random() > 0.95) {
+                        const voxels = charEl.querySelectorAll('b');
+                        voxels.forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
+                    }
+                } else {
+                    charEl.classList.remove('is-fractured');
+                }
+            });
+            requestAnimationFrame(animateTextVoxels);
+        }
+        animateTextVoxels();
+
+        // Project Row Hover Logic
         projectRows.forEach(row => {
             row.addEventListener('mouseenter', () => {
                 const mediaSrc = row.getAttribute('data-media');
@@ -216,112 +326,6 @@
                 cursorMedia.style.opacity = '0';
             });
         });
-
-        // =========================================
-        // 3. UNIFIED DOM VOXEL ENGINE & MULTILINGUAL LOOP
-        // =========================================
-        let allChars = []; // Global array to track text nodes
-
-        // Function to mathematically slice a word into the universal GRID_SIZE
-        function buildVoxels(element) {
-            const text = element.innerText;
-            element.innerHTML = ''; 
-            
-            text.split('').forEach((char) => {
-                if (char === ' ') { element.appendChild(document.createTextNode(' ')); return; }
-                
-                const wrapper = document.createElement('span');
-                wrapper.className = 'char-voxel';
-
-                const base = document.createElement('span');
-                base.className = 'base';
-                base.innerText = char;
-
-                wrapper.appendChild(base);
-                element.appendChild(wrapper);
-
-                const rect = base.getBoundingClientRect();
-                const width = rect.width || 10;
-                const height = rect.height || 20;
-
-                // Syncs the DOM division perfectly to the Canvas Matrix
-                const cols = Math.ceil(width / GRID_SIZE);
-                const rows = Math.ceil(height / GRID_SIZE);
-
-                const grid = document.createElement('span');
-                grid.className = 'voxel-grid';
-                grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`;
-                grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
-                
-                const totalVoxels = cols * rows;
-                for(let i=0; i < totalVoxels; i++){
-                    const b = document.createElement('b');
-                    b.innerText = chars[Math.floor(Math.random() * chars.length)];
-                    grid.appendChild(b);
-                }
-                wrapper.appendChild(grid);
-            });
-            // Update the global tracker after rebuilding
-            allChars = document.querySelectorAll('.char-voxel');
-        }
-
-        // Initialize all titles on load
-        document.querySelectorAll('.hero-title').forEach(h1 => buildVoxels(h1));
-
-        // MULTILINGUAL APPLE-STYLE LOOP
-        const langs = [
-            "COMPUTATIONAL", 
-            "ALGORITHMISCH", // German
-            "COMPUTATIONNEL", // French
-            "计算", // Chinese
-            "ВЫЧИСЛИТЕЛЬНЫЙ", // Russian
-            "計算論的" // Japanese
-        ];
-        
-        let langIndex = 0;
-        const loopTarget = document.getElementById('lang-loop');
-
-        setInterval(() => {
-            langIndex = (langIndex + 1) % langs.length;
-            
-            // Blur out
-            loopTarget.style.opacity = 0;
-            loopTarget.style.filter = "blur(8px)";
-            
-            // Swap, Rebuild Voxels, Blur in
-            setTimeout(() => {
-                loopTarget.innerText = langs[langIndex];
-                buildVoxels(loopTarget);
-                loopTarget.style.opacity = 1;
-                loopTarget.style.filter = "blur(0px)";
-            }, 600); // Waits for the CSS fade
-            
-        }, 4000); // Changes language every 4 seconds
-
-        // Glitch Engine (Square Distance)
-        function animateTextVoxels() {
-            const hardRadius = 200; 
-            allChars.forEach(charEl => {
-                const rect = charEl.getBoundingClientRect();
-                const charX = rect.left + rect.width / 2;
-                const charY = rect.top + rect.height / 2;
-                
-                // Chebyshev distance for square DOM cut-out
-                const dist = Math.max(Math.abs(mouseX - charX), Math.abs(mouseY - charY));
-
-                if (dist < hardRadius) { 
-                    charEl.classList.add('is-fractured');
-                    if(Math.random() > 0.95) {
-                        const voxels = charEl.querySelectorAll('b');
-                        voxels.forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
-                    }
-                } else {
-                    charEl.classList.remove('is-fractured');
-                }
-            });
-            requestAnimationFrame(animateTextVoxels);
-        }
-        animateTextVoxels();
     </script>
 </body>
 </html>
