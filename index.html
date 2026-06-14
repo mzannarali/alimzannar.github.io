@@ -13,16 +13,20 @@
     <meta property="og:title" content="Ali Mzannar | Computational Designer">
     <meta property="og:description" content="Portfolio of architectural algorithms and data-driven material systems.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://alimzannar.com/">
+    <meta property="og:url" content="https://mzannar.io/">
     
     <link rel="stylesheet" href="STYLE.CSS">
 </head>
 <body>
 
     <nav class="home-nav">
-        <span>Ali Mzannar © 2026</span>
-        <span>Stuttgart, DE</span> 
-        <a href="#contact" style="color: inherit; text-decoration: none;">CONTACT ↓</a>
+        <div class="nav-left">
+            <span>Ali Mzannar © 2026</span>
+        </div>
+        <div class="nav-right">
+            <span>STUTTGART, DE</span>
+            <a href="#contact">CONTACT ↓</a>
+        </div>
     </nav>
 
     <header class="hero">
@@ -57,49 +61,79 @@
         
         <div class="contact-links">
             <a href="mailto:ali_mahmoud_mzannar@outlook.com">EMAIL ↗</a>
+            <a href="tel:+4915207628651">PHONE [DE] ↗</a>
+            <a href="tel:+96171722662">PHONE [LB] ↗</a>
             <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank">LINKEDIN ↗</a>
             <a href="https://www.instagram.com/ali_mzannar" target="_blank">INSTAGRAM ↗</a>
         </div>
     </footer>
 
-    <div id="cursor-media"></div>
+    <div id="cursor-media">
+        <div id="media-border-data"></div>
+        <div class="media-container" id="media-container"></div>
+    </div>
 
     <script>
+        const chars = "█▓▒░#@%&01";
+
         // =========================================
-        // 1. CUSTOM CURSOR MEDIA TRACKER
+        // 1. HOVER MEDIA & GLITCH BORDER ENGINE
         // =========================================
         const cursorMedia = document.getElementById('cursor-media');
+        const mediaContainer = document.getElementById('media-container');
+        const mediaBorder = document.getElementById('media-border-data');
         const projectRows = document.querySelectorAll('.project-row');
+
+        // Pre-render chaotic data frames for the image border to save CPU
+        const borderFrames = [];
+        for (let f = 0; f < 5; f++) {
+            let str = "";
+            for (let i = 0; i < 1500; i++) str += chars[Math.floor(Math.random() * chars.length)];
+            borderFrames.push(str);
+        }
 
         let mouseX = -1000;
         let mouseY = -1000;
         let mediaX = 0;
         let mediaY = 0;
+        let borderFrameCounter = 0;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
 
-        function animateMedia() {
+        // The Master Render Loop
+        function animateEngine() {
+            // 1. Interpolate Media Position
             mediaX += (mouseX - mediaX) * 0.15;
             mediaY += (mouseY - mediaY) * 0.15;
             cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px)`;
-            requestAnimationFrame(animateMedia);
-        }
-        animateMedia();
 
+            // 2. Glitch the Image Boundary (Only when visible)
+            if (cursorMedia.style.opacity === '1') {
+                // Slower effect: Updates the border data 15% of the time
+                if (Math.random() > 0.85) {
+                    mediaBorder.innerText = borderFrames[borderFrameCounter % 5];
+                    borderFrameCounter++;
+                }
+            }
+
+            requestAnimationFrame(animateEngine);
+        }
+        animateEngine();
+
+        // Inject Media on Hover
         projectRows.forEach(row => {
             row.addEventListener('mouseenter', () => {
                 const mediaSrc = row.getAttribute('data-media');
                 
                 if (mediaSrc !== "") {
-                    if (cursorMedia.getAttribute('data-loaded') !== mediaSrc) {
-                        cursorMedia.setAttribute('data-loaded', mediaSrc);
-                        cursorMedia.innerHTML = ''; 
+                    if (mediaContainer.getAttribute('data-loaded') !== mediaSrc) {
+                        mediaContainer.setAttribute('data-loaded', mediaSrc);
+                        mediaContainer.innerHTML = ''; 
 
                         const ext = mediaSrc.split('.').pop().toLowerCase();
-                        
                         if (ext === 'mp4' || ext === 'webm') {
                             const video = document.createElement('video');
                             video.src = mediaSrc;
@@ -107,11 +141,11 @@
                             video.loop = true;
                             video.muted = true;
                             video.playsInline = true;
-                            cursorMedia.appendChild(video);
+                            mediaContainer.appendChild(video);
                         } else {
                             const img = document.createElement('img');
                             img.src = mediaSrc;
-                            cursorMedia.appendChild(img);
+                            mediaContainer.appendChild(img);
                         }
                     }
                 }
@@ -126,12 +160,10 @@
         });
 
         // =========================================
-        // 2. GRADIENT PROXIMITY VOXEL ENGINE
+        // 2. BINARY VOXEL ENGINE (Full Opacity, Slowed Down)
         // =========================================
-        const chars = "█▓▒░#@%&01";
         const headers = document.querySelectorAll('.hero h1');
 
-        // Deconstruct the text into dynamic, mathematically square grids
         headers.forEach(h1 => {
             const text = h1.innerText;
             h1.innerHTML = ''; 
@@ -177,41 +209,36 @@
 
         const allChars = document.querySelectorAll('.char-voxel');
 
-        // The Render Loop (60fps Gradient Engine)
-        function animateVoxels() {
-            const maxRadius = 300; // Total size of the impact area
+        function animateTextVoxels() {
+            const hardRadius = 150; // The fixed radius of the cut-out
 
             allChars.forEach(charEl => {
                 const rect = charEl.getBoundingClientRect();
-                
                 const charX = rect.left + rect.width / 2;
                 const charY = rect.top + rect.height / 3;
 
                 const dist = Math.hypot(mouseX - charX, mouseY - charY);
 
-                if (dist < maxRadius) { 
-                    // Calculate intensity (1.0 at center, 0.0 at edge)
-                    const intensity = 1 - (dist / maxRadius);
+                if (dist < hardRadius) { 
+                    // Binary switch on (Full Opacity)
+                    charEl.classList.add('is-fractured');
                     
-                    // Pass the math to CSS for smooth fading
-                    charEl.style.setProperty('--intensity', intensity.toFixed(3));
-                    
-                    // The closer the mouse, the faster the symbols swap
-                    if(Math.random() < (intensity * 0.6)) {
+                    // MUCH SLOWER SPEED: Only updates 5% of the frames
+                    if(Math.random() > 0.95) {
                         const voxels = charEl.querySelectorAll('b');
                         voxels.forEach(v => {
                             v.innerText = chars[Math.floor(Math.random() * chars.length)];
                         });
                     }
                 } else {
-                    // Reset to pure text when the mouse is far away
-                    charEl.style.setProperty('--intensity', '0');
+                    // Binary switch off
+                    charEl.classList.remove('is-fractured');
                 }
             });
-            requestAnimationFrame(animateVoxels);
+            requestAnimationFrame(animateTextVoxels);
         }
         
-        animateVoxels();
+        animateTextVoxels();
     </script>
 </body>
 </html>

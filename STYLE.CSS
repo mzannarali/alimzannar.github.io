@@ -40,7 +40,6 @@ nav {
     letter-spacing: 0.05em;
 }
 
-/* Specific to the Home Page Index (Floating & Inverted) */
 .home-nav {
     position: fixed;
     width: 100%;
@@ -50,7 +49,16 @@ nav {
     color: #fff;
 }
 
-/* Specific to the Project Pages (Static & Bordered) */
+.nav-right {
+    display: flex;
+    gap: 40px; /* Separates the location and the contact link */
+}
+
+.nav-right a {
+    color: inherit;
+    text-decoration: none;
+}
+
 .project-nav {
     border-bottom: 1px solid #000;
     color: #000;
@@ -91,7 +99,7 @@ nav {
     margin-left: 10vw;
 }
 
-/* --- STRUCTURAL VOXEL FRACTURE ENGINE (GRADIENT UPGRADE) --- */
+/* --- STRUCTURAL VOXEL FRACTURE ENGINE (STRICT BINARY) --- */
 .char-voxel {
     position: relative;
     display: inline-block;
@@ -99,8 +107,7 @@ nav {
 
 .char-voxel .base {
     display: inline-block;
-    /* Listens to JS to fade out smoothly as intensity approaches 1 */
-    opacity: calc(1 - var(--intensity, 0));
+    transition: opacity 0.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .char-voxel .voxel-grid {
@@ -109,12 +116,8 @@ nav {
     display: grid;
     pointer-events: none;
     overflow: hidden; 
-    
-    /* Listens to JS to fade in smoothly as intensity approaches 1 */
-    opacity: var(--intensity, 0);
-    
-    /* Adds a subtle spatial expansion to the center of the cursor blast */
-    transform: scale(calc(1 + (var(--intensity, 0) * 0.15)));
+    opacity: 0;
+    transition: opacity 0.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .char-voxel .voxel-grid b {
@@ -127,6 +130,10 @@ nav {
     line-height: 1;
     color: #000;
 }
+
+/* HARD CUT: Full opacity triggers */
+.char-voxel.is-fractured .base { opacity: 0; }
+.char-voxel.is-fractured .voxel-grid { opacity: 1; }
 
 /* --- BIO & PROJECTS --- */
 .bio-section {
@@ -172,6 +179,7 @@ nav {
 .project-row span { pointer-events: none; }
 .project-row .desc { font-size: 1rem; font-weight: 400; align-self: center; color: #666; text-transform: none; }
 
+/* --- CURSOR MEDIA BOUNDING BOX --- */
 #cursor-media {
     position: fixed;
     top: 0; left: 0;
@@ -179,14 +187,37 @@ nav {
     pointer-events: none;
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.9);
-    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.3s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 5;
-    overflow: hidden;
-    background-color: #f0f0f0;
+    /* Adds a 15px gap around the image where the data border shows through */
+    padding: 15px; 
 }
 
-#cursor-media video, #cursor-media img {
+#media-border-data {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10px;
+    line-height: 10px;
+    color: #000;
+    word-break: break-all;
+    z-index: 1;
+    overflow: hidden;
+    /* Inverts the border so it looks like raw terminal data */
+    background: #f0f0f0; 
+}
+
+.media-container {
+    position: relative;
+    width: 100%; height: 100%;
+    background-color: #000;
+    z-index: 2; /* Keeps the image above the data */
+    overflow: hidden;
+}
+
+.media-container video, .media-container img {
     width: 100%; height: 100%; object-fit: cover;
+    display: block;
 }
 
 /* =========================================
@@ -287,6 +318,7 @@ nav {
    GLOBAL MOBILE RESPONSIVENESS
    ========================================= */
 @media (max-width: 768px) {
+    .nav-right { gap: 15px; }
     .bio-section { grid-template-columns: 1fr; }
     .bio-text { font-size: 1.5rem; }
     .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
