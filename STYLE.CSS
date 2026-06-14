@@ -172,7 +172,12 @@ nav {
 #cursor-media video, #cursor-media img {
     width: 100%; height: 100%; object-fit: cover;
 }
-
+/* --- SVG DITHER TRIGGER --- */
+.dither-active h1 {
+    filter: url(#edge-dither);
+    /* Transforms the crisp vector text into raw pixels */
+    transform: translateZ(0); 
+}
 /* =========================================
    PROJECT PAGE ELEMENTS (sakura-bay.html)
    ========================================= */

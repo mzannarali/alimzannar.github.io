@@ -22,7 +22,14 @@
     
 </head>
 <body>
-
+    <svg style="width: 0; height: 0; position: absolute;">
+        <defs>
+            <filter id="edge-dither">
+                <feTurbulence id="dither-noise" type="fractalNoise" baseFrequency="1.5" numOctaves="1" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
     <nav>
         <span>Ali Mzannar © 2026</span>
         <span>Stuttgart, DE ↗</span>
@@ -167,12 +174,13 @@
         });
     });
 
-    // --- MICRO-MATRIX VOXEL ENGINE ---
+    // --- MICRO-MATRIX + EDGE DITHER ENGINE ---
     const matrixBox = document.getElementById('micro-matrix');
     const heroSection = document.querySelector('.hero');
+    const noiseNode = document.getElementById('dither-noise');
     const chars = "+-\\/_[]<>01";
 
-    // Pre-render 5 massive blocks of random characters to ensure maximum performance
+    // Pre-render noise frames for performance
     const frames = [];
     for (let f = 0; f < 5; f++) {
         let text = '';
@@ -190,30 +198,35 @@
         let frameIndex = 0;
         let tick = 0;
 
-        // Reveal the stencil
+        // Reveal matrix stencil and trigger edge dither
         matrixBox.style.opacity = '1';
+        heroSection.classList.add('dither-active');
 
         clearInterval(glitchInterval);
         glitchInterval = setInterval(() => {
-            // Cycle through the pre-rendered frames rapidly
+            // Cycle matrix characters
             matrixBox.textContent = frames[frameIndex];
             frameIndex = (frameIndex + 1) % frames.length;
 
+            // Randomize the SVG noise seed to make the edges "boil"
+            noiseNode.setAttribute('seed', Math.floor(Math.random() * 100));
+
             tick++;
-            // After ~1.2 seconds, automatically resolve the matrix back into solid letters
+            // Resolve back to clean text after ~1.2 seconds
             if (tick > 25 && isHovering) {
                 clearInterval(glitchInterval);
                 matrixBox.style.opacity = '0';
+                heroSection.classList.remove('dither-active');
             }
-        }, 40); // Speed of the glitch (40ms)
+        }, 40); 
     });
 
-    // Immediately resolve to solid letters if the mouse leaves early
     heroSection.addEventListener('mouseleave', () => {
         isHovering = false;
         clearInterval(glitchInterval);
         matrixBox.style.opacity = '0';
-    });    
+        heroSection.classList.remove('dither-active');
+    }); 
 </script>
 </body>
 </html>
