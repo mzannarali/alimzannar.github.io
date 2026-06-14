@@ -21,11 +21,11 @@
 
     <nav class="home-nav">
         <div class="nav-left">
-            <span>STUTTGART, DE</span>
-        </div>
-        <div class="nav-right">
             <span>ALI MZANNAR © 2026</span>
             <a href="#contact" class="nav-link">CONTACT ↓</a>
+        </div>
+        <div class="nav-right">
+            <span>STUTTGART, DE</span>
         </div>
     </nav>
 
@@ -77,24 +77,24 @@
         <div class="contact-label">CONTACT / NETWORK</div>
         <div class="contact-links">
             <a href="mailto:ali_mahmoud_mzannar@outlook.com">
-                <span class="link-reveal">ali_mahmoud_mzannar@outlook.com</span>
                 <span class="link-title">EMAIL ↗</span>
+                <span class="link-reveal">ali_mahmoud_mzannar@outlook.com</span>
             </a>
             <a href="tel:+4915100000000">
-                <span class="link-reveal">+49 151 000 0000</span>
                 <span class="link-title">PHONE [DE] ↗</span>
+                <span class="link-reveal">+49 151 000 0000</span>
             </a> 
             <a href="tel:+96100000000">
-                <span class="link-reveal">+961 00 000 000</span>
                 <span class="link-title">PHONE [LB] ↗</span>
+                <span class="link-reveal">+961 00 000 000</span>
             </a>
             <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank">
-                <span class="link-reveal">/in/ali-mzannar</span>
                 <span class="link-title">LINKEDIN ↗</span>
+                <span class="link-reveal">/in/ali-mzannar</span>
             </a>
             <a href="https://www.instagram.com/ali_mzannar" target="_blank">
-                <span class="link-reveal">@ali_mzannar</span>
                 <span class="link-title">INSTAGRAM ↗</span>
+                <span class="link-reveal">@ali_mzannar</span>
             </a>
         </div>
     </footer>
@@ -117,18 +117,31 @@
         });
 
         // =========================================
-        // 1. BACKGROUND CANVAS ENGINE (PURE BLACK NOISE)
+        // 1. SYNCHRONIZED CANVAS NOISE ENGINE
         // =========================================
         const canvas = document.getElementById('bg-wave');
         const ctx = canvas.getContext('2d');
         const hero = document.querySelector('.hero');
         let cols, rows;
+        let canvasGrid = []; // Persistent memory grid
 
         function resizeCanvas() {
             canvas.width = hero.clientWidth;
             canvas.height = hero.clientHeight;
             cols = Math.floor(canvas.width / GRID_SIZE);
             rows = Math.floor(canvas.height / GRID_SIZE);
+            
+            // Build the memory grid
+            canvasGrid = [];
+            for(let i=0; i<cols; i++) {
+                canvasGrid[i] = [];
+                for(let j=0; j<rows; j++) {
+                    canvasGrid[i][j] = {
+                        char: chars[Math.floor(Math.random() * chars.length)],
+                        active: false
+                    };
+                }
+            }
         }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
@@ -143,18 +156,24 @@
                 for(let j=0; j<rows; j++) {
                     let x = i * GRID_SIZE;
                     let y = j * GRID_SIZE;
-                    
                     let dist = Math.max(Math.abs(mouseX - x), Math.abs(mouseY - y));
                     
                     if(dist < 350) {
-                        // Calculates density: Closer = more dense, Further = sparse
                         let probability = Math.pow(1 - (dist / 350), 2); 
                         
-                        // Pure random noise instead of waves
-                        if(Math.random() < probability * 0.3) {
-                            ctx.globalAlpha = 1; // Pure black, full opacity
-                            ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y);
+                        // EXACT MATCH: Updates at the same 5% frame rate as the typography
+                        if(Math.random() > 0.95) {
+                            canvasGrid[i][j].char = chars[Math.floor(Math.random() * chars.length)];
+                            canvasGrid[i][j].active = Math.random() < probability * 0.4;
                         }
+                        
+                        // Draw from memory to stop flickering
+                        if(canvasGrid[i][j].active) {
+                            ctx.globalAlpha = 1; 
+                            ctx.fillText(canvasGrid[i][j].char, x, y);
+                        }
+                    } else {
+                        canvasGrid[i][j].active = false;
                     }
                 }
             }
@@ -247,16 +266,16 @@
 
         document.querySelectorAll('.hero-title').forEach(h1 => buildVoxels(h1));
 
-        // EXPANDED MULTILINGUAL ARRAY
+        // NATIVE INDUSTRY TRANSLATIONS
         const langs = [
             "COMPUTATIONAL",  // English
             "ALGORITHMISCH",  // German
-            "حوسبة",          // Arabic
-            "COMPUTATIONNEL", // French
-            "COMPUTACIONAL",  // Spanish/Portuguese
+            "خوارزمية",       // Arabic (Algorithmic)
+            "ALGORITHMIQUE",  // French
+            "COMPUTACIONAL",  // Spanish
             "ВЫЧИСЛИТЕЛЬНЫЙ", // Russian
-            "计算",            // Chinese
-            "計算論的"         // Japanese
+            "计算化",          // Chinese
+            "アルゴリズム"       // Japanese (Algorithm)
         ];
         
         let langIndex = 0;
@@ -288,6 +307,7 @@
 
                 if (dist < hardRadius) { 
                     charEl.classList.add('is-fractured');
+                    // EXACT MATCH: 5% Update Rate
                     if(Math.random() > 0.95) {
                         const voxels = charEl.querySelectorAll('b');
                         voxels.forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });

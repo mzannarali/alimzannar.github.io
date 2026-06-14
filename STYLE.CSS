@@ -39,20 +39,24 @@ body {
     letter-spacing: 0.05em;
 }
 
-.nav-right {
+.nav-left {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 5px;
+    gap: 40px;
+    align-items: center;
 }
 
-.nav-right a {
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.home-nav a {
     color: inherit;
     text-decoration: none;
     transition: opacity 0.2s ease;
 }
 
-.nav-right a:hover { opacity: 0.5; }
+.home-nav a:hover { opacity: 0.5; }
 
 /* =========================================
    HERO SECTION & CANVAS
@@ -215,7 +219,7 @@ body {
 }
 
 /* =========================================
-   VERTICAL CONTACT FOOTER (WITH REVEAL)
+   VERTICAL CONTACT FOOTER (LEFT ALIGN, RIGHT REVEAL)
    ========================================= */
 .contact-section {
     padding: 8vh 30px;
@@ -234,11 +238,11 @@ body {
     color: #666;
 }
 
-/* Stacked vertically on the right */
+/* Stacked vertically on the left side of its column */
 .contact-links {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
     gap: 1.5vh;
 }
 
@@ -246,40 +250,34 @@ body {
     color: #000;
     text-decoration: none;
     display: flex;
-    align-items: flex-end;
-    gap: 15px;
+    align-items: baseline;
     cursor: pointer;
-}
-
-/* The hidden data that reveals on hover */
-.contact-links a .link-reveal {
-    font-size: 0.8vw;
-    font-weight: 500;
-    font-family: "Courier New", Courier, monospace;
-    color: #666;
-    max-width: 0;
-    opacity: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-transform: none; /* Keeps email formatting intact */
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .contact-links a .link-title {
     font-size: 2vw; 
     font-weight: 700;
     letter-spacing: -0.02em;
-    transition: opacity 0.2s ease;
+}
+
+/* The hidden data that pulls out to the right */
+.contact-links a .link-reveal {
+    font-size: 2vw; /* Matched size */
+    font-weight: 700;
+    color: #999;    /* Stark Brutalist Grey */
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-transform: none; 
+    transition: max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, padding-left 0.4s ease;
 }
 
 /* Hover Mechanics */
 .contact-links a:hover .link-reveal {
-    max-width: 400px;
+    max-width: 800px; /* Expands to fit long emails */
     opacity: 1;
-}
-
-.contact-links a:hover .link-title {
-    opacity: 0.4;
+    padding-left: 20px; /* Pushes away from the title */
 }
 
 /* =========================================
@@ -287,6 +285,7 @@ body {
    ========================================= */
 @media (max-width: 768px) {
     .home-nav { padding: 15px; }
+    .nav-left { flex-direction: column; align-items: flex-start; gap: 5px; }
     .bio-section { grid-template-columns: 1fr; }
     .bio-text { font-size: 1.5rem; }
     .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
@@ -296,7 +295,8 @@ body {
     #cursor-media { display: none; }
     
     .contact-section { flex-direction: column; align-items: flex-start; gap: 30px; padding-bottom: 15vh;}
-    .contact-links { align-items: flex-start; gap: 15px; }
+    .contact-links { align-items: flex-start; gap: 15px; width: 100%; }
+    .contact-links a { flex-direction: column; gap: 5px; } /* Stack on mobile */
     .contact-links a .link-title { font-size: 1.5rem; }
-    .contact-links a .link-reveal { font-size: 0.85rem; max-width: 300px; opacity: 1; } /* Always reveal on mobile */
+    .contact-links a .link-reveal { font-size: 1rem; max-width: 100%; opacity: 1; padding-left: 0;} /* Always reveal on mobile */
 }
