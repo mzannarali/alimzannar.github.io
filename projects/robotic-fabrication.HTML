@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotic Fabrication | Ali Mzannar</title>
+    
+    <link rel="stylesheet" href="../STYLE.CSS">
+</head>
+<body>
+
+    <nav class="home-nav">
+        <div class="nav-left">
+            <a href="../index.html">← INDEX</a>
+        </div>
+        <div class="nav-right">
+            <span>ALI MZANNAR</span>
+            <span class="nav-divider">|</span>
+            <img src="../assets/logo/am-logo.svg" alt="AMz Logo" class="nav-logo">
+        </div>
+    </nav>
+
+    <header class="hero project-hero">
+        <div class="hero-text-mask"><h1 class="hero-title">ROBOTIC</h1></div>
+        <div class="hero-text-mask"><h1 class="hero-title indent">FABRICATION &</h1></div>
+        <div class="hero-text-mask"><h1 class="hero-title">SYSTEMS</h1></div>
+    </header>
+
+    <section class="project-meta">
+        <div class="meta-group">
+            TYPOLOGY
+            <span>Robotics / Kinematics / Digital Craft</span>
+        </div>
+        <div class="meta-group">
+            TIMELINE
+            <span>2024–2026</span>
+        </div>
+        <div class="meta-group">
+            INSTITUTION
+            <span>ICD/ITKE / University of Stuttgart</span>
+        </div>
+    </section>
+
+    <section class="vault-grid">
+        
+        <article class="vault-item">
+            <div class="media-wrapper">
+                <video src="../assets/videos/fibre-winding-preview.mp4" loop muted playsinline preload="metadata"></video>
+            </div>
+            <div class="vault-item-meta">
+                <span class="item-title">Coreless Filament Winding</span>
+                <span class="item-software">KUKA prc / Python / Grasshopper</span>
+            </div>
+        </article>
+
+        <article class="vault-item">
+            <div class="media-wrapper">
+                <video src="../assets/videos/another-fabrication-video.mp4" loop muted playsinline preload="metadata"></video>
+            </div>
+            <div class="vault-item-meta">
+                <span class="item-title">Adaptive Robotic Paths</span>
+                <span class="item-software">C# / RobotStudio</span>
+            </div>
+        </article>
+        
+        </section>
+
+    <footer class="contact-section" id="contact">
+        <div class="contact-label">CONTACT / NETWORK</div>
+        <div class="contact-links">
+            <a href="mailto:ali_mahmoud_mzannar@outlook.com">
+                <span class="link-title">EMAIL ↗</span>
+                <span class="link-reveal">ali_mahmoud_mzannar@outlook.com</span>
+            </a>
+            <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank">
+                <span class="link-title">LINKEDIN ↗</span>
+                <span class="link-reveal">/in/ali-mzannar</span>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        const chars = "█▓▒░#@%&01";
+        const GRID_SIZE = 14; 
+        let mouseX = -1000;
+        let mouseY = -1000;
+
+        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+        document.addEventListener('touchstart', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
+        document.addEventListener('touchmove', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
+        document.addEventListener('touchend', () => { mouseX = -1000; mouseY = -1000; });
+
+        // 1. UNIFIED DOM VOXEL ENGINE (Carried over from Index)
+        let allChars = []; 
+        function buildVoxels(element) {
+            const text = element.innerText;
+            element.innerHTML = ''; 
+            const isArabic = /[\u0600-\u06FF]/.test(text);
+            const pieces = isArabic ? [text] : text.split('');
+            
+            pieces.forEach((char) => {
+                if (char === ' ') { element.appendChild(document.createTextNode(' ')); return; }
+                const wrapper = document.createElement('span'); wrapper.className = 'char-voxel';
+                const base = document.createElement('span'); base.className = 'base'; base.innerText = char;
+                wrapper.appendChild(base); element.appendChild(wrapper);
+
+                const rect = base.getBoundingClientRect();
+                const width = rect.width || 10; const height = rect.height || 20;
+                const cols = Math.ceil(width / GRID_SIZE); const rows = Math.ceil(height / GRID_SIZE);
+
+                const grid = document.createElement('span'); grid.className = 'voxel-grid';
+                grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`;
+                grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
+                
+                const totalVoxels = cols * rows;
+                for(let i=0; i < totalVoxels; i++){
+                    const b = document.createElement('b'); b.innerText = chars[Math.floor(Math.random() * chars.length)];
+                    grid.appendChild(b);
+                }
+                wrapper.appendChild(grid);
+            });
+            allChars = document.querySelectorAll('.char-voxel');
+        }
+
+        document.querySelectorAll('.hero-title').forEach(h1 => buildVoxels(h1));
+
+        function animateTextVoxels() {
+            const hardRadius = 200; 
+            allChars.forEach(charEl => {
+                const rect = charEl.getBoundingClientRect();
+                const charX = rect.left + rect.width / 2;
+                const charY = rect.top + rect.height / 2;
+                const dist = Math.max(Math.abs(mouseX - charX), Math.abs(mouseY - charY));
+
+                if (dist < hardRadius) { 
+                    charEl.classList.add('is-fractured');
+                    if(Math.random() > 0.95) {
+                        const voxels = charEl.querySelectorAll('b');
+                        voxels.forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
+                    }
+                } else {
+                    charEl.classList.remove('is-fractured');
+                }
+            });
+            requestAnimationFrame(animateTextVoxels);
+        }
+        animateTextVoxels();
+
+        // 2. VIDEO PERFORMANCE ENGINE (Spatial Play/Pause)
+        const videos = document.querySelectorAll('.vault-item video');
+        
+        let observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 // Triggers when 10% of the video is visible
+        };
+
+        let videoObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.play().catch(e => console.log("Autoplay prevented by browser"));
+                } else {
+                    entry.target.pause();
+                }
+            });
+        }, observerOptions);
+
+        videos.forEach(video => {
+            videoObserver.observe(video);
+        });
+
+    </script>
+</body>
+</html>
