@@ -15,7 +15,7 @@
                 "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": "assets/images/fibre-winding.jpeg"
-            }
+            },
 
             {
                 "title": "Coreless Filament Winding-01",
@@ -24,7 +24,7 @@
                 "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": "assets/images/fibre-winding.jpeg"
-            }
+            },
 
             {
                 "title": "Coreless Filament Winding-03",
@@ -33,7 +33,7 @@
                 "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": "assets/images/fibre-winding.jpeg"
-            }
+            },
 
             {
                 "title": "Coreless Filament Winding-04",
@@ -61,7 +61,7 @@
                 "description": "Evolutionary solver applied to maximize solar gain while minimizing structural wind load.",
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": ""
-            }
+            },
 
             {
                 "title": "fds",
@@ -70,7 +70,7 @@
                 "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": "assets/images/fibre-winding.jpeg"
-            }
+            },
 
             {
                 "title": "hgfsv",
@@ -79,7 +79,7 @@
                 "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": "assets/images/fibre-winding.jpeg"
-            }
+            },
 
             {
                 "title": "sgvs",
