@@ -10,9 +10,9 @@
 </head>
 <body>
 
-    <nav class="home-nav">
+    <nav class="home-nav reveal-up">
         <div class="nav-left">
-            <a href="../index.HTML">← INDEX</a>
+            <a href="../">← INDEX</a>
         </div>
         <div class="nav-right">
             <span>ALI MZANNAR</span>
@@ -22,24 +22,15 @@
     </nav>
 
     <header class="hero project-hero" id="dynamic-hero"></header>
-    <section class="project-meta" id="dynamic-meta"></section>
+    <section class="project-meta reveal-up" id="dynamic-meta"></section>
     <section class="vault-grid" id="dynamic-vault-grid"></section>
 
-    <footer class="contact-section" id="contact">
+    <footer class="contact-section reveal-up" id="contact">
         <div class="contact-label">CONTACT / NETWORK</div>
         <div class="contact-links">
-            <a href="mailto:ali_mahmoud_mzannar@outlook.com">
-                <span class="link-title">EMAIL ↗</span>
-                <span class="link-reveal">ali_mahmoud_mzannar@outlook.com</span>
-            </a>
-            <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank">
-                <span class="link-title">LINKEDIN ↗</span>
-                <span class="link-reveal">/in/ali-mzannar</span>
-            </a>
-            <a href="https://www.instagram.com/ali_mzannar" target="_blank">
-                <span class="link-title">INSTAGRAM ↗</span>
-                <span class="link-reveal">@ali_mzannar</span>
-            </a>
+            <a href="mailto:ali_mahmoud_mzannar@outlook.com"><span class="link-title">EMAIL ↗</span><span class="link-reveal">ali_mahmoud_mzannar@outlook.com</span></a>
+            <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank"><span class="link-title">LINKEDIN ↗</span><span class="link-reveal">/in/ali-mzannar</span></a>
+            <a href="https://www.instagram.com/ali_mzannar" target="_blank"><span class="link-title">INSTAGRAM ↗</span><span class="link-reveal">@ali_mzannar</span></a>
         </div>
     </footer>
 
@@ -74,6 +65,15 @@
         // =========================================
         const CURRENT_TRACK_ID = "robotic-fabrication"; 
         
+        // Scroll Observer for Fluidity
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('is-revealed');
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.reveal-up').forEach(el => scrollObserver.observe(el));
+
         const chars = "█▓▒░#@%&01";
         const GRID_SIZE = 14; 
         let mouseX = -1000; let mouseY = -1000;
@@ -81,15 +81,12 @@
         document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
         document.addEventListener('touchstart', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
         document.addEventListener('touchmove', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
-        document.addEventListener('touchend', () => { mouseX = -1000; mouseY = -1000; });
 
         let allChars = []; 
         function buildVoxels(element) {
-            const text = element.innerText;
-            element.innerHTML = ''; 
+            const text = element.innerText; element.innerHTML = ''; 
             const isArabic = /[\u0600-\u06FF]/.test(text);
             const pieces = isArabic ? [text] : text.split('');
-            
             pieces.forEach((char) => {
                 if (char === ' ') { element.appendChild(document.createTextNode(' ')); return; }
                 const wrapper = document.createElement('span'); wrapper.className = 'char-voxel';
@@ -97,16 +94,11 @@
                 wrapper.appendChild(base); element.appendChild(wrapper);
 
                 const rect = base.getBoundingClientRect();
-                const cols = Math.ceil((rect.width || 10) / GRID_SIZE);
-                const rows = Math.ceil((rect.height || 20) / GRID_SIZE);
-
+                const cols = Math.ceil((rect.width || 10) / GRID_SIZE); const rows = Math.ceil((rect.height || 20) / GRID_SIZE);
                 const grid = document.createElement('span'); grid.className = 'voxel-grid';
-                grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`;
-                grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
-                
+                grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`; grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
                 for(let i=0; i < (cols * rows); i++){
-                    const b = document.createElement('b'); b.innerText = chars[Math.floor(Math.random() * chars.length)];
-                    grid.appendChild(b);
+                    const b = document.createElement('b'); b.innerText = chars[Math.floor(Math.random() * chars.length)]; grid.appendChild(b);
                 }
                 wrapper.appendChild(grid);
             });
@@ -120,21 +112,18 @@
                 if (dist < 200) { 
                     charEl.classList.add('is-fractured');
                     if(Math.random() > 0.95) charEl.querySelectorAll('b').forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
-                } else {
-                    charEl.classList.remove('is-fractured');
-                }
+                } else { charEl.classList.remove('is-fractured'); }
             });
             requestAnimationFrame(animateTextVoxels);
         }
         animateTextVoxels();
 
-        let observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
         let videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) { entry.target.play().catch(e => console.log("Autoplay prevented")); } 
                 else { entry.target.pause(); }
             });
-        }, observerOptions);
+        }, { root: null, rootMargin: '0px', threshold: 0.1 });
 
         function attachModalLogic() {
             const modal = document.getElementById('data-modal');
@@ -187,11 +176,14 @@
                 document.title = `${trackData.trackTitle} | Ali Mzannar`;
 
                 document.getElementById('dynamic-hero').innerHTML = `
-                    <div class="hero-text-mask"><h1 class="hero-title">${trackData.heroLines[0]}</h1></div>
-                    <div class="hero-text-mask"><h1 class="hero-title indent">${trackData.heroLines[1]}</h1></div>
-                    <div class="hero-text-mask"><h1 class="hero-title">${trackData.heroLines[2]}</h1></div>
+                    <div class="hero-text-mask"><h1 class="hero-title reveal-up">${trackData.heroLines[0]}</h1></div>
+                    <div class="hero-text-mask"><h1 class="hero-title indent reveal-up">${trackData.heroLines[1]}</h1></div>
+                    <div class="hero-text-mask"><h1 class="hero-title reveal-up">${trackData.heroLines[2]}</h1></div>
                 `;
-                document.querySelectorAll('.hero-title').forEach(h1 => buildVoxels(h1)); 
+                document.querySelectorAll('.hero-title').forEach(h1 => {
+                    buildVoxels(h1);
+                    scrollObserver.observe(h1);
+                }); 
 
                 document.getElementById('dynamic-meta').innerHTML = `
                     <div class="meta-group">TYPOLOGY<span>${trackData.typology}</span></div>
@@ -200,9 +192,10 @@
                 `;
 
                 const gridContainer = document.getElementById('dynamic-vault-grid');
-                trackData.vaultItems.forEach(item => {
+                trackData.vaultItems.forEach((item, index) => {
                     const article = document.createElement('article');
-                    article.className = 'vault-item';
+                    article.className = 'vault-item reveal-up';
+                    article.style.transitionDelay = `${(index % 3) * 0.1}s`; // Staggered entrance
                     
                     const correctedVideo = item.videoSrc ? `../${item.videoSrc}` : "";
                     const correctedRender = item.renderSrc ? `../${item.renderSrc}` : "";
@@ -229,6 +222,7 @@
                         </div>
                     `;
                     gridContainer.appendChild(article);
+                    scrollObserver.observe(article);
                 });
 
                 document.querySelectorAll('.vault-item video').forEach(v => videoObserver.observe(v));

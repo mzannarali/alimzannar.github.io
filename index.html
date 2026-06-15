@@ -3,24 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Ali Mzannar | Computational Designer</title>
 
     <link rel="icon" type="image/svg+xml" href="assets/logo/am-logo.svg">
-    <meta name="description" content="Ali Mzannar: Architectural and Computational Designer. Portfolio featuring multi-objective optimization, spatial computing, and fabrication-oriented research at ITECH.">
+    <meta name="description" content="Ali Mzannar: Architectural and Computational Designer.">
     <meta name="author" content="Ali Mzannar">
-    <meta name="keywords" content="Ali Mzannar, Computational Design, Architecture, Grasshopper, ITECH, BAD, Built by Associative Data, Stuttgart">
-
-    <meta property="og:title" content="Ali Mzannar | Computational Designer">
-    <meta property="og:description" content="Portfolio of architectural algorithms and data-driven material systems.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://alimzannar.com/">
-    
     <link rel="stylesheet" href="STYLE.CSS">
 </head>
 <body>
 
-    <nav class="home-nav">
+    <nav class="home-nav reveal-up">
         <div class="nav-left">
             <span>ALI MZANNAR © 2026</span>
             <a href="#contact" class="nav-link">CONTACT ↓</a>
@@ -34,32 +26,24 @@
 
     <header class="hero">
         <canvas id="bg-wave"></canvas>
-        <div class="hero-text-mask"><h1 class="hero-title">ALI MZANNAR</h1></div>
-        
-        <div class="hero-text-mask">
-            <h1 class="indent loop-wrapper hero-title" id="lang-loop">COMPUTATIONAL</h1>
-        </div>
-        
-        <div class="hero-text-mask"><h1 class="hero-title">DESIGNER</h1></div>
+        <div class="hero-text-mask"><h1 class="hero-title reveal-up">ALI MZANNAR</h1></div>
+        <div class="hero-text-mask"><h1 class="indent loop-wrapper hero-title reveal-up" id="lang-loop">COMPUTATIONAL</h1></div>
+        <div class="hero-text-mask"><h1 class="hero-title reveal-up">DESIGNER</h1></div>
     </header>
 
-    <section class="bio-section">
+    <section class="bio-section reveal-up">
         <div class="bio-label">INDEX / PROFILE</div>
         <div class="bio-content">
             <img src="assets/logo/am-logo.svg" alt="AMz Logo" class="bio-logo">
             <div class="bio-text-group">
-                <div class="bio-text">
-                    Advanced Data-Driven Workflows in Research and Practice
-                </div>
-                <div class="bio-subtext">
-                    leveraging computational methodologies to solve complex spatial, structural, and environmental challenges, transforming data into intelligent built environments.
-                </div>
+                <div class="bio-text">Advanced Data-Driven Workflows in Research and Practice</div>
+                <div class="bio-subtext">leveraging computational methodologies to solve complex spatial, structural, and environmental challenges, transforming data into intelligent built environments.</div>
             </div>
         </div>
     </section>
  
     <section class="project-list">
-        <div class="project-header">
+        <div class="project-header reveal-up">
             <span>RESEARCH TRACK</span>
             <span>TYPOLOGY / ALGORITHM</span>
             <span>TIMELINE</span>
@@ -67,29 +51,14 @@
         <div id="dynamic-project-list"></div>
     </section>
 
-    <footer class="contact-section" id="contact">
+    <footer class="contact-section reveal-up" id="contact">
         <div class="contact-label">CONTACT / NETWORK</div>
         <div class="contact-links">
-            <a href="mailto:ali_mahmoud_mzannar@outlook.com">
-                <span class="link-title">EMAIL ↗</span>
-                <span class="link-reveal">ali_mahmoud_mzannar@outlook.com</span>
-            </a>
-            <a href="tel:+4915100000000">
-                <span class="link-title">PHONE [DE] ↗</span>
-                <span class="link-reveal">+49 1520 762 8651</span>
-            </a> 
-            <a href="tel:+96100000000">
-                <span class="link-title">PHONE [LB] ↗</span>
-                <span class="link-reveal">+961 71 722 662</span>
-            </a>
-            <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank">
-                <span class="link-title">LINKEDIN ↗</span>
-                <span class="link-reveal">/in/ali-mzannar</span>
-            </a>
-            <a href="https://www.instagram.com/ali_mzannar" target="_blank">
-                <span class="link-title">INSTAGRAM ↗</span>
-                <span class="link-reveal">@ali_mzannar</span>
-            </a>
+            <a href="mailto:ali_mahmoud_mzannar@outlook.com"><span class="link-title">EMAIL ↗</span><span class="link-reveal">ali_mahmoud_mzannar@outlook.com</span></a>
+            <a href="tel:+4915100000000"><span class="link-title">PHONE [DE] ↗</span><span class="link-reveal">+49 1520 762 8651</span></a> 
+            <a href="tel:+96100000000"><span class="link-title">PHONE [LB] ↗</span><span class="link-reveal">+961 71 722 662</span></a>
+            <a href="https://www.linkedin.com/in/ali-mzannar-65795424a/" target="_blank"><span class="link-title">LINKEDIN ↗</span><span class="link-reveal">/in/ali-mzannar</span></a>
+            <a href="https://www.instagram.com/ali_mzannar" target="_blank"><span class="link-title">INSTAGRAM ↗</span><span class="link-reveal">@ali_mzannar</span></a>
         </div>
     </footer>
 
@@ -99,17 +68,27 @@
     </div>
 
     <script>
+        // 1. FLUID SCROLL OBSERVER
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-revealed');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.reveal-up').forEach(el => scrollObserver.observe(el));
+
+        // 2. CORE VARIABLES
         const chars = "█▓▒░#@%&01";
         const GRID_SIZE = 14; 
-        
-        let mouseX = -1000;
-        let mouseY = -1000;
+        let mouseX = -1000; let mouseY = -1000;
 
         document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
         document.addEventListener('touchstart', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
         document.addEventListener('touchmove', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
-        document.addEventListener('touchend', () => { mouseX = -1000; mouseY = -1000; });
 
+        // 3. CANVAS ENGINE
         const canvas = document.getElementById('bg-wave');
         const ctx = canvas.getContext('2d');
         const hero = document.querySelector('.hero');
@@ -117,73 +96,67 @@
         let canvasGrid = []; 
 
         function resizeCanvas() {
-            canvas.width = hero.clientWidth;
-            canvas.height = hero.clientHeight;
-            cols = Math.floor(canvas.width / GRID_SIZE);
-            rows = Math.floor(canvas.height / GRID_SIZE);
+            canvas.width = hero.clientWidth; canvas.height = hero.clientHeight;
+            cols = Math.floor(canvas.width / GRID_SIZE); rows = Math.floor(canvas.height / GRID_SIZE);
             canvasGrid = Array.from({ length: cols }, () => 
                 Array.from({ length: rows }, () => ({ char: chars[Math.floor(Math.random() * chars.length)], active: false }))
             );
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
         function drawStaticNoise() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.font = `600 ${GRID_SIZE}px "Courier New", Courier, monospace`;
-            ctx.fillStyle = '#000000';
-            ctx.textBaseline = 'top';
+            ctx.fillStyle = '#000000'; ctx.textBaseline = 'top';
 
             for(let i=0; i<cols; i++) {
                 for(let j=0; j<rows; j++) {
-                    let x = i * GRID_SIZE;
-                    let y = j * GRID_SIZE;
+                    let x = i * GRID_SIZE; let y = j * GRID_SIZE;
                     let dist = Math.max(Math.abs(mouseX - x), Math.abs(mouseY - y));
-                    
                     if(dist < 350) {
                         let probability = Math.pow(1 - (dist / 350), 2); 
                         if(Math.random() > 0.95) {
                             canvasGrid[i][j].char = chars[Math.floor(Math.random() * chars.length)];
                             canvasGrid[i][j].active = Math.random() < probability * 0.4;
                         }
-                        if(canvasGrid[i][j].active) {
-                            ctx.globalAlpha = 1; 
-                            ctx.fillText(canvasGrid[i][j].char, x, y);
-                        }
-                    } else {
-                        canvasGrid[i][j].active = false;
-                    }
+                        if(canvasGrid[i][j].active) { ctx.globalAlpha = 1; ctx.fillText(canvasGrid[i][j].char, x, y); }
+                    } else { canvasGrid[i][j].active = false; }
                 }
             }
             requestAnimationFrame(drawStaticNoise);
         }
         drawStaticNoise();
 
+        // 4. CURSOR HOVER LOGIC (Single Ring + Throttled Speed)
         const cursorMedia = document.getElementById('cursor-media');
         const mediaContainer = document.getElementById('media-container');
         const maskGrid = document.getElementById('media-glitch-mask');
-
         const maskCells = [];
+
         for(let i=0; i<144; i++) {
             let cell = document.createElement('div');
-            let row = Math.floor(i / 12);
-            let col = i % 12;
-            if(row < 3 || row > 8 || col < 3 || col > 8) maskCells.push(cell);
+            let row = Math.floor(i / 12); let col = i % 12;
+            
+            // MATH FIX: Only target the absolute outer 1-pixel edge
+            if(row === 0 || row === 11 || col === 0 || col === 11) maskCells.push(cell);
+            
             maskGrid.appendChild(cell);
         }
 
-        let mediaX = 0; let mediaY = 0;
+        let mediaX = 0; let mediaY = 0; let frameCount = 0;
 
         function animateMedia() {
             mediaX += (mouseX - mediaX) * 0.15;
             mediaY += (mouseY - mediaY) * 0.15;
-            cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px)`;
+            cursorMedia.style.transform = `translate(${mediaX - 200}px, ${mediaY - 200}px)`; // Adjusted for 400px width
 
-            if (cursorMedia.style.opacity === '1' && Math.random() > 0.4) {
+            frameCount++;
+            // MATH FIX: Throttled glitch speed by dividing frame calls
+            if (cursorMedia.style.opacity === '1' && frameCount % 6 === 0) {
                 maskCells.forEach(cell => {
-                    if (Math.random() > 0.8) {
+                    if (Math.random() > 0.4) {
                         cell.style.backgroundColor = '#ffffff';
-                        cell.style.opacity = Math.random() > 0.5 ? '1' : '0';
+                        cell.style.opacity = Math.random() > 0.6 ? '1' : '0';
                     }
                 });
             }
@@ -191,15 +164,12 @@
         }
         animateMedia();
 
+        // 5. VOXEL DOM ENGINE
         let allChars = []; 
-
         function buildVoxels(element) {
-            const text = element.innerText;
-            element.innerHTML = ''; 
-            
+            const text = element.innerText; element.innerHTML = ''; 
             const isArabic = /[\u0600-\u06FF]/.test(text);
             const pieces = isArabic ? [text] : text.split('');
-            
             pieces.forEach((char) => {
                 if (char === ' ') { element.appendChild(document.createTextNode(' ')); return; }
                 const wrapper = document.createElement('span'); wrapper.className = 'char-voxel';
@@ -207,16 +177,11 @@
                 wrapper.appendChild(base); element.appendChild(wrapper);
 
                 const rect = base.getBoundingClientRect();
-                const cols = Math.ceil((rect.width || 10) / GRID_SIZE);
-                const rows = Math.ceil((rect.height || 20) / GRID_SIZE);
-
+                const cols = Math.ceil((rect.width || 10) / GRID_SIZE); const rows = Math.ceil((rect.height || 20) / GRID_SIZE);
                 const grid = document.createElement('span'); grid.className = 'voxel-grid';
-                grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`;
-                grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
-                
+                grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`; grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
                 for(let i=0; i < (cols * rows); i++){
-                    const b = document.createElement('b'); b.innerText = chars[Math.floor(Math.random() * chars.length)];
-                    grid.appendChild(b);
+                    const b = document.createElement('b'); b.innerText = chars[Math.floor(Math.random() * chars.length)]; grid.appendChild(b);
                 }
                 wrapper.appendChild(grid);
             });
@@ -226,15 +191,12 @@
         document.querySelectorAll('.hero-title').forEach(h1 => buildVoxels(h1));
 
         const langs = ["COMPUTATIONAL", "ALGORITHMISCH", "خوارزمية", "ALGORITHMIQUE", "COMPUTACIONAL", "ВЫЧИСЛИТЕЛЬНЫЙ", "计算化", "アルゴリズム"];
-        let langIndex = 0;
-        const loopTarget = document.getElementById('lang-loop');
-
+        let langIndex = 0; const loopTarget = document.getElementById('lang-loop');
         setInterval(() => {
             langIndex = (langIndex + 1) % langs.length;
             loopTarget.style.opacity = 0; loopTarget.style.filter = "blur(8px)";
             setTimeout(() => {
-                loopTarget.innerText = langs[langIndex];
-                buildVoxels(loopTarget);
+                loopTarget.innerText = langs[langIndex]; buildVoxels(loopTarget);
                 loopTarget.style.opacity = 1; loopTarget.style.filter = "blur(0px)";
             }, 600); 
         }, 4000); 
@@ -245,29 +207,31 @@
                 const dist = Math.max(Math.abs(mouseX - (rect.left + rect.width / 2)), Math.abs(mouseY - (rect.top + rect.height / 2)));
                 if (dist < 200) { 
                     charEl.classList.add('is-fractured');
-                    if(Math.random() > 0.95) {
-                        charEl.querySelectorAll('b').forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
-                    }
-                } else {
-                    charEl.classList.remove('is-fractured');
-                }
+                    if(Math.random() > 0.95) charEl.querySelectorAll('b').forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
+                } else { charEl.classList.remove('is-fractured'); }
             });
             requestAnimationFrame(animateTextVoxels);
         }
         animateTextVoxels();
 
+        // 6. JSON FETCH ENGINE
         const projectListContainer = document.getElementById('dynamic-project-list');
 
         fetch('portfolio-db.json')
             .then(response => response.json())
             .then(data => {
-                data.forEach(track => {
+                data.forEach((track, index) => {
                     const a = document.createElement('a');
                     a.href = `projects/${track.trackId}.HTML`; 
-                    a.className = 'project-row';
+                    a.className = 'project-row reveal-up'; // Add Reveal Class
                     a.setAttribute('data-media', track.previewMedia);
+                    // Slight animation delay stagger based on row index
+                    a.style.transitionDelay = `${index * 0.1}s`;
                     a.innerHTML = `<span class="row-title">${track.trackTitle}</span><span class="desc">${track.typology}</span><span>${track.timeline}</span>`;
                     projectListContainer.appendChild(a);
+                    
+                    // Observe the new row
+                    scrollObserver.observe(a);
                 });
 
                 document.querySelectorAll('.project-row').forEach(row => {
@@ -287,7 +251,7 @@
                             }
                         }
                         cursorMedia.style.opacity = '1';
-                        cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px) scale(1.05)`;
+                        cursorMedia.style.transform = `translate(${mediaX - 200}px, ${mediaY - 200}px) scale(1.05)`;
                     });
                     row.addEventListener('mouseleave', () => { cursorMedia.style.opacity = '0'; });
                 });
