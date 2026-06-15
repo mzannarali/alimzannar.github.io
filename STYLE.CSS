@@ -522,7 +522,8 @@ body {
 
 .modal-media video, .modal-media img {
     width: 100%;
-    height: auto;
+    height: 80vh;
+    object-fit: contain;
     display: block;
     background-color: #f4f4f4; 
 }
