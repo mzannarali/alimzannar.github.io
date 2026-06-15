@@ -21,14 +21,9 @@
         </div>
     </nav>
 
-    <header class="hero project-hero" id="dynamic-hero">
-        </header>
-
-    <section class="project-meta" id="dynamic-meta">
-        </section>
-
-    <section class="vault-grid" id="dynamic-vault-grid">
-        </section>
+    <header class="hero project-hero" id="dynamic-hero"></header>
+    <section class="project-meta" id="dynamic-meta"></section>
+    <section class="vault-grid" id="dynamic-vault-grid"></section>
 
     <footer class="contact-section" id="contact">
         <div class="contact-label">CONTACT / NETWORK</div>
@@ -54,21 +49,17 @@
             <button id="close-modal">CLOSE [X]</button>
         </div>
         <div class="modal-content">
-            <div class="modal-media" id="modal-media-container">
-                </div>
+            <div class="modal-media" id="modal-media-container"></div>
             <div class="modal-data">
                 <h2 id="modal-title">TITLE</h2>
-                
                 <div class="data-block">
                     <span class="data-label">SOFTWARE / STACK</span>
                     <span class="data-value" id="modal-software">DATA</span>
                 </div>
-                
                 <div class="data-block">
                     <span class="data-label">TEAM / COLLABORATORS</span>
                     <span class="data-value" id="modal-team">DATA</span>
                 </div>
-
                 <div class="data-block">
                     <span class="data-label">SYSTEM DESCRIPTION</span>
                     <p class="data-desc" id="modal-desc">DATA</p>
@@ -79,26 +70,19 @@
 
     <script>
         // =========================================
-        // CONFIGURATION: SET THIS ID FOR EACH NEW PAGE
+        // SET THIS TO MATCH YOUR JSON "trackId"
         // =========================================
         const CURRENT_TRACK_ID = "complex-geometry"; 
         
-        // =========================================
-        // CORE VARIABLES & TRACKING
-        // =========================================
         const chars = "█▓▒░#@%&01";
         const GRID_SIZE = 14; 
-        let mouseX = -1000;
-        let mouseY = -1000;
+        let mouseX = -1000; let mouseY = -1000;
 
         document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
         document.addEventListener('touchstart', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
         document.addEventListener('touchmove', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
         document.addEventListener('touchend', () => { mouseX = -1000; mouseY = -1000; });
 
-        // =========================================
-        // 1. UNIFIED DOM VOXEL ENGINE
-        // =========================================
         let allChars = []; 
         function buildVoxels(element) {
             const text = element.innerText;
@@ -113,15 +97,14 @@
                 wrapper.appendChild(base); element.appendChild(wrapper);
 
                 const rect = base.getBoundingClientRect();
-                const width = rect.width || 10; const height = rect.height || 20;
-                const cols = Math.ceil(width / GRID_SIZE); const rows = Math.ceil(height / GRID_SIZE);
+                const cols = Math.ceil((rect.width || 10) / GRID_SIZE);
+                const rows = Math.ceil((rect.height || 20) / GRID_SIZE);
 
                 const grid = document.createElement('span'); grid.className = 'voxel-grid';
                 grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`;
                 grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
                 
-                const totalVoxels = cols * rows;
-                for(let i=0; i < totalVoxels; i++){
+                for(let i=0; i < (cols * rows); i++){
                     const b = document.createElement('b'); b.innerText = chars[Math.floor(Math.random() * chars.length)];
                     grid.appendChild(b);
                 }
@@ -131,19 +114,12 @@
         }
 
         function animateTextVoxels() {
-            const hardRadius = 200; 
             allChars.forEach(charEl => {
                 const rect = charEl.getBoundingClientRect();
-                const charX = rect.left + rect.width / 2;
-                const charY = rect.top + rect.height / 2;
-                const dist = Math.max(Math.abs(mouseX - charX), Math.abs(mouseY - charY));
-
-                if (dist < hardRadius) { 
+                const dist = Math.max(Math.abs(mouseX - (rect.left + rect.width / 2)), Math.abs(mouseY - (rect.top + rect.height / 2)));
+                if (dist < 200) { 
                     charEl.classList.add('is-fractured');
-                    if(Math.random() > 0.95) {
-                        const voxels = charEl.querySelectorAll('b');
-                        voxels.forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
-                    }
+                    if(Math.random() > 0.95) charEl.querySelectorAll('b').forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
                 } else {
                     charEl.classList.remove('is-fractured');
                 }
@@ -152,54 +128,41 @@
         }
         animateTextVoxels();
 
-        // =========================================
-        // 2. VIDEO PERFORMANCE ENGINE (Spatial Play/Pause)
-        // =========================================
         let observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-        let videoObserver = new IntersectionObserver((entries, observer) => {
+        let videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.play().catch(e => console.log("Autoplay prevented by browser"));
-                } else {
-                    entry.target.pause();
-                }
+                if (entry.isIntersecting) { entry.target.play().catch(e => console.log("Autoplay prevented")); } 
+                else { entry.target.pause(); }
             });
         }, observerOptions);
 
-        // =========================================
-        // 3. BRUTALIST MODAL LOGIC (Wrapped in a function to run after JSON fetch)
-        // =========================================
         function attachModalLogic() {
-            const vaultItems = document.querySelectorAll('.vault-item');
             const modal = document.getElementById('data-modal');
             const closeModal = document.getElementById('close-modal');
-            
             const mTitle = document.getElementById('modal-title');
             const mSoftware = document.getElementById('modal-software');
             const mTeam = document.getElementById('modal-team');
             const mDesc = document.getElementById('modal-desc');
             const mMedia = document.getElementById('modal-media-container');
 
-            vaultItems.forEach(item => {
+            document.querySelectorAll('.vault-item').forEach(item => {
                 item.addEventListener('click', () => {
-                    const videoSrc = item.getAttribute('data-video');
-                    const renderSrc = item.getAttribute('data-render'); 
-                    
                     mTitle.innerText = item.getAttribute('data-title');
                     mSoftware.innerText = item.getAttribute('data-software');
                     mTeam.innerText = item.getAttribute('data-team');
                     mDesc.innerText = item.getAttribute('data-desc');
 
+                    const videoSrc = item.getAttribute('data-video');
+                    const renderSrc = item.getAttribute('data-render'); 
+
                     mMedia.innerHTML = ''; 
                     if (videoSrc && videoSrc !== "") {
                         const vid = document.createElement('video');
-                        vid.src = videoSrc;
-                        vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
+                        vid.src = videoSrc; vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
                         mMedia.appendChild(vid);
                     }
                     if (renderSrc && renderSrc !== "") {
-                        const img = document.createElement('img');
-                        img.src = renderSrc;
+                        const img = document.createElement('img'); img.src = renderSrc;
                         mMedia.appendChild(img);
                     }
 
@@ -215,48 +178,32 @@
             });
         }
 
-        // =========================================
-        // 4. THE UNIVERSAL JSON ENGINE
-        // =========================================
         fetch('../portfolio-db.json')
             .then(response => response.json())
             .then(data => {
-                // Find the specific track matching this page's ID
                 const trackData = data.find(t => t.trackId === CURRENT_TRACK_ID);
-                
-                if(!trackData) {
-                    console.error("Track ID not found in database."); 
-                    return;
-                }
+                if(!trackData) { console.error("Track ID not found."); return; }
 
-                // Update the Document Title for SEO
                 document.title = `${trackData.trackTitle} | Ali Mzannar`;
 
-                // 1. Inject Dynamic Hero Text
-                const heroContainer = document.getElementById('dynamic-hero');
-                heroContainer.innerHTML = `
+                document.getElementById('dynamic-hero').innerHTML = `
                     <div class="hero-text-mask"><h1 class="hero-title">${trackData.heroLines[0]}</h1></div>
                     <div class="hero-text-mask"><h1 class="hero-title indent">${trackData.heroLines[1]}</h1></div>
                     <div class="hero-text-mask"><h1 class="hero-title">${trackData.heroLines[2]}</h1></div>
                 `;
-                
-                // Reboot the Voxel Engine on the newly injected titles
                 document.querySelectorAll('.hero-title').forEach(h1 => buildVoxels(h1)); 
 
-                // 2. Inject Dynamic Metadata
                 document.getElementById('dynamic-meta').innerHTML = `
                     <div class="meta-group">TYPOLOGY<span>${trackData.typology}</span></div>
                     <div class="meta-group">TIMELINE<span>${trackData.timeline}</span></div>
                     <div class="meta-group">INSTITUTION<span>${trackData.institution}</span></div>
                 `;
 
-                // 3. Build Vault Grid Items
                 const gridContainer = document.getElementById('dynamic-vault-grid');
                 trackData.vaultItems.forEach(item => {
                     const article = document.createElement('article');
                     article.className = 'vault-item';
                     
-                    // Prepend ../ so the sub-page can correctly route to the assets folder
                     const correctedVideo = item.videoSrc ? `../${item.videoSrc}` : "";
                     const correctedRender = item.renderSrc ? `../${item.renderSrc}` : "";
 
@@ -267,14 +214,14 @@
                     article.setAttribute('data-team', item.team);
                     article.setAttribute('data-desc', item.description);
 
-                    // Optional: If there is no video, we don't render a broken video tag
-                    const mediaElement = correctedVideo 
-                        ? `<video src="${correctedVideo}" loop muted playsinline preload="metadata"></video>` 
-                        : (correctedRender ? `<img src="${correctedRender}" alt="${item.title}">` : '');
+                    let mediaHTML = "";
+                    if (correctedVideo) mediaHTML += `<video src="${correctedVideo}" loop muted playsinline preload="metadata"></video>`;
+                    if (correctedRender) mediaHTML += `<img src="${correctedRender}" alt="${item.title}">`;
 
                     article.innerHTML = `
                         <div class="media-wrapper">
-                            ${mediaElement}
+                            <div class="hover-indicator">[ OPEN ]</div>
+                            ${mediaHTML}
                         </div>
                         <div class="vault-item-meta">
                             <span class="item-title">${item.title}</span>
@@ -284,13 +231,10 @@
                     gridContainer.appendChild(article);
                 });
 
-                // 4. Initialize Video Observers for performance
                 document.querySelectorAll('.vault-item video').forEach(v => videoObserver.observe(v));
-                
-                // 5. Turn on the Modal Clicks
                 attachModalLogic(); 
             })
-            .catch(err => console.error("Error loading database:", err));
+            .catch(err => console.error("Database error:", err));
     </script>
 </body>
 </html>

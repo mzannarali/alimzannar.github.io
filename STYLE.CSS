@@ -389,17 +389,51 @@ body {
     cursor: crosshair; 
 }
 
+/* Hover Stacking Logic */
 .media-wrapper {
     width: 100%;
-    background-color: #f4f4f4;
+    background-color: #000; 
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1px; /* 1px black line between stacked media */
 }
 
 .media-wrapper video, .media-wrapper img {
     width: 100%;
     height: auto;
     display: block;
+    background-color: #f4f4f4;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: scale(1);
+}
+
+.vault-item:hover .media-wrapper video, 
+.vault-item:hover .media-wrapper img {
+    transform: scale(1.02);
+}
+
+.hover-indicator {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #000;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: "Courier New", Courier, monospace;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.vault-item:hover .hover-indicator {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .vault-item-meta {

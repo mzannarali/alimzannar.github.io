@@ -47,7 +47,6 @@
         <div class="bio-label">INDEX / PROFILE</div>
         <div class="bio-content">
             <img src="assets/logo/am-logo.svg" alt="AMz Logo" class="bio-logo">
-            
             <div class="bio-text-group">
                 <div class="bio-text">
                     Advanced Data-Driven Workflows in Research and Practice
@@ -65,7 +64,6 @@
             <span>TYPOLOGY / ALGORITHM</span>
             <span>TIMELINE</span>
         </div>
-        
         <div id="dynamic-project-list"></div>
     </section>
 
@@ -112,9 +110,6 @@
         document.addEventListener('touchmove', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
         document.addEventListener('touchend', () => { mouseX = -1000; mouseY = -1000; });
 
-        // =========================================
-        // 1. SYNCHRONIZED CANVAS NOISE ENGINE
-        // =========================================
         const canvas = document.getElementById('bg-wave');
         const ctx = canvas.getContext('2d');
         const hero = document.querySelector('.hero');
@@ -126,17 +121,9 @@
             canvas.height = hero.clientHeight;
             cols = Math.floor(canvas.width / GRID_SIZE);
             rows = Math.floor(canvas.height / GRID_SIZE);
-            
-            canvasGrid = [];
-            for(let i=0; i<cols; i++) {
-                canvasGrid[i] = [];
-                for(let j=0; j<rows; j++) {
-                    canvasGrid[i][j] = {
-                        char: chars[Math.floor(Math.random() * chars.length)],
-                        active: false
-                    };
-                }
-            }
+            canvasGrid = Array.from({ length: cols }, () => 
+                Array.from({ length: rows }, () => ({ char: chars[Math.floor(Math.random() * chars.length)], active: false }))
+            );
         }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
@@ -172,9 +159,6 @@
         }
         drawStaticNoise();
 
-        // =========================================
-        // 2. CURSOR MEDIA & SHAPE MASKING ENGINE
-        // =========================================
         const cursorMedia = document.getElementById('cursor-media');
         const mediaContainer = document.getElementById('media-container');
         const maskGrid = document.getElementById('media-glitch-mask');
@@ -184,9 +168,7 @@
             let cell = document.createElement('div');
             let row = Math.floor(i / 12);
             let col = i % 12;
-            if(row < 3 || row > 8 || col < 3 || col > 8) {
-                maskCells.push(cell);
-            }
+            if(row < 3 || row > 8 || col < 3 || col > 8) maskCells.push(cell);
             maskGrid.appendChild(cell);
         }
 
@@ -209,9 +191,6 @@
         }
         animateMedia();
 
-        // =========================================
-        // 3. UNIFIED DOM VOXEL ENGINE & MULTILINGUAL LOOP
-        // =========================================
         let allChars = []; 
 
         function buildVoxels(element) {
@@ -223,33 +202,20 @@
             
             pieces.forEach((char) => {
                 if (char === ' ') { element.appendChild(document.createTextNode(' ')); return; }
-                
-                const wrapper = document.createElement('span');
-                wrapper.className = 'char-voxel';
-
-                const base = document.createElement('span');
-                base.className = 'base';
-                base.innerText = char;
-
-                wrapper.appendChild(base);
-                element.appendChild(wrapper);
+                const wrapper = document.createElement('span'); wrapper.className = 'char-voxel';
+                const base = document.createElement('span'); base.className = 'base'; base.innerText = char;
+                wrapper.appendChild(base); element.appendChild(wrapper);
 
                 const rect = base.getBoundingClientRect();
-                const width = rect.width || 10;
-                const height = rect.height || 20;
+                const cols = Math.ceil((rect.width || 10) / GRID_SIZE);
+                const rows = Math.ceil((rect.height || 20) / GRID_SIZE);
 
-                const cols = Math.ceil(width / GRID_SIZE);
-                const rows = Math.ceil(height / GRID_SIZE);
-
-                const grid = document.createElement('span');
-                grid.className = 'voxel-grid';
+                const grid = document.createElement('span'); grid.className = 'voxel-grid';
                 grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`;
                 grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
                 
-                const totalVoxels = cols * rows;
-                for(let i=0; i < totalVoxels; i++){
-                    const b = document.createElement('b');
-                    b.innerText = chars[Math.floor(Math.random() * chars.length)];
+                for(let i=0; i < (cols * rows); i++){
+                    const b = document.createElement('b'); b.innerText = chars[Math.floor(Math.random() * chars.length)];
                     grid.appendChild(b);
                 }
                 wrapper.appendChild(grid);
@@ -259,47 +225,28 @@
 
         document.querySelectorAll('.hero-title').forEach(h1 => buildVoxels(h1));
 
-        const langs = [
-            "COMPUTATIONAL",  
-            "ALGORITHMISCH",  
-            "خوارزمية",       
-            "ALGORITHMIQUE",  
-            "COMPUTACIONAL",  
-            "ВЫЧИСЛИТЕЛЬНЫЙ", 
-            "计算化",          
-            "アルゴリズム"       
-        ];
-        
+        const langs = ["COMPUTATIONAL", "ALGORITHMISCH", "خوارزمية", "ALGORITHMIQUE", "COMPUTACIONAL", "ВЫЧИСЛИТЕЛЬНЫЙ", "计算化", "アルゴリズム"];
         let langIndex = 0;
         const loopTarget = document.getElementById('lang-loop');
 
         setInterval(() => {
             langIndex = (langIndex + 1) % langs.length;
-            loopTarget.style.opacity = 0;
-            loopTarget.style.filter = "blur(8px)";
-            
+            loopTarget.style.opacity = 0; loopTarget.style.filter = "blur(8px)";
             setTimeout(() => {
                 loopTarget.innerText = langs[langIndex];
                 buildVoxels(loopTarget);
-                loopTarget.style.opacity = 1;
-                loopTarget.style.filter = "blur(0px)";
+                loopTarget.style.opacity = 1; loopTarget.style.filter = "blur(0px)";
             }, 600); 
         }, 4000); 
 
         function animateTextVoxels() {
-            const hardRadius = 200; 
             allChars.forEach(charEl => {
                 const rect = charEl.getBoundingClientRect();
-                const charX = rect.left + rect.width / 2;
-                const charY = rect.top + rect.height / 2;
-                
-                const dist = Math.max(Math.abs(mouseX - charX), Math.abs(mouseY - charY));
-
-                if (dist < hardRadius) { 
+                const dist = Math.max(Math.abs(mouseX - (rect.left + rect.width / 2)), Math.abs(mouseY - (rect.top + rect.height / 2)));
+                if (dist < 200) { 
                     charEl.classList.add('is-fractured');
                     if(Math.random() > 0.95) {
-                        const voxels = charEl.querySelectorAll('b');
-                        voxels.forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
+                        charEl.querySelectorAll('b').forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
                     }
                 } else {
                     charEl.classList.remove('is-fractured');
@@ -309,30 +256,20 @@
         }
         animateTextVoxels();
 
-        // =========================================
-        // 4. INDEX PAGE: JSON FETCH ENGINE
-        // =========================================
         const projectListContainer = document.getElementById('dynamic-project-list');
 
         fetch('portfolio-db.json')
             .then(response => response.json())
             .then(data => {
                 data.forEach(track => {
-                    // Build the Row HTML dynamically
                     const a = document.createElement('a');
-                    a.href = `projects/${track.trackId}.HTML`; // Strict uppercase routing
+                    a.href = `projects/${track.trackId}.HTML`; 
                     a.className = 'project-row';
                     a.setAttribute('data-media', track.previewMedia);
-                    
-                    a.innerHTML = `
-                        <span class="row-title">${track.trackTitle}</span>
-                        <span class="desc">${track.typology}</span>
-                        <span>${track.timeline}</span>
-                    `;
+                    a.innerHTML = `<span class="row-title">${track.trackTitle}</span><span class="desc">${track.typology}</span><span>${track.timeline}</span>`;
                     projectListContainer.appendChild(a);
                 });
 
-                // Attach Hover Logic to the newly injected rows
                 document.querySelectorAll('.project-row').forEach(row => {
                     row.addEventListener('mouseenter', () => {
                         const mediaSrc = row.getAttribute('data-media');
@@ -342,12 +279,10 @@
                             const ext = mediaSrc.split('.').pop().toLowerCase();
                             if (ext === 'mp4' || ext === 'webm') {
                                 const video = document.createElement('video');
-                                video.src = mediaSrc;
-                                video.autoplay = true; video.loop = true; video.muted = true; video.playsInline = true;
+                                video.src = mediaSrc; video.autoplay = true; video.loop = true; video.muted = true; video.playsInline = true;
                                 mediaContainer.appendChild(video);
                             } else {
-                                const img = document.createElement('img');
-                                img.src = mediaSrc;
+                                const img = document.createElement('img'); img.src = mediaSrc;
                                 mediaContainer.appendChild(img);
                             }
                         }
