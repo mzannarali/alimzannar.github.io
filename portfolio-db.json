@@ -16,6 +16,33 @@
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": "assets/images/fibre-winding.jpeg"
             }
+
+            {
+                "title": "Coreless Filament Winding",
+                "software": "KUKA prc / Python / Grasshopper",
+                "team": "Ali Mzannar, x,y...",
+                "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
+                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
+                "renderSrc": "assets/images/fibre-winding.jpeg"
+            }
+
+            {
+                "title": "Coreless Filament Winding",
+                "software": "KUKA prc / Python / Grasshopper",
+                "team": "Ali Mzannar, x,y...",
+                "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
+                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
+                "renderSrc": "assets/images/fibre-winding.jpeg"
+            }
+
+            {
+                "title": "Coreless Filament Winding",
+                "software": "KUKA prc / Python / Grasshopper",
+                "team": "Ali Mzannar, x,y...",
+                "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
+                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
+                "renderSrc": "assets/images/fibre-winding.jpeg"
+            }
         ]
     },
     {
@@ -34,6 +61,33 @@
                 "description": "Evolutionary solver applied to maximize solar gain while minimizing structural wind load.",
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": ""
+            }
+
+            {
+                "title": "Coreless Filament Winding",
+                "software": "KUKA prc / Python / Grasshopper",
+                "team": "Ali Mzannar, x,y...",
+                "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
+                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
+                "renderSrc": "assets/images/fibre-winding.jpeg"
+            }
+
+            {
+                "title": "Coreless Filament Winding",
+                "software": "KUKA prc / Python / Grasshopper",
+                "team": "Ali Mzannar, x,y...",
+                "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
+                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
+                "renderSrc": "assets/images/fibre-winding.jpeg"
+            }
+
+            {
+                "title": "Coreless Filament Winding",
+                "software": "KUKA prc / Python / Grasshopper",
+                "team": "Ali Mzannar, x,y...",
+                "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
+                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
+                "renderSrc": "assets/images/fibre-winding.jpeg"
             }
         ]
     }
