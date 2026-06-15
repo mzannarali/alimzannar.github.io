@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Ali Mzannar | Computational Designer</title>
+
     <link rel="icon" type="image/svg+xml" href="assets/logo/am-logo.svg">
     <meta name="description" content="Ali Mzannar: Architectural and Computational Designer. Portfolio featuring multi-objective optimization, spatial computing, and fabrication-oriented research at ITECH.">
     <meta name="author" content="Ali Mzannar">
@@ -71,13 +72,13 @@
             <span>2024–2026</span>
         </a>
 
-        <a href="projects/multi-objective-optimization.html" class="project-row" data-media="assets/videos/massing-opt-preview.mp4">
+        <a href="projects/multi-objective-optimization.HTML" class="project-row" data-media="assets/videos/massing-opt-preview.mp4">
             <span class="row-title">Multi-Objective Optimization</span>
             <span class="desc">Evolutionary Solvers / Physics / Analytics</span>
             <span>2025–2026</span>
         </a>
 
-        <a href="projects/complex-geometry.html" class="project-row" data-media="assets/videos/net-form-finding.mp4">
+        <a href="projects/complex-geometry.HTML" class="project-row" data-media="assets/videos/net-form-finding.mp4">
             <span class="row-title">Complex Geometry & Form-Finding</span>
             <span class="desc">Topology / Physics Simulation / Rationalization</span>
             <span>2024–2026</span>
@@ -122,25 +123,10 @@
         let mouseX = -1000;
         let mouseY = -1000;
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        document.addEventListener('touchstart', (e) => {
-            mouseX = e.touches[0].clientX;
-            mouseY = e.touches[0].clientY;
-        }, {passive: true});
-
-        document.addEventListener('touchmove', (e) => {
-            mouseX = e.touches[0].clientX;
-            mouseY = e.touches[0].clientY;
-        }, {passive: true});
-
-        document.addEventListener('touchend', () => {
-            mouseX = -1000;
-            mouseY = -1000;
-        });
+        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+        document.addEventListener('touchstart', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
+        document.addEventListener('touchmove', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
+        document.addEventListener('touchend', () => { mouseX = -1000; mouseY = -1000; });
 
         // =========================================
         // 1. SYNCHRONIZED CANVAS NOISE ENGINE
@@ -185,12 +171,10 @@
                     
                     if(dist < 350) {
                         let probability = Math.pow(1 - (dist / 350), 2); 
-                        
                         if(Math.random() > 0.95) {
                             canvasGrid[i][j].char = chars[Math.floor(Math.random() * chars.length)];
                             canvasGrid[i][j].active = Math.random() < probability * 0.4;
                         }
-                        
                         if(canvasGrid[i][j].active) {
                             ctx.globalAlpha = 1; 
                             ctx.fillText(canvasGrid[i][j].char, x, y);
@@ -308,7 +292,6 @@
 
         setInterval(() => {
             langIndex = (langIndex + 1) % langs.length;
-            
             loopTarget.style.opacity = 0;
             loopTarget.style.filter = "blur(8px)";
             
@@ -318,7 +301,6 @@
                 loopTarget.style.opacity = 1;
                 loopTarget.style.filter = "blur(0px)";
             }, 600); 
-            
         }, 4000); 
 
         function animateTextVoxels() {

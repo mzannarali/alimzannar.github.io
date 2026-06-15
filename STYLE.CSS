@@ -115,7 +115,7 @@ body {
 }
 
 /* =========================================
-   STRUCTURAL VOXEL ENGINE (SYNCHRONIZED)
+   STRUCTURAL VOXEL ENGINE
    ========================================= */
 .char-voxel {
     position: relative;
@@ -152,7 +152,7 @@ body {
 .char-voxel.is-fractured .voxel-grid { opacity: 1; }
 
 /* =========================================
-   BIO & PROJECTS (UPDATED LOGO ALIGNMENT)
+   INDEX: BIO SECTION
    ========================================= */
 .bio-section {
     padding: 8vh 30px;
@@ -168,16 +168,16 @@ body {
 .bio-content {
     display: flex;
     justify-content: flex-start;
-    align-items: stretch; /* Forces the logo and text block to be the same height */
+    align-items: stretch; 
     gap: 3vw; 
 }
 
 .bio-logo {
-    height: auto; /* Uses the stretched height from flexbox */
+    height: auto; 
     width: auto;
-    max-width: 15vw; /* Safety constraint so it doesn't take over the screen */
+    max-width: 15vw; 
     object-fit: contain;
-    object-position: left center; /* Anchors it cleanly beside the text */
+    object-position: left center; 
     opacity: 0;
     transform: translateY(20px);
     animation: starkReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
@@ -187,7 +187,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2vh;
-    flex: 1; /* Allows text to fill the remaining space naturally */
+    flex: 1; 
 }
 
 .bio-text { 
@@ -216,6 +216,9 @@ body {
     to { transform: translateY(0); opacity: 1; }
 }
 
+/* =========================================
+   INDEX: PROJECT DIRECTORY
+   ========================================= */
 .project-list { 
     padding: 5vh 30px 15vh 30px; 
     background-color: var(--bg-color); 
@@ -348,34 +351,8 @@ body {
 }
 
 /* =========================================
-   GLOBAL MOBILE RESPONSIVENESS
+   SUB-PAGE: PROJECT VAULT GRID
    ========================================= */
-@media (max-width: 768px) {
-    .home-nav { padding: 15px; }
-    .nav-left { flex-direction: row; flex-wrap: wrap; gap: 15px; }
-    .bio-section { grid-template-columns: 1fr; }
-    .bio-content { flex-direction: column; align-items: flex-start; gap: 20px; }
-    .bio-text { font-size: 1.5rem; }
-    .bio-subtext { font-size: 0.85rem; max-width: 100%; }
-    .bio-logo { height: 50px; max-width: 100%; object-position: left center; } 
-    
-    .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
-    .project-row:hover .row-title { transform: translateX(5vw); }
-    .project-row .desc { font-size: 0.85rem; }
-    .project-header { display: none; }
-    #cursor-media { display: none; }
-    
-    .contact-section { grid-template-columns: 1fr; gap: 30px; padding-bottom: 15vh;}
-    .contact-links { align-items: flex-start; gap: 15px; width: 100%; }
-    .contact-links a { flex-direction: column; gap: 5px; } 
-    .contact-links a .link-title { font-size: 1.5rem; }
-    .contact-links a .link-reveal { font-size: 1rem; max-width: 100%; opacity: 1; padding-left: 0;} 
-}
-/* =========================================
-   PROJECT VAULT GRID (SUB-PAGES)
-   ========================================= */
-
-/* Adjust the hero spacing specifically for sub-pages */
 .project-hero {
     padding: 18vh 30px 5vh 30px;
 }
@@ -398,11 +375,9 @@ body {
     font-weight: 600;
 }
 
-/* The structural container for the videos */
 .vault-grid {
     padding: 10vh 30px 15vh 30px;
     display: grid;
-    /* Automatically creates a 2 or 3 column layout depending on screen size */
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
     gap: 4vw;
 }
@@ -411,9 +386,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    cursor: crosshair; 
 }
 
-/* The sharp, unstyled video container */
 .media-wrapper {
     width: 100%;
     background-color: #f4f4f4;
@@ -427,7 +402,6 @@ body {
     display: block;
 }
 
-/* The brutalist data tag under the video */
 .vault-item-meta {
     display: flex;
     justify-content: space-between;
@@ -449,9 +423,151 @@ body {
     text-transform: none;
 }
 
-/* Sub-Page Mobile Overrides */
+/* =========================================
+   SUB-PAGE: BRUTALIST MODAL ENGINE
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.is-active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid #000;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background-color: var(--bg-color);
+    z-index: 10;
+}
+
+#close-modal {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+}
+
+#close-modal:hover { opacity: 0.5; }
+
+.modal-content {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr; 
+    height: calc(100vh - 60px); 
+    overflow: hidden;
+}
+
+.modal-media {
+    padding: 30px;
+    border-right: 1px solid #000;
+    overflow-y: auto; 
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.modal-media video, .modal-media img {
+    width: 100%;
+    height: auto;
+    display: block;
+    background-color: #f4f4f4; 
+}
+
+.modal-data {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 5vh;
+    overflow-y: auto;
+}
+
+#modal-title {
+    font-size: 3vw;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.data-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.data-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #000;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 5px;
+}
+
+.data-value {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: none;
+}
+
+.data-desc {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #666;
+    text-transform: none;
+}
+
+/* =========================================
+   GLOBAL MOBILE RESPONSIVENESS
+   ========================================= */
 @media (max-width: 768px) {
+    .home-nav { padding: 15px; }
+    .nav-left { flex-direction: row; flex-wrap: wrap; gap: 15px; }
+    .bio-section { grid-template-columns: 1fr; }
+    .bio-content { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .bio-text { font-size: 1.5rem; }
+    .bio-subtext { font-size: 0.85rem; max-width: 100%; }
+    .bio-logo { height: 50px; max-width: 100%; object-position: left center; } 
+    
+    .project-row { font-size: 1.2rem; grid-template-columns: 1fr; gap: 5px; padding: 20px 0;}
+    .project-row:hover .row-title { transform: translateX(5vw); }
+    .project-row .desc { font-size: 0.85rem; }
+    .project-header { display: none; }
+    #cursor-media { display: none; }
+    
+    .contact-section { grid-template-columns: 1fr; gap: 30px; padding-bottom: 15vh;}
+    .contact-links { align-items: flex-start; gap: 15px; width: 100%; }
+    .contact-links a { flex-direction: column; gap: 5px; } 
+    .contact-links a .link-title { font-size: 1.5rem; }
+    .contact-links a .link-reveal { font-size: 1rem; max-width: 100%; opacity: 1; padding-left: 0;} 
+
+    /* Sub-Page Overrides */
     .project-meta { grid-template-columns: 1fr; gap: 20px; }
     .vault-grid { grid-template-columns: 1fr; gap: 40px; padding: 5vh 15px 10vh 15px;}
     .vault-item-meta { flex-direction: column; gap: 5px; }
+    
+    /* Modal Overrides */
+    .modal-content { grid-template-columns: 1fr; overflow-y: auto; }
+    .modal-media { border-right: none; border-bottom: 1px solid #000; padding: 15px;}
+    .modal-data { padding: 15px; }
+    #modal-title { font-size: 2rem; }
 }

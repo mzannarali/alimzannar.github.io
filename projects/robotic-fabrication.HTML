@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robotic Fabrication | Ali Mzannar</title>
     
+    <link rel="icon" type="image/svg+xml" href="../assets/logo/am-logo.svg">
     <link rel="stylesheet" href="../STYLE.CSS">
 </head>
 <body>
 
     <nav class="home-nav">
         <div class="nav-left">
-            <a href="../index.html">← INDEX</a>
+            <a href="../index.HTML">← INDEX</a>
         </div>
         <div class="nav-right">
             <span>ALI MZANNAR</span>
@@ -43,26 +44,23 @@
 
     <section class="vault-grid">
         
-        <article class="vault-item">
+        <article class="vault-item" 
+            data-video="../assets/videos/fibre-winding-preview.mp4"
+            data-render="" 
+            data-title="Coreless Filament Winding"
+            data-software="KUKA prc / Python / Grasshopper"
+            data-team="Ali Mzannar, Sam (Instructor), Katja Rinderspacher"
+            data-desc="This research explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm. By simulating tension and friction in Grasshopper, we generated adaptable toolpaths for lightweight structural composites. The final geometry relies entirely on the structural tension of the fibers, eliminating the need for a physical mold.">
+            
             <div class="media-wrapper">
                 <video src="../assets/videos/fibre-winding-preview.mp4" loop muted playsinline preload="metadata"></video>
             </div>
             <div class="vault-item-meta">
                 <span class="item-title">Coreless Filament Winding</span>
-                <span class="item-software">KUKA prc / Python / Grasshopper</span>
+                <span class="item-software">KUKA prc / Python</span>
             </div>
         </article>
 
-        <article class="vault-item">
-            <div class="media-wrapper">
-                <video src="../assets/videos/another-fabrication-video.mp4" loop muted playsinline preload="metadata"></video>
-            </div>
-            <div class="vault-item-meta">
-                <span class="item-title">Adaptive Robotic Paths</span>
-                <span class="item-software">C# / RobotStudio</span>
-            </div>
-        </article>
-        
         </section>
 
     <footer class="contact-section" id="contact">
@@ -76,8 +74,41 @@
                 <span class="link-title">LINKEDIN ↗</span>
                 <span class="link-reveal">/in/ali-mzannar</span>
             </a>
+            <a href="https://www.instagram.com/ali_mzannar" target="_blank">
+                <span class="link-title">INSTAGRAM ↗</span>
+                <span class="link-reveal">@ali_mzannar</span>
+            </a>
         </div>
     </footer>
+
+    <div id="data-modal" class="modal-overlay">
+        <div class="modal-header">
+            <span class="modal-id">SYS.DATA.VIEWER</span>
+            <button id="close-modal">CLOSE [X]</button>
+        </div>
+        <div class="modal-content">
+            <div class="modal-media" id="modal-media-container">
+                </div>
+            <div class="modal-data">
+                <h2 id="modal-title">TITLE</h2>
+                
+                <div class="data-block">
+                    <span class="data-label">SOFTWARE / STACK</span>
+                    <span class="data-value" id="modal-software">DATA</span>
+                </div>
+                
+                <div class="data-block">
+                    <span class="data-label">TEAM / COLLABORATORS</span>
+                    <span class="data-value" id="modal-team">DATA</span>
+                </div>
+
+                <div class="data-block">
+                    <span class="data-label">SYSTEM DESCRIPTION</span>
+                    <p class="data-desc" id="modal-desc">DATA</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         const chars = "█▓▒░#@%&01";
@@ -90,7 +121,7 @@
         document.addEventListener('touchmove', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
         document.addEventListener('touchend', () => { mouseX = -1000; mouseY = -1000; });
 
-        // 1. UNIFIED DOM VOXEL ENGINE (Carried over from Index)
+        // 1. UNIFIED DOM VOXEL ENGINE
         let allChars = []; 
         function buildVoxels(element) {
             const text = element.innerText;
@@ -148,12 +179,7 @@
 
         // 2. VIDEO PERFORMANCE ENGINE (Spatial Play/Pause)
         const videos = document.querySelectorAll('.vault-item video');
-        
-        let observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1 // Triggers when 10% of the video is visible
-        };
+        let observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
 
         let videoObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
@@ -165,10 +191,52 @@
             });
         }, observerOptions);
 
-        videos.forEach(video => {
-            videoObserver.observe(video);
+        videos.forEach(video => { videoObserver.observe(video); });
+
+        // 3. BRUTALIST MODAL ENGINE
+        const vaultItems = document.querySelectorAll('.vault-item');
+        const modal = document.getElementById('data-modal');
+        const closeModal = document.getElementById('close-modal');
+        
+        const mTitle = document.getElementById('modal-title');
+        const mSoftware = document.getElementById('modal-software');
+        const mTeam = document.getElementById('modal-team');
+        const mDesc = document.getElementById('modal-desc');
+        const mMedia = document.getElementById('modal-media-container');
+
+        vaultItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const videoSrc = item.getAttribute('data-video');
+                const renderSrc = item.getAttribute('data-render'); 
+                
+                mTitle.innerText = item.getAttribute('data-title');
+                mSoftware.innerText = item.getAttribute('data-software');
+                mTeam.innerText = item.getAttribute('data-team');
+                mDesc.innerText = item.getAttribute('data-desc');
+
+                mMedia.innerHTML = ''; 
+                if (videoSrc) {
+                    const vid = document.createElement('video');
+                    vid.src = videoSrc;
+                    vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
+                    mMedia.appendChild(vid);
+                }
+                if (renderSrc && renderSrc !== "") {
+                    const img = document.createElement('img');
+                    img.src = renderSrc;
+                    mMedia.appendChild(img);
+                }
+
+                modal.classList.add('is-active');
+                document.body.style.overflow = 'hidden';
+            });
         });
 
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('is-active');
+            document.body.style.overflow = 'auto'; 
+            setTimeout(() => { mMedia.innerHTML = ''; }, 400); 
+        });
     </script>
 </body>
 </html>
