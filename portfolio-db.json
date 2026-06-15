@@ -1,0 +1,40 @@
+[
+    {
+        "trackId": "robotic-fabrication",
+        "trackTitle": "Robotic Fabrication & Material Systems",
+        "typology": "Robotics / Kinematics / Digital Craft",
+        "timeline": "2024–2026",
+        "institution": "ICD/ITKE / University of Stuttgart",
+        "previewMedia": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
+        "heroLines": ["ROBOTIC", "FABRICATION &", "SYSTEMS"],
+        "vaultItems": [
+            {
+                "title": "Coreless Filament Winding",
+                "software": "KUKA prc / Python / Grasshopper",
+                "team": "Ali Mzannar, x,y...",
+                "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
+                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
+                "renderSrc": ""
+            }
+        ]
+    },
+    {
+        "trackId": "complex-geometry",
+        "trackTitle": "complex-geometry",
+        "typology": "Evolutionary Solvers / Physics / Analytics",
+        "timeline": "2025–2026",
+        "institution": "ITECH / University of Stuttgart",
+        "previewMedia": "assets/videos/massing-opt-preview.mp4",
+        "heroLines": ["MULTI-OBJECTIVE", "OPTIMIZATION &", "ANALYTICS"],
+        "vaultItems": [
+            {
+                "title": "Voxel Massing Algorithm",
+                "software": "Grasshopper / Wallacei",
+                "team": "Ali Mzannar",
+                "description": "Evolutionary solver applied to maximize solar gain while minimizing structural wind load.",
+                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
+                "renderSrc": ""
+            }
+        ]
+    }
+]

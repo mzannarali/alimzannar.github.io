@@ -65,24 +65,8 @@
             <span>TYPOLOGY / ALGORITHM</span>
             <span>TIMELINE</span>
         </div>
-
-        <a href="projects/robotic-fabrication.HTML" class="project-row" data-media="assets/videos/fibre-winding-preview.mp4">
-            <span class="row-title">Robotic Fabrication & Material Systems</span>
-            <span class="desc">Robotics / Kinematics / Digital Craft</span>
-            <span>2024–2026</span>
-        </a>
-
-        <a href="projects/multi-objective-optimization.HTML" class="project-row" data-media="assets/videos/massing-opt-preview.mp4">
-            <span class="row-title">Multi-Objective Optimization</span>
-            <span class="desc">Evolutionary Solvers / Physics / Analytics</span>
-            <span>2025–2026</span>
-        </a>
-
-        <a href="projects/complex-geometry.HTML" class="project-row" data-media="assets/videos/net-form-finding.mp4">
-            <span class="row-title">Complex Geometry & Form-Finding</span>
-            <span class="desc">Topology / Physics Simulation / Rationalization</span>
-            <span>2024–2026</span>
-        </a>
+        
+        <div id="dynamic-project-list"></div>
     </section>
 
     <footer class="contact-section" id="contact">
@@ -194,7 +178,6 @@
         const cursorMedia = document.getElementById('cursor-media');
         const mediaContainer = document.getElementById('media-container');
         const maskGrid = document.getElementById('media-glitch-mask');
-        const projectRows = document.querySelectorAll('.project-row');
 
         const maskCells = [];
         for(let i=0; i<144; i++) {
@@ -326,31 +309,55 @@
         }
         animateTextVoxels();
 
-        projectRows.forEach(row => {
-            row.addEventListener('mouseenter', () => {
-                const mediaSrc = row.getAttribute('data-media');
-                if (mediaSrc !== "" && mediaContainer.getAttribute('data-loaded') !== mediaSrc) {
-                    mediaContainer.setAttribute('data-loaded', mediaSrc);
-                    mediaContainer.innerHTML = ''; 
-                    const ext = mediaSrc.split('.').pop().toLowerCase();
-                    if (ext === 'mp4' || ext === 'webm') {
-                        const video = document.createElement('video');
-                        video.src = mediaSrc;
-                        video.autoplay = true; video.loop = true; video.muted = true; video.playsInline = true;
-                        mediaContainer.appendChild(video);
-                    } else {
-                        const img = document.createElement('img');
-                        img.src = mediaSrc;
-                        mediaContainer.appendChild(img);
-                    }
-                }
-                cursorMedia.style.opacity = '1';
-                cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px) scale(1.05)`;
-            });
-            row.addEventListener('mouseleave', () => {
-                cursorMedia.style.opacity = '0';
-            });
-        });
+        // =========================================
+        // 4. INDEX PAGE: JSON FETCH ENGINE
+        // =========================================
+        const projectListContainer = document.getElementById('dynamic-project-list');
+
+        fetch('portfolio-db.json')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(track => {
+                    // Build the Row HTML dynamically
+                    const a = document.createElement('a');
+                    a.href = `projects/${track.trackId}.HTML`; // Strict uppercase routing
+                    a.className = 'project-row';
+                    a.setAttribute('data-media', track.previewMedia);
+                    
+                    a.innerHTML = `
+                        <span class="row-title">${track.trackTitle}</span>
+                        <span class="desc">${track.typology}</span>
+                        <span>${track.timeline}</span>
+                    `;
+                    projectListContainer.appendChild(a);
+                });
+
+                // Attach Hover Logic to the newly injected rows
+                document.querySelectorAll('.project-row').forEach(row => {
+                    row.addEventListener('mouseenter', () => {
+                        const mediaSrc = row.getAttribute('data-media');
+                        if (mediaSrc !== "" && mediaContainer.getAttribute('data-loaded') !== mediaSrc) {
+                            mediaContainer.setAttribute('data-loaded', mediaSrc);
+                            mediaContainer.innerHTML = ''; 
+                            const ext = mediaSrc.split('.').pop().toLowerCase();
+                            if (ext === 'mp4' || ext === 'webm') {
+                                const video = document.createElement('video');
+                                video.src = mediaSrc;
+                                video.autoplay = true; video.loop = true; video.muted = true; video.playsInline = true;
+                                mediaContainer.appendChild(video);
+                            } else {
+                                const img = document.createElement('img');
+                                img.src = mediaSrc;
+                                mediaContainer.appendChild(img);
+                            }
+                        }
+                        cursorMedia.style.opacity = '1';
+                        cursorMedia.style.transform = `translate(${mediaX - 175}px, ${mediaY - 225}px) scale(1.05)`;
+                    });
+                    row.addEventListener('mouseleave', () => { cursorMedia.style.opacity = '0'; });
+                });
+            })
+            .catch(err => console.error('Error loading database:', err));
     </script>
 </body>
 </html>
