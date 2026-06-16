@@ -45,7 +45,8 @@
             }
         ]
     },
-    
+]
+[  
     {
         "trackId": "geometry-rationalization",
         "trackTitle": "Geometry Rationalization & Constructability",
@@ -56,7 +57,8 @@
         "heroLines": ["GEOMETRY", "RATIONALIZATION &", "CONSTRUCTABILITY"],
         "vaultItems": []
     }
-
+]
+[
     {
         "trackId": "advanced-digital-fabrication",
         "trackTitle": "Advanced Digital Fabrication",
@@ -66,8 +68,10 @@
         "previewMedia": "assets/videos/fibre-winding-preview.mp4",
         "heroLines": ["ADVANCED", "DIGITAL", "FABRICATION"],
         "vaultItems": []
+ 
     }
-
+]
+[    
     {
         "trackId": "performance-optimization",
         "trackTitle": "Performance Optimization & Automation",
@@ -78,7 +82,8 @@
         "heroLines": ["PERFORMANCE", "OPTIMIZATION &", "AUTOMATION"],
         "vaultItems": []
     }
-
+]
+[
     {
         "trackId": "computational-pipelines",
         "trackTitle": "Computational Pipelines & Interoperability",
