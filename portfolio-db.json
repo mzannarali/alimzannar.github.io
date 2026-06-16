@@ -6,7 +6,11 @@
         "timeline": "2024–2026",
         "institution": "ICD/ITKE / University of Stuttgart",
         "previewMedia": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
-        "heroLines": ["ROBOTIC", "FABRICATION &", "SYSTEMS"],
+        "heroLines": [
+            "ROBOTIC",
+            "FABRICATION &",
+            "SYSTEMS"
+        ],
         "vaultItems": [
             {
                 "title": "Coreless Filament Winding",
@@ -16,7 +20,6 @@
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": "assets/images/fibre-winding.jpeg"
             },
-
             {
                 "title": "Coreless Filament Winding-01",
                 "software": "KUKA prc / Python / Grasshopper",
@@ -25,7 +28,6 @@
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": "assets/images/fibre-winding.jpeg"
             },
-
             {
                 "title": "Coreless Filament Winding-03",
                 "software": "KUKA prc / Python / Grasshopper",
@@ -34,7 +36,6 @@
                 "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
                 "renderSrc": "assets/images/fibre-winding.jpeg"
             },
-
             {
                 "title": "Coreless Filament Winding-04",
                 "software": "KUKA prc / Python / Grasshopper",
@@ -45,8 +46,6 @@
             }
         ]
     },
-]
-[  
     {
         "trackId": "geometry-rationalization",
         "trackTitle": "Geometry Rationalization & Constructability",
@@ -54,11 +53,13 @@
         "timeline": "2024–2026",
         "institution": "BAD (Built by Associative Data)",
         "previewMedia": "assets/videos/your-rationalization-video.mp4",
-        "heroLines": ["GEOMETRY", "RATIONALIZATION &", "CONSTRUCTABILITY"],
+        "heroLines": [
+            "GEOMETRY",
+            "RATIONALIZATION &",
+            "CONSTRUCTABILITY"
+        ],
         "vaultItems": []
-    }
-]
-[
+    },
     {
         "trackId": "advanced-digital-fabrication",
         "trackTitle": "Advanced Digital Fabrication",
@@ -66,12 +67,13 @@
         "timeline": "2024–2026",
         "institution": "ICD/ITKE / University of Stuttgart",
         "previewMedia": "assets/videos/fibre-winding-preview.mp4",
-        "heroLines": ["ADVANCED", "DIGITAL", "FABRICATION"],
+        "heroLines": [
+            "ADVANCED",
+            "DIGITAL",
+            "FABRICATION"
+        ],
         "vaultItems": []
- 
-    }
-]
-[    
+    },
     {
         "trackId": "performance-optimization",
         "trackTitle": "Performance Optimization & Automation",
@@ -79,11 +81,13 @@
         "timeline": "2024–2026",
         "institution": "ITECH / Applied Practice",
         "previewMedia": "assets/videos/massing-opt-preview.mp4",
-        "heroLines": ["PERFORMANCE", "OPTIMIZATION &", "AUTOMATION"],
+        "heroLines": [
+            "PERFORMANCE",
+            "OPTIMIZATION &",
+            "AUTOMATION"
+        ],
         "vaultItems": []
-    }
-]
-[
+    },
     {
         "trackId": "computational-pipelines",
         "trackTitle": "Computational Pipelines & Interoperability",
@@ -91,7 +95,11 @@
         "timeline": "2025–2026",
         "institution": "Applied Practice & Research",
         "previewMedia": "assets/videos/pipeline-preview.mp4",
-        "heroLines": ["COMPUTATIONAL", "PIPELINES &", "INTEROPERABILITY"],
+        "heroLines": [
+            "COMPUTATIONAL",
+            "PIPELINES &",
+            "INTEROPERABILITY"
+        ],
         "vaultItems": [
             {
                 "title": "AI-Driven Visualization Pipeline",
@@ -111,5 +119,4 @@
             }
         ]
     }
-
-]       
+]
