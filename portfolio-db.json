@@ -45,50 +45,64 @@
             }
         ]
     },
+    
     {
-        "trackId": "complex-geometry",
-        "trackTitle": "complex-geometry",
-        "typology": "Evolutionary Solvers / Physics / Analytics",
-        "timeline": "2025–2026",
-        "institution": "ITECH / University of Stuttgart",
+        "trackId": "geometry-rationalization",
+        "trackTitle": "Geometry Rationalization & Constructability",
+        "typology": "Topology / Rationalization / BIM Integration",
+        "timeline": "2024–2026",
+        "institution": "BAD (Built by Associative Data)",
+        "previewMedia": "assets/videos/your-rationalization-video.mp4",
+        "heroLines": ["GEOMETRY", "RATIONALIZATION &", "CONSTRUCTABILITY"],
+        "vaultItems": []
+    }
+
+    {
+        "trackId": "advanced-digital-fabrication",
+        "trackTitle": "Advanced Digital Fabrication",
+        "typology": "Robotics / Material Efficiency / Digital Craft",
+        "timeline": "2024–2026",
+        "institution": "ICD/ITKE / University of Stuttgart",
+        "previewMedia": "assets/videos/fibre-winding-preview.mp4",
+        "heroLines": ["ADVANCED", "DIGITAL", "FABRICATION"],
+        "vaultItems": []
+    }
+
+    {
+        "trackId": "performance-optimization",
+        "trackTitle": "Performance Optimization & Automation",
+        "typology": "Algorithm-Aided Design / Analytics / OOP",
+        "timeline": "2024–2026",
+        "institution": "ITECH / Applied Practice",
         "previewMedia": "assets/videos/massing-opt-preview.mp4",
-        "heroLines": ["MULTI-OBJECTIVE", "OPTIMIZATION &", "ANALYTICS"],
+        "heroLines": ["PERFORMANCE", "OPTIMIZATION &", "AUTOMATION"],
+        "vaultItems": []
+    }
+
+    {
+        "trackId": "computational-pipelines",
+        "trackTitle": "Computational Pipelines & Interoperability",
+        "typology": "Systems Architecture / BIM Integration / AI Workflows",
+        "timeline": "2025–2026",
+        "institution": "Applied Practice & Research",
+        "previewMedia": "assets/videos/pipeline-preview.mp4",
+        "heroLines": ["COMPUTATIONAL", "PIPELINES &", "INTEROPERABILITY"],
         "vaultItems": [
             {
-                "title": "Voxel Massing Algorithm",
-                "software": "Grasshopper / Wallacei",
+                "title": "AI-Driven Visualization Pipeline",
+                "software": "Grasshopper / Python / Stable Diffusion / ComfyUI",
                 "team": "Ali Mzannar",
-                "description": "Evolutionary solver applied to maximize solar gain while minimizing structural wind load.",
-                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
+                "description": "An automated workflow extracting depth maps and geometric line-art directly from Rhino/Grasshopper and feeding it into local AI models for rapid, highly-controlled architectural visualization and masterplan ideation.",
+                "videoSrc": "assets/videos/ai-pipeline-demo.mp4",
                 "renderSrc": ""
             },
-
             {
-                "title": "fds",
-                "software": "KUKA prc / Python / Grasshopper",
-                "team": "Ali Mzannar, x,y...",
-                "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
-                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
-                "renderSrc": "assets/images/fibre-winding.jpeg"
-            },
-
-            {
-                "title": "hgfsv",
-                "software": "KUKA prc / Python / Grasshopper",
-                "team": "Ali Mzannar, x,y...",
-                "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
-                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
-                "renderSrc": "assets/images/fibre-winding.jpeg"
-            },
-
-            {
-                "title": "sgvs",
-                "software": "KUKA prc / Python / Grasshopper",
-                "team": "Ali Mzannar, x,y...",
-                "description": "Explores the geometric logic of coreless filament winding using a 6-axis KUKA robotic arm.",
-                "videoSrc": "assets/videos/20260611_VISUALIZE-RHINO-WORKESSION-OBJECTS-SIZE.gif",
-                "renderSrc": "assets/images/fibre-winding.jpeg"
+                "title": "Algorithmic BIM Integration",
+                "software": "Rhino.Inside.Revit / C# / Grasshopper",
+                "team": "Ali Mzannar",
+                "description": "A seamless data pipeline translating complex, rationalized NURBS geometry and data trees from Grasshopper directly into native, schedule-ready Revit families and adaptive components.",
+                "videoSrc": "assets/videos/rhino-inside-demo.mp4",
+                "renderSrc": ""
             }
         ]
     }
-]
