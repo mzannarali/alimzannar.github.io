@@ -271,8 +271,8 @@
                 "software": "Grasshopper / Karamba3D",
                 "team": "Ali Mzannar (ITECH Research)",
                 "description": "Utilized Karamba3D to structurally optimize both lightweight shells and complex playground installations. The script iterates through material thicknesses and rib configurations to minimize mass while ensuring structural integrity.",
-                "videoSrc": "assets/videos/karamba-shell.mp4",
-                "renderSrc": "",
+                "videoSrc": "assets/videos/karamba-playground.gif",
+                "renderSrc": "assets/images/karamba-playground.jpeg",
                 "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
             },
             {
