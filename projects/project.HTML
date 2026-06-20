@@ -70,7 +70,7 @@
         const CURRENT_TRACK_ID = urlParams.get('id'); 
         
         if (!CURRENT_TRACK_ID) {
-            window.location.href = "../index.HTML";
+            window.location.href = "../index.html";
         }
         
         const scrollObserver = new IntersectionObserver((entries) => {
@@ -154,9 +154,16 @@
 
                     const videoSrc = item.getAttribute('data-video');
                     if (videoSrc && videoSrc !== "") {
-                        const vid = document.createElement('video');
-                        vid.src = videoSrc; vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
-                        mMedia.appendChild(vid);
+                        const ext = videoSrc.split('.').pop().toLowerCase();
+                        if (ext === 'mp4' || ext === 'webm') {
+                            const vid = document.createElement('video');
+                            vid.src = videoSrc; vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
+                            mMedia.appendChild(vid);
+                        } else {
+                            const img = document.createElement('img'); 
+                            img.src = videoSrc;
+                            mMedia.appendChild(img);
+                        }
                     }
 
                     const galleryRaw = item.getAttribute('data-gallery');
@@ -186,7 +193,7 @@
             .then(response => response.json())
             .then(data => {
                 const trackData = data.find(t => t.trackId === CURRENT_TRACK_ID);
-                if(!trackData) { window.location.href = "../index.HTML"; return; }
+                if(!trackData) { window.location.href = "../index.html"; return; }
 
                 document.title = `${trackData.trackTitle} | Ali Mzannar`;
 
@@ -235,17 +242,24 @@
 
                     let mediaHTML = "";
                     
-                    // FIX: Checking for GIFs vs MP4s to prevent broken thumbnails
+                    // 1. Static Cover Image Layer (Lowest Z-Index)
+                    if (item.gallery && item.gallery.length > 0) {
+                        mediaHTML += `<img src="../${item.gallery[0]}" class="vault-cover" alt="${item.title}">`;
+                    } else if (item.renderSrc) {
+                        mediaHTML += `<img src="../${item.renderSrc}" class="vault-cover" alt="${item.title}">`;
+                    } else {
+                        mediaHTML += `<div class="vault-cover"></div>`; // Fallback blank cover
+                    }
+
+                    // 2. Animated Hover Layer (Video or GIF, fades in over the cover)
                     if (correctedVideo) {
                         const ext = correctedVideo.split('.').pop().toLowerCase();
                         if (ext === 'mp4' || ext === 'webm') {
-                            mediaHTML += `<video src="${correctedVideo}" loop muted playsinline preload="metadata"></video>`;
+                            mediaHTML += `<video src="${correctedVideo}" class="vault-hover-media" loop muted playsinline preload="metadata"></video>`;
                         } else {
-                            // If it's a .gif or .jpg placed in the video field, render as an image
-                            mediaHTML += `<img src="${correctedVideo}" alt="${item.title}">`;
+                            // Automatically supports .gif files as images that fade in and play visually
+                            mediaHTML += `<img src="${correctedVideo}" class="vault-hover-media" alt="${item.title}">`;
                         }
-                    } else if (item.gallery && item.gallery.length > 0) {
-                        mediaHTML += `<img src="../${item.gallery[0]}" alt="${item.title}">`;
                     }
 
                     article.innerHTML = `
@@ -259,14 +273,17 @@
                         </div>
                     `;
                     
-                    // Plays the video ONLY when hovered over (Will ignore GIFs)
+                    // Plays the video ONLY when hovered over
                     article.addEventListener('mouseenter', () => {
-                        const vid = article.querySelector('video');
+                        const vid = article.querySelector('video.vault-hover-media');
                         if(vid) vid.play();
                     });
                     article.addEventListener('mouseleave', () => {
-                        const vid = article.querySelector('video');
-                        if(vid) vid.pause();
+                        const vid = article.querySelector('video.vault-hover-media');
+                        if(vid) {
+                            vid.pause();
+                            vid.currentTime = 0; // Resets video back to start smoothly
+                        }
                     });
 
                     gridContainer.appendChild(article);

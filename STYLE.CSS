@@ -214,10 +214,11 @@ body {
     grid-template-rows: 1fr; 
 }
 
+/* Creates the Ultra-Wide Cinematic Banner Under the Title */
 .dropdown-inner {
     min-height: 0; 
     width: 100%;
-    aspect-ratio: 21 / 9; 
+    aspect-ratio: 24 / 9; 
     background-color: #000;
     overflow: hidden;
     margin-bottom: 0;
@@ -334,27 +335,42 @@ body {
 }
 .vault-item { display: flex; flex-direction: column; gap: 15px; cursor: crosshair; }
 
-/* Fluid Hover Stacking Logic & Aspect Ratio Lock */
+/* Static Cover + GIF/MP4 Hover System */
 .media-wrapper {
     width: 100%; 
     aspect-ratio: 16 / 9; 
-    background-color: #000; 
+    background-color: #f4f4f4; 
     position: relative; 
     overflow: hidden;
     display: block; 
 }
 
-.media-wrapper video, .media-wrapper img {
+.media-wrapper .vault-cover, 
+.media-wrapper .vault-hover-media {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%; 
     object-fit: cover; 
-    display: block; background-color: #f4f4f4;
-    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+    display: block; 
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.4s ease;
     transform: scale(1.001); 
 }
-.vault-item:hover .media-wrapper video, 
-.vault-item:hover .media-wrapper img { transform: scale(1.03); filter: brightness(0.95); }
+
+.media-wrapper .vault-hover-media {
+    opacity: 0; /* Hidden by default */
+    z-index: 2;
+}
+
+.vault-item:hover .media-wrapper .vault-cover {
+    transform: scale(1.03); 
+    opacity: 0; /* Static image crossfades out */
+}
+
+.vault-item:hover .media-wrapper .vault-hover-media {
+    transform: scale(1.03); 
+    opacity: 1; /* Video or GIF crossfades in */
+    filter: brightness(0.95);
+}
 
 .hover-indicator {
     position: absolute; top: 15px; right: 15px; background-color: #000; color: #fff;

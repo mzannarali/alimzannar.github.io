@@ -186,21 +186,6 @@
                     wrapper.className = 'project-wrapper reveal-up';
                     wrapper.style.transitionDelay = `${index * 0.1}s`;
 
-                    // FIX: Precision Scroll Logic
-                    wrapper.addEventListener('mouseenter', function() {
-                        // Wait 300ms for the CSS accordion to physically expand
-                        setTimeout(() => {
-                            const rect = this.getBoundingClientRect();
-                            const navOffset = 100; // Height of your top nav bar
-                            
-                            // If the expansion pushed the title up under the nav bar, nudge it down
-                            if (rect.top < navOffset) {
-                                const scrollPosition = window.scrollY + rect.top - navOffset - 20;
-                                window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
-                            }
-                        }, 300);
-                    });
-
                     const rowText = `
                         <div class="project-row">
                             <span class="row-title">${track.trackTitle}</span>
@@ -235,5 +220,6 @@
                 });
             })
             .catch(err => console.error('Error loading database:', err));
+    </script>
 </body>
 </html>
