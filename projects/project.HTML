@@ -61,9 +61,15 @@
 
     <script>
         // =========================================
-        // SET THIS TO MATCH YOUR JSON "trackId"
+        // DYNAMIC URL ROUTING ENGINE
         // =========================================
-        const CURRENT_TRACK_ID = "computational-pipelines"; 
+        const urlParams = new URLSearchParams(window.location.search);
+        const CURRENT_TRACK_ID = urlParams.get('id'); 
+        
+        // Failsafe: If someone goes to project.HTML without an ID, send them back home
+        if (!CURRENT_TRACK_ID) {
+            window.location.href = "../index.HTML";
+        }
         
         // Scroll Observer for Fluidity
         const scrollObserver = new IntersectionObserver((entries) => {
@@ -185,10 +191,23 @@
                     scrollObserver.observe(h1);
                 }); 
 
+               // 1. Build the Logo Array HTML
+                let logosHTML = "";
+                if (trackData.institutionLogos && trackData.institutionLogos.length > 0) {
+                    logosHTML = `<div class="inst-logo-container">` + 
+                        trackData.institutionLogos.map(logo => `<img src="../${logo}" class="inst-logo" alt="Institution Logo">`).join('') + 
+                        `</div>`;
+                }
+
+                // 2. Inject Meta Data & Logos
                 document.getElementById('dynamic-meta').innerHTML = `
                     <div class="meta-group">TYPOLOGY<span>${trackData.typology}</span></div>
                     <div class="meta-group">TIMELINE<span>${trackData.timeline}</span></div>
-                    <div class="meta-group">INSTITUTION<span>${trackData.institution}</span></div>
+                    <div class="meta-group">
+                        INSTITUTION
+                        <span>${trackData.institution}</span>
+                        ${logosHTML}
+                    </div>
                 `;
 
                 const gridContainer = document.getElementById('dynamic-vault-grid');

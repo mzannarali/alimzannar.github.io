@@ -187,7 +187,7 @@
                 data.forEach((track, index) => {
                     // 1. Build the Master Wrapper Link
                     const wrapper = document.createElement('a');
-                    wrapper.href = `projects/${track.trackId}.HTML`; 
+                    wrapper.href = `projects/project.HTML?id=${track.trackId}`; 
                     wrapper.className = 'project-wrapper reveal-up';
                     wrapper.style.transitionDelay = `${index * 0.1}s`;
 
