@@ -21,7 +21,8 @@
                 "team": "Computational Design: Ali Mzannar | Lead Architects: BAD",
                 "description": "Professional work executed at BAD. Developed a custom computational workflow to generate high-density parametric facade perforations using custom bitmaps. This optimized viewport performance by eliminating the need to render heavy geometric breps during the design phase.",
                 "videoSrc": "assets/videos/kosen-bitmap.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/BAD.jpg"]
             },
             {
                 "title": "Fresco Beirut: Algorithmic Mosaic Panelization",
@@ -29,7 +30,8 @@
                 "team": "Computational Design: Ali Mzannar | Lead Architects: BAD",
                 "description": "Generative facade ceramic tiling for the Fresco project in Beirut. The script samples color data from input imagery to automatically define the precise size and distribution of ceramic tiles, utilizing structural intersection curves of slabs and planters as geometric attractors.",
                 "videoSrc": "assets/videos/fresco-mosaic.mp4",
-                "renderSrc": "assets/images/fresco-render.jpg"
+                "renderSrc": "assets/images/fresco-render.jpg",
+                "projectLogos": ["assets/logo/BAD.jpg"]
             },
             {
                 "title": "Azha North Coast: Parametric Wave Facade",
@@ -37,7 +39,8 @@
                 "team": "Computational Design: Ali Mzannar | Lead Architects: BAD",
                 "description": "Automated the panelization of a complex, wave-like coastal facade into fabricatable blocks. The script generated hundreds of unique, production-ready schematic drawings directly from the 3D model. Similar logic pipelines were deployed for the Kora and Komorebi projects.",
                 "videoSrc": "assets/videos/azha-facade.mp4",
-                "renderSrc": "assets/images/azha-published.jpg"
+                "renderSrc": "assets/images/azha-published.jpg",
+                "projectLogos": ["assets/logo/BAD.jpg"]
             }
         ]
     },
@@ -65,7 +68,8 @@
                 "team": "Ali Mzannar",
                 "description": "A seamless data pipeline translating complex, rationalized NURBS geometry and data trees from Grasshopper directly into native, schedule-ready Revit families and adaptive components.",
                 "videoSrc": "assets/videos/rhino-inside.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/BAD.jpg"]
             },
             {
                 "title": "Tower of Gabon: AI-Driven Visualization Pipeline",
@@ -73,7 +77,8 @@
                 "team": "Computational Design: Ali Mzannar | Lead Architects: BAD",
                 "description": "An automated workflow extracting depth maps and geometric line-art directly from Rhino and feeding it into local AI models for rapid, highly-controlled architectural visualization of complex tower geometries.",
                 "videoSrc": "assets/videos/gabon-ai.mp4",
-                "renderSrc": "assets/images/gabon-render.jpg"
+                "renderSrc": "assets/images/gabon-render.jpg",
+                "projectLogos": ["assets/logo/BAD.jpg"]
             },
             {
                 "title": "Cross-Platform Kinematic Simulation",
@@ -81,7 +86,8 @@
                 "team": "Ali Mzannar (ITECH Research)",
                 "description": "A custom data-connector workflow linking Grasshopper geometry directly to Blender's robust physics engine to accurately simulate the complex motion and collision mechanics of dynamic net installations.",
                 "videoSrc": "assets/videos/blender-connector.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg"]
             }
         ]
     },
@@ -107,7 +113,8 @@
                 "team": "Computational Design: Ali Mzannar | Lead Architects: BAD",
                 "description": "A voxel-based computational massing optimization for a three-tower residential project in the Raouche area of Beirut. The evolutionary solver iterations systematically maximized direct sea views while strictly adhering to complex plot constraints.",
                 "videoSrc": "assets/videos/raouche-voxel.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/BAD.jpg"]
             },
             {
                 "title": "2211 Developments: View Analytics & Field Lines",
@@ -115,7 +122,8 @@
                 "team": "Computational Design: Ali Mzannar | Lead Architects: BAD",
                 "description": "A programmatic positioning script that maximizes view visibility between multiple circular towers, coupled with a parametric facade system driven entirely by invisible magnetic field lines.",
                 "videoSrc": "assets/videos/2211-views.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/BAD.jpg"]
             },
             {
                 "title": "Ovium: Atrium Solar Gain Analytics",
@@ -123,7 +131,8 @@
                 "team": "Computational Design: Ali Mzannar | Lead Architects: BAD",
                 "description": "Environmental simulation and optimization of an interior atrium designed to maximize natural daylight distribution while mitigating excessive heat gains.",
                 "videoSrc": "assets/videos/ovium-solar.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/BAD.jpg"]
             },
             {
                 "title": "Momo: Utility & Documentation Automation",
@@ -131,7 +140,8 @@
                 "team": "Computational Design: Ali Mzannar | Lead Architects: BAD",
                 "description": "A suite of custom studio tools developed to automate tedious AEC workflows. Features include batch PDF plan extraction directly from 3D tower geometry and automated viewport visualization sizing for consistent design reviews.",
                 "videoSrc": "assets/videos/momo-automation.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/BAD.jpg"]
             }
         ]
     },
@@ -159,7 +169,8 @@
                 "team": "Conceptual Masterplan & Computation: Ali Mzannar",
                 "description": "A standalone conceptual masterplan in Egypt. Driven fundamentally by UAE social culture and biomimicry, the project utilizes circle-packing geometry to maximize programmatic distribution. The 'Sakura' theme serves purely as an underlying conceptual philosophy, while the core algorithmic logic focuses on environmental and cultural responsiveness.",
                 "videoSrc": "assets/videos/sakura-bay.mp4",
-                "renderSrc": "assets/images/sakura-bay-render.jpg"
+                "renderSrc": "assets/images/sakura-bay-render.jpg",
+                "projectLogos": []
             },
             {
                 "title": "Saadiyat: Environmental Masterplan Analytics",
@@ -167,7 +178,8 @@
                 "team": "Computational Design: Ali Mzannar | Lead Architects: BAD",
                 "description": "A generative masterplan framework heavily influenced by vector field lines and prevailing environmental data to strictly maximize residential views over a coastal beach site.",
                 "videoSrc": "assets/videos/saadiyat-masterplan.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/BAD.jpg"]
             },
             {
                 "title": "Socio-Economic Swarm Aggregation",
@@ -175,7 +187,8 @@
                 "team": "Ali Mzannar (Research)",
                 "description": "A swarm-based geometric aggregation script that responds to dynamic socio-economic data points, resulting in a complex, self-organizing structural lattice.",
                 "videoSrc": "assets/videos/swarm-aggregation.mp4",
-                "renderSrc": "assets/images/swarm-drawing.jpg"
+                "renderSrc": "assets/images/swarm-drawing.jpg",
+                "projectLogos": []
             }
         ]
     },
@@ -203,7 +216,8 @@
                 "team": "Ali Mzannar (ITECH Research)",
                 "description": "Research exploring the complex geometric logic and pathfinding syntax required for robotic fibre winding. The study translates artistic geometries into fabricatable KUKA kinematic simulations.",
                 "videoSrc": "assets/videos/robotic-skirt.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
             },
             {
                 "title": "Human-Robot Collaborative Wax Deposition",
@@ -211,7 +225,8 @@
                 "team": "Ali Mzannar (ITECH Research)",
                 "description": "An adaptive robotic path feedback loop designed for complex wax aggregation. The system utilizes custom end-effectors and real-time data to allow human intervention during autonomous robotic deposition.",
                 "videoSrc": "assets/videos/wax-deposition.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
             }
         ]
     },
@@ -239,7 +254,8 @@
                 "team": "Ali Mzannar (ITECH Studio)",
                 "description": "A form-finding algorithm generating differentiated net topologies. The computational pipeline dynamically adjusts rope mesh networks based on structural tension requirements and anchor distribution prior to physical actuation.",
                 "videoSrc": "assets/videos/differentiated-nets.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
             },
             {
                 "title": "Continuous Network Structural Analysis",
@@ -247,7 +263,8 @@
                 "team": "Ali Mzannar (ITECH Research)",
                 "description": "Finite Element Analysis (FEA) applied to a large-scale net installation. The simulation analyzes joint stress and predicts the large-deformation behavior of continuous ropes under dynamic loads.",
                 "videoSrc": "assets/videos/karamba-net.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
             },
             {
                 "title": "Structural Shell & Playground Optimization",
@@ -255,7 +272,8 @@
                 "team": "Ali Mzannar (ITECH Research)",
                 "description": "Utilized Karamba3D to structurally optimize both lightweight shells and complex playground installations. The script iterates through material thicknesses and rib configurations to minimize mass while ensuring structural integrity.",
                 "videoSrc": "assets/videos/karamba-shell.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
             },
             {
                 "title": "Agent-Based Emergency Propagation",
@@ -263,7 +281,8 @@
                 "team": "Ali Mzannar (ITECH Research)",
                 "description": "An agent-based model (ABM) simulating fire propagation through a forest density map. The agents react dynamically to topological vectors, fuel loads, and wind data to accurately map high-risk propagation zones.",
                 "videoSrc": "assets/videos/agent-fire.mp4",
-                "renderSrc": ""
+                "renderSrc": "",
+                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
             }
         ]
     }

@@ -43,6 +43,9 @@
             <div class="modal-media" id="modal-media-container"></div>
             <div class="modal-data">
                 <h2 id="modal-title">TITLE</h2>
+                
+                <div id="modal-logos" class="modal-logos-container"></div>
+                
                 <div class="data-block">
                     <span class="data-label">SOFTWARE / STACK</span>
                     <span class="data-value" id="modal-software">DATA</span>
@@ -135,6 +138,7 @@
             const modal = document.getElementById('data-modal');
             const closeModal = document.getElementById('close-modal');
             const mTitle = document.getElementById('modal-title');
+            const mLogos = document.getElementById('modal-logos'); // Target for logos
             const mSoftware = document.getElementById('modal-software');
             const mTeam = document.getElementById('modal-team');
             const mDesc = document.getElementById('modal-desc');
@@ -146,6 +150,15 @@
                     mSoftware.innerText = item.getAttribute('data-software');
                     mTeam.innerText = item.getAttribute('data-team');
                     mDesc.innerText = item.getAttribute('data-desc');
+
+                    // Inject specific project logos
+                    mLogos.innerHTML = '';
+                    const logosRaw = item.getAttribute('data-logos');
+                    if (logosRaw) {
+                        logosRaw.split(',').forEach(logoPath => {
+                            if (logoPath) mLogos.innerHTML += `<img src="../${logoPath}" class="modal-logo" alt="logo">`;
+                        });
+                    }
 
                     const videoSrc = item.getAttribute('data-video');
                     const renderSrc = item.getAttribute('data-render'); 
@@ -177,7 +190,7 @@
             .then(response => response.json())
             .then(data => {
                 const trackData = data.find(t => t.trackId === CURRENT_TRACK_ID);
-                if(!trackData) { console.error("Track ID not found."); return; }
+                if(!trackData) { window.location.href = "../index.HTML"; return; }
 
                 document.title = `${trackData.trackTitle} | Ali Mzannar`;
 
@@ -191,7 +204,6 @@
                     scrollObserver.observe(h1);
                 }); 
 
-               // 1. Build the Logo Array HTML
                 let logosHTML = "";
                 if (trackData.institutionLogos && trackData.institutionLogos.length > 0) {
                     logosHTML = `<div class="inst-logo-container">` + 
@@ -199,13 +211,11 @@
                         `</div>`;
                 }
 
-                // 2. Inject Meta Data & Logos
+                // Removed the word "INSTITUTION" and span from the third block
                 document.getElementById('dynamic-meta').innerHTML = `
                     <div class="meta-group">TYPOLOGY<span>${trackData.typology}</span></div>
                     <div class="meta-group">TIMELINE<span>${trackData.timeline}</span></div>
                     <div class="meta-group">
-                        INSTITUTION
-                        <span>${trackData.institution}</span>
                         ${logosHTML}
                     </div>
                 `;
@@ -214,10 +224,13 @@
                 trackData.vaultItems.forEach((item, index) => {
                     const article = document.createElement('article');
                     article.className = 'vault-item reveal-up';
-                    article.style.transitionDelay = `${(index % 3) * 0.1}s`; // Staggered entrance
+                    article.style.transitionDelay = `${(index % 3) * 0.1}s`; 
                     
                     const correctedVideo = item.videoSrc ? `../${item.videoSrc}` : "";
                     const correctedRender = item.renderSrc ? `../${item.renderSrc}` : "";
+                    
+                    // Collapse the individual project logos array into a single string for the HTML attribute
+                    const projectLogosString = item.projectLogos ? item.projectLogos.join(',') : "";
 
                     article.setAttribute('data-video', correctedVideo);
                     article.setAttribute('data-render', correctedRender);
@@ -225,6 +238,7 @@
                     article.setAttribute('data-software', item.software);
                     article.setAttribute('data-team', item.team);
                     article.setAttribute('data-desc', item.description);
+                    article.setAttribute('data-logos', projectLogosString);
 
                     let mediaHTML = "";
                     if (correctedVideo) mediaHTML += `<video src="${correctedVideo}" loop muted playsinline preload="metadata"></video>`;

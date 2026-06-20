@@ -351,27 +351,36 @@ body {
     border-bottom: 1px solid #000; font-size: 0.75rem; font-weight: 700; color: #666;
 }
 .meta-group span { display: block; color: #000; margin-top: 5px; font-size: 1rem; font-weight: 600; }
-/* Institutional Logo Layout */
+/* =========================================
+   INSTITUTIONAL LOGOS (STATIC & MODAL)
+   ========================================= */
 .inst-logo-container {
     display: flex;
     gap: 15px;
-    margin-top: 15px;
     align-items: center;
-    flex-wrap: wrap; /* Keeps them neat on mobile screens */
+    flex-wrap: wrap; 
 }
 
 .inst-logo {
-    height: 22px; /* Locks all logos to the exact same visual weight */
+    height: 22px; 
     width: auto;
     object-fit: contain;
-    filter: grayscale(100%) contrast(1.2); /* Makes them stark black/white */
-    opacity: 0.6; /* Subdues them so they don't overpower your text */
-    transition: opacity 0.3s ease, filter 0.3s ease;
+    /* Removed transparency and hover physics to make them solid and static */
 }
 
-.inst-logo:hover {
-    opacity: 1;
-    filter: grayscale(0%) contrast(1); /* Brings back full color on hover */
+.modal-logos-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    margin-bottom: 2vh;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.modal-logo {
+    height: 18px; /* Slightly smaller than header logos for visual hierarchy */
+    width: auto;
+    object-fit: contain;
 }
 
 .vault-grid {
