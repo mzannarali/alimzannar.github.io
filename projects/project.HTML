@@ -215,14 +215,13 @@
                     </div>
                 `;
 
-                const gridContainer = document.getElementById('dynamic-vault-grid');
+               const gridContainer = document.getElementById('dynamic-vault-grid');
                 trackData.vaultItems.forEach((item, index) => {
                     const article = document.createElement('article');
                     article.className = 'vault-item reveal-up';
                     article.style.transitionDelay = `${(index % 3) * 0.1}s`; 
                     
                     const correctedVideo = item.videoSrc ? `../${item.videoSrc}` : "";
-                    
                     const galleryString = item.gallery ? item.gallery.join(',') : (item.renderSrc ? item.renderSrc : "");
                     const projectLogosString = item.projectLogos ? item.projectLogos.join(',') : "";
 
@@ -235,12 +234,18 @@
                     article.setAttribute('data-logos', projectLogosString);
 
                     let mediaHTML = "";
+                    
+                    // FIX: Checking for GIFs vs MP4s to prevent broken thumbnails
                     if (correctedVideo) {
-                        mediaHTML += `<video src="${correctedVideo}" loop muted playsinline preload="metadata"></video>`;
+                        const ext = correctedVideo.split('.').pop().toLowerCase();
+                        if (ext === 'mp4' || ext === 'webm') {
+                            mediaHTML += `<video src="${correctedVideo}" loop muted playsinline preload="metadata"></video>`;
+                        } else {
+                            // If it's a .gif or .jpg placed in the video field, render as an image
+                            mediaHTML += `<img src="${correctedVideo}" alt="${item.title}">`;
+                        }
                     } else if (item.gallery && item.gallery.length > 0) {
                         mediaHTML += `<img src="../${item.gallery[0]}" alt="${item.title}">`;
-                    } else if (item.renderSrc) {
-                        mediaHTML += `<img src="../${item.renderSrc}" alt="${item.title}">`;
                     }
 
                     article.innerHTML = `
@@ -254,7 +259,7 @@
                         </div>
                     `;
                     
-                    // Plays the video ONLY when hovered over
+                    // Plays the video ONLY when hovered over (Will ignore GIFs)
                     article.addEventListener('mouseenter', () => {
                         const vid = article.querySelector('video');
                         if(vid) vid.play();

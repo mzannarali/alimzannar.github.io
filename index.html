@@ -172,7 +172,7 @@
         }
         animateTextVoxels();
 
-        // =========================================
+       // =========================================
         // 5. JSON FETCH & DROPDOWN ENGINE
         // =========================================
         const projectListContainer = document.getElementById('dynamic-project-list');
@@ -181,21 +181,26 @@
             .then(response => response.json())
             .then(data => {
                 data.forEach((track, index) => {
-                    // 1. Build the Master Wrapper Link (NO DUPLICATES)
                     const wrapper = document.createElement('a');
                     wrapper.href = `projects/project.HTML?id=${track.trackId}`; 
                     wrapper.className = 'project-wrapper reveal-up';
                     wrapper.style.transitionDelay = `${index * 0.1}s`;
 
-                    // Auto-center the row when hovered so the title never gets pushed out of view
+                    // FIX: Precision Scroll Logic
                     wrapper.addEventListener('mouseenter', function() {
-                        const rect = this.getBoundingClientRect();
-                        if (rect.top < 100 || rect.bottom > window.innerHeight - 100) {
-                            this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }
+                        // Wait 300ms for the CSS accordion to physically expand
+                        setTimeout(() => {
+                            const rect = this.getBoundingClientRect();
+                            const navOffset = 100; // Height of your top nav bar
+                            
+                            // If the expansion pushed the title up under the nav bar, nudge it down
+                            if (rect.top < navOffset) {
+                                const scrollPosition = window.scrollY + rect.top - navOffset - 20;
+                                window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                            }
+                        }, 300);
                     });
 
-                    // 2. Build the Text Row
                     const rowText = `
                         <div class="project-row">
                             <span class="row-title">${track.trackTitle}</span>
@@ -204,7 +209,6 @@
                         </div>
                     `;
 
-                    // 3. Build the Dropdown Media
                     let mediaContent = '';
                     if (track.previewMedia && track.previewMedia !== "") {
                         const ext = track.previewMedia.split('.').pop().toLowerCase();
@@ -224,7 +228,6 @@
                         </div>
                     `;
 
-                    // 4. Inject into the DOM
                     wrapper.innerHTML = rowText + dropdownHTML;
                     projectListContainer.appendChild(wrapper);
                     
@@ -232,6 +235,5 @@
                 });
             })
             .catch(err => console.error('Error loading database:', err));
-    </script>
 </body>
 </html>
