@@ -190,6 +190,20 @@
                     wrapper.href = `projects/project.HTML?id=${track.trackId}`; 
                     wrapper.className = 'project-wrapper reveal-up';
                     wrapper.style.transitionDelay = `${index * 0.1}s`;
+                    // 1. Build the Master Wrapper Link
+                    const wrapper = document.createElement('a');
+                    wrapper.href = `projects/project.HTML?id=${track.trackId}`; 
+                    wrapper.className = 'project-wrapper reveal-up';
+                    wrapper.style.transitionDelay = `${index * 0.1}s`;
+
+                    // FIX: Auto-center the row when hovered so the title never gets pushed out of view
+                    wrapper.addEventListener('mouseenter', function() {
+                        const rect = this.getBoundingClientRect();
+                        // If the row is too close to the top or bottom, smoothly center it
+                        if (rect.top < 100 || rect.bottom > window.innerHeight - 100) {
+                            this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    });
 
                     // 2. Build the Text Row
                     const rowText = `

@@ -138,7 +138,7 @@
             const modal = document.getElementById('data-modal');
             const closeModal = document.getElementById('close-modal');
             const mTitle = document.getElementById('modal-title');
-            const mLogos = document.getElementById('modal-logos'); // Target for logos
+            const mLogos = document.getElementById('modal-logos');
             const mSoftware = document.getElementById('modal-software');
             const mTeam = document.getElementById('modal-team');
             const mDesc = document.getElementById('modal-desc');
@@ -151,7 +151,6 @@
                     mTeam.innerText = item.getAttribute('data-team');
                     mDesc.innerText = item.getAttribute('data-desc');
 
-                    // Inject specific project logos
                     mLogos.innerHTML = '';
                     const logosRaw = item.getAttribute('data-logos');
                     if (logosRaw) {
@@ -160,18 +159,26 @@
                         });
                     }
 
-                    const videoSrc = item.getAttribute('data-video');
-                    const renderSrc = item.getAttribute('data-render'); 
-
                     mMedia.innerHTML = ''; 
+
+                    // 1. Inject the Video (if it exists) into the modal
+                    const videoSrc = item.getAttribute('data-video');
                     if (videoSrc && videoSrc !== "") {
                         const vid = document.createElement('video');
                         vid.src = videoSrc; vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
                         mMedia.appendChild(vid);
                     }
-                    if (renderSrc && renderSrc !== "") {
-                        const img = document.createElement('img'); img.src = renderSrc;
-                        mMedia.appendChild(img);
+
+                    // 2. Inject MULTIPLE IMAGES into the modal
+                    const galleryRaw = item.getAttribute('data-gallery');
+                    if (galleryRaw && galleryRaw !== "") {
+                        galleryRaw.split(',').forEach(imgSrc => {
+                            if (imgSrc) {
+                                const img = document.createElement('img'); 
+                                img.src = `../${imgSrc}`;
+                                mMedia.appendChild(img);
+                            }
+                        });
                     }
 
                     modal.classList.add('is-active');
@@ -211,7 +218,6 @@
                         `</div>`;
                 }
 
-                // Removed the word "INSTITUTION" and span from the third block
                 document.getElementById('dynamic-meta').innerHTML = `
                     <div class="meta-group">TYPOLOGY<span>${trackData.typology}</span></div>
                     <div class="meta-group">TIMELINE<span>${trackData.timeline}</span></div>
@@ -227,13 +233,13 @@
                     article.style.transitionDelay = `${(index % 3) * 0.1}s`; 
                     
                     const correctedVideo = item.videoSrc ? `../${item.videoSrc}` : "";
-                    const correctedRender = item.renderSrc ? `../${item.renderSrc}` : "";
                     
-                    // Collapse the individual project logos array into a single string for the HTML attribute
+                    // NEW: Handles an array of multiple images from JSON
+                    const galleryString = item.gallery ? item.gallery.join(',') : (item.renderSrc ? item.renderSrc : "");
                     const projectLogosString = item.projectLogos ? item.projectLogos.join(',') : "";
 
                     article.setAttribute('data-video', correctedVideo);
-                    article.setAttribute('data-render', correctedRender);
+                    article.setAttribute('data-gallery', galleryString); // Attaches all images to the modal
                     article.setAttribute('data-title', item.title);
                     article.setAttribute('data-software', item.software);
                     article.setAttribute('data-team', item.team);
@@ -241,8 +247,16 @@
                     article.setAttribute('data-logos', projectLogosString);
 
                     let mediaHTML = "";
-                    if (correctedVideo) mediaHTML += `<video src="${correctedVideo}" loop muted playsinline preload="metadata"></video>`;
-                    if (correctedRender) mediaHTML += `<img src="${correctedRender}" alt="${item.title}">`;
+                    // The thumbnail shows the video if it exists, otherwise it shows the FIRST image in the gallery
+                    if (correctedVideo) {
+                        // Notice autoplay is REMOVED from the video tag here
+                        mediaHTML += `<video src="${correctedVideo}" loop muted playsinline preload="metadata"></video>`;
+                    } else if (item.gallery && item.gallery.length > 0) {
+                        mediaHTML += `<img src="../${item.gallery[0]}" alt="${item.title}">`;
+                    } else if (item.renderSrc) {
+                        // Fallback for your old JSON formatting
+                        mediaHTML += `<img src="../${item.renderSrc}" alt="${item.title}">`;
+                    }
 
                     article.innerHTML = `
                         <div class="media-wrapper">
@@ -254,11 +268,21 @@
                             <span class="item-software">${item.software.split('/')[0]}</span>
                         </div>
                     `;
+                    
+                    // NEW: Play Video strictly on Hover
+                    article.addEventListener('mouseenter', () => {
+                        const vid = article.querySelector('video');
+                        if(vid) vid.play();
+                    });
+                    article.addEventListener('mouseleave', () => {
+                        const vid = article.querySelector('video');
+                        if(vid) vid.pause();
+                    });
+
                     gridContainer.appendChild(article);
                     scrollObserver.observe(article);
                 });
 
-                document.querySelectorAll('.vault-item video').forEach(v => videoObserver.observe(v));
                 attachModalLogic(); 
             })
             .catch(err => console.error("Database error:", err));
