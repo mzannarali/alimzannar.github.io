@@ -62,10 +62,7 @@
         </div>
     </footer>
 
-    <div id="cursor-media">
-        <div class="media-container" id="media-container"></div>
-        <div id="media-glitch-mask"></div>
-    </div>
+  
 
     <script>
         // 1. FLUID SCROLL OBSERVER
@@ -127,42 +124,7 @@
         }
         drawStaticNoise();
 
-        // 4. CURSOR HOVER LOGIC (Single Ring + Throttled Speed)
-        const cursorMedia = document.getElementById('cursor-media');
-        const mediaContainer = document.getElementById('media-container');
-        const maskGrid = document.getElementById('media-glitch-mask');
-        const maskCells = [];
-
-        for(let i=0; i<144; i++) {
-            let cell = document.createElement('div');
-            let row = Math.floor(i / 12); let col = i % 12;
-            
-            // MATH FIX: Only target the absolute outer 1-pixel edge
-            if(row === 0 || row === 11 || col === 0 || col === 11) maskCells.push(cell);
-            
-            maskGrid.appendChild(cell);
-        }
-
-        let mediaX = 0; let mediaY = 0; let frameCount = 0;
-
-        function animateMedia() {
-            mediaX += (mouseX - mediaX) * 0.15;
-            mediaY += (mouseY - mediaY) * 0.15;
-            cursorMedia.style.transform = `translate(${mediaX - 200}px, ${mediaY - 200}px)`; // Adjusted for 400px width
-
-            frameCount++;
-            // MATH FIX: Throttled glitch speed by dividing frame calls
-            if (cursorMedia.style.opacity === '1' && frameCount % 6 === 0) {
-                maskCells.forEach(cell => {
-                    if (Math.random() > 0.4) {
-                        cell.style.backgroundColor = '#ffffff';
-                        cell.style.opacity = Math.random() > 0.6 ? '1' : '0';
-                    }
-                });
-            }
-            requestAnimationFrame(animateMedia);
-        }
-        animateMedia();
+        
 
         // 5. VOXEL DOM ENGINE
         let allChars = []; 
@@ -214,46 +176,56 @@
         }
         animateTextVoxels();
 
-        // 6. JSON FETCH ENGINE
+// =========================================
+        // 6. JSON FETCH & DROPDOWN ENGINE
+        // =========================================
         const projectListContainer = document.getElementById('dynamic-project-list');
 
         fetch('portfolio-db.json')
             .then(response => response.json())
             .then(data => {
                 data.forEach((track, index) => {
-                    const a = document.createElement('a');
-                    a.href = `projects/${track.trackId}.HTML`; 
-                    a.className = 'project-row reveal-up'; // Add Reveal Class
-                    a.setAttribute('data-media', track.previewMedia);
-                    // Slight animation delay stagger based on row index
-                    a.style.transitionDelay = `${index * 0.1}s`;
-                    a.innerHTML = `<span class="row-title">${track.trackTitle}</span><span class="desc">${track.typology}</span><span>${track.timeline}</span>`;
-                    projectListContainer.appendChild(a);
-                    
-                    // Observe the new row
-                    scrollObserver.observe(a);
-                });
+                    // 1. Build the Master Wrapper Link
+                    const wrapper = document.createElement('a');
+                    wrapper.href = `projects/${track.trackId}.HTML`; 
+                    wrapper.className = 'project-wrapper reveal-up';
+                    wrapper.style.transitionDelay = `${index * 0.1}s`;
 
-                document.querySelectorAll('.project-row').forEach(row => {
-                    row.addEventListener('mouseenter', () => {
-                        const mediaSrc = row.getAttribute('data-media');
-                        if (mediaSrc !== "" && mediaContainer.getAttribute('data-loaded') !== mediaSrc) {
-                            mediaContainer.setAttribute('data-loaded', mediaSrc);
-                            mediaContainer.innerHTML = ''; 
-                            const ext = mediaSrc.split('.').pop().toLowerCase();
-                            if (ext === 'mp4' || ext === 'webm') {
-                                const video = document.createElement('video');
-                                video.src = mediaSrc; video.autoplay = true; video.loop = true; video.muted = true; video.playsInline = true;
-                                mediaContainer.appendChild(video);
-                            } else {
-                                const img = document.createElement('img'); img.src = mediaSrc;
-                                mediaContainer.appendChild(img);
-                            }
+                    // 2. Build the Text Row
+                    const rowText = `
+                        <div class="project-row">
+                            <span class="row-title">${track.trackTitle}</span>
+                            <span class="desc">${track.typology}</span>
+                            <span>${track.timeline}</span>
+                        </div>
+                    `;
+
+                    // 3. Build the Dropdown Media
+                    let mediaContent = '';
+                    if (track.previewMedia && track.previewMedia !== "") {
+                        const ext = track.previewMedia.split('.').pop().toLowerCase();
+                        if (ext === 'mp4' || ext === 'webm') {
+                            // Autoplay is explicitly set here so the video runs inside the accordion
+                            mediaContent = `<video src="${track.previewMedia}" loop muted playsinline autoplay></video>`;
+                        } else {
+                            mediaContent = `<img src="${track.previewMedia}" alt="${track.trackTitle}">`;
                         }
-                        cursorMedia.style.opacity = '1';
-                        cursorMedia.style.transform = `translate(${mediaX - 200}px, ${mediaY - 200}px) scale(1.05)`;
-                    });
-                    row.addEventListener('mouseleave', () => { cursorMedia.style.opacity = '0'; });
+                    }
+
+                    const dropdownHTML = `
+                        <div class="project-dropdown">
+                            <div class="dropdown-inner">
+                                ${mediaContent}
+                            </div>
+                        </div>
+                    `;
+
+                    // 4. Inject into the DOM
+                    wrapper.innerHTML = rowText + dropdownHTML;
+                    projectListContainer.appendChild(wrapper);
+                    
+                    // Observe the wrapper for scroll animations
+                    scrollObserver.observe(wrapper);
                 });
             })
             .catch(err => console.error('Error loading database:', err));

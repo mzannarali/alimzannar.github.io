@@ -191,25 +191,79 @@ body {
 .project-row:hover .desc { color: #000; }
 
 /* =========================================
-   CURSOR MEDIA & MASK (UPDATED SQUARING)
+   INDEX: DROPDOWN ACCORDION ENGINE
    ========================================= */
-#cursor-media {
-    position: fixed; top: 0; left: 0;
-    width: 400px; height: 400px; /* SQUARED */
-    pointer-events: none; opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9);
-    transition: opacity 0.4s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 5;
+.project-wrapper {
+    display: block; /* Wraps everything as a clickable link */
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid #e5e5e5;
+    transition: border-color 0.4s ease;
+    cursor: pointer;
 }
-.media-container {
-    position: relative; width: 100%; height: 100%; background-color: #000; z-index: 1; 
+
+.project-wrapper:hover {
+    border-color: #000;
 }
-.media-container video, .media-container img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
+
+/* Redefining the row without its own border */
+.project-row {
+    display: grid;
+    grid-template-columns: 3fr 2fr 1fr;
+    padding: 3.5vh 0;
+    font-size: 2.5vw;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    pointer-events: none; /* Lets the wrapper handle the hover/click */
 }
-#media-glitch-mask {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(12, 1fr); z-index: 2; 
+
+.project-row .row-title { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+.project-wrapper:hover .project-row .row-title { transform: translateX(1.5vw); }
+.project-wrapper:hover .project-row { color: #000; }
+.project-row .desc { font-size: 1rem; font-weight: 400; align-self: center; color: #666; text-transform: none; transition: color 0.4s; }
+.project-wrapper:hover .project-row .desc { color: #000; }
+
+/* The Animated Dropdown Magic */
+.project-dropdown {
+    display: grid;
+    grid-template-rows: 0fr; /* Mathematical baseline for closed state */
+    transition: grid-template-rows 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.project-wrapper:hover .project-dropdown {
+    grid-template-rows: 1fr; /* Mathematically expands to fit the inner content */
+}
+
+/* The Cinematic Horizontal Container */
+.dropdown-inner {
+    min-height: 0; /* Required for CSS grid animation */
+    width: 100%;
+    aspect-ratio: 21 / 9; /* Ultra-wide horizontal proportion */
+    background-color: #000;
+    overflow: hidden;
+    margin-bottom: 0;
+    opacity: 0;
+    transition: margin-bottom 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+}
+
+.project-wrapper:hover .dropdown-inner {
+    margin-bottom: 3.5vh; /* Adds spacing below the video when open */
+    opacity: 1;
+}
+
+.dropdown-inner video, .dropdown-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Forces media to fill the wide rectangle without distortion */
+    display: block;
+    transform: scale(1.05); /* Slight zoom for physics effect */
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-wrapper:hover .dropdown-inner video,
+.project-wrapper:hover .dropdown-inner img {
+    transform: scale(1); /* Smoothly snaps to true scale on reveal */
 }
 
 /* =========================================
