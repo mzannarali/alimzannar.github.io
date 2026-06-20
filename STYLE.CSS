@@ -362,7 +362,7 @@ body {
 }
 
 .inst-logo {
-    height: 22px; 
+    height: 36px; 
     width: auto;
     object-fit: contain;
     /* Removed transparency and hover physics to make them solid and static */
@@ -378,7 +378,7 @@ body {
 }
 
 .modal-logo {
-    height: 18px; /* Slightly smaller than header logos for visual hierarchy */
+    height: 28px; /* Slightly smaller than header logos for visual hierarchy */
     width: auto;
     object-fit: contain;
 }
