@@ -69,12 +69,10 @@
         const urlParams = new URLSearchParams(window.location.search);
         const CURRENT_TRACK_ID = urlParams.get('id'); 
         
-        // Failsafe: If someone goes to project.HTML without an ID, send them back home
         if (!CURRENT_TRACK_ID) {
             window.location.href = "../index.HTML";
         }
         
-        // Scroll Observer for Fluidity
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('is-revealed');
@@ -127,13 +125,6 @@
         }
         animateTextVoxels();
 
-        let videoObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.play().catch(e => console.log("Autoplay prevented")); } 
-                else { entry.target.pause(); }
-            });
-        }, { root: null, rootMargin: '0px', threshold: 0.1 });
-
         function attachModalLogic() {
             const modal = document.getElementById('data-modal');
             const closeModal = document.getElementById('close-modal');
@@ -161,7 +152,6 @@
 
                     mMedia.innerHTML = ''; 
 
-                    // 1. Inject the Video (if it exists) into the modal
                     const videoSrc = item.getAttribute('data-video');
                     if (videoSrc && videoSrc !== "") {
                         const vid = document.createElement('video');
@@ -169,7 +159,6 @@
                         mMedia.appendChild(vid);
                     }
 
-                    // 2. Inject MULTIPLE IMAGES into the modal
                     const galleryRaw = item.getAttribute('data-gallery');
                     if (galleryRaw && galleryRaw !== "") {
                         galleryRaw.split(',').forEach(imgSrc => {
@@ -234,12 +223,11 @@
                     
                     const correctedVideo = item.videoSrc ? `../${item.videoSrc}` : "";
                     
-                    // NEW: Handles an array of multiple images from JSON
                     const galleryString = item.gallery ? item.gallery.join(',') : (item.renderSrc ? item.renderSrc : "");
                     const projectLogosString = item.projectLogos ? item.projectLogos.join(',') : "";
 
                     article.setAttribute('data-video', correctedVideo);
-                    article.setAttribute('data-gallery', galleryString); // Attaches all images to the modal
+                    article.setAttribute('data-gallery', galleryString); 
                     article.setAttribute('data-title', item.title);
                     article.setAttribute('data-software', item.software);
                     article.setAttribute('data-team', item.team);
@@ -247,14 +235,11 @@
                     article.setAttribute('data-logos', projectLogosString);
 
                     let mediaHTML = "";
-                    // The thumbnail shows the video if it exists, otherwise it shows the FIRST image in the gallery
                     if (correctedVideo) {
-                        // Notice autoplay is REMOVED from the video tag here
                         mediaHTML += `<video src="${correctedVideo}" loop muted playsinline preload="metadata"></video>`;
                     } else if (item.gallery && item.gallery.length > 0) {
                         mediaHTML += `<img src="../${item.gallery[0]}" alt="${item.title}">`;
                     } else if (item.renderSrc) {
-                        // Fallback for your old JSON formatting
                         mediaHTML += `<img src="../${item.renderSrc}" alt="${item.title}">`;
                     }
 
@@ -269,7 +254,7 @@
                         </div>
                     `;
                     
-                    // NEW: Play Video strictly on Hover
+                    // Plays the video ONLY when hovered over
                     article.addEventListener('mouseenter', () => {
                         const vid = article.querySelector('video');
                         if(vid) vid.play();

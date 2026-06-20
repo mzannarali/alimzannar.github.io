@@ -62,8 +62,6 @@
         </div>
     </footer>
 
-  
-
     <script>
         // 1. FLUID SCROLL OBSERVER
         const scrollObserver = new IntersectionObserver((entries) => {
@@ -124,9 +122,7 @@
         }
         drawStaticNoise();
 
-        
-
-        // 5. VOXEL DOM ENGINE
+        // 4. VOXEL DOM ENGINE
         let allChars = []; 
         function buildVoxels(element) {
             const text = element.innerText; element.innerHTML = ''; 
@@ -176,8 +172,8 @@
         }
         animateTextVoxels();
 
-// =========================================
-        // 6. JSON FETCH & DROPDOWN ENGINE
+        // =========================================
+        // 5. JSON FETCH & DROPDOWN ENGINE
         // =========================================
         const projectListContainer = document.getElementById('dynamic-project-list');
 
@@ -185,21 +181,15 @@
             .then(response => response.json())
             .then(data => {
                 data.forEach((track, index) => {
-                    // 1. Build the Master Wrapper Link
-                    const wrapper = document.createElement('a');
-                    wrapper.href = `projects/project.HTML?id=${track.trackId}`; 
-                    wrapper.className = 'project-wrapper reveal-up';
-                    wrapper.style.transitionDelay = `${index * 0.1}s`;
-                    // 1. Build the Master Wrapper Link
+                    // 1. Build the Master Wrapper Link (NO DUPLICATES)
                     const wrapper = document.createElement('a');
                     wrapper.href = `projects/project.HTML?id=${track.trackId}`; 
                     wrapper.className = 'project-wrapper reveal-up';
                     wrapper.style.transitionDelay = `${index * 0.1}s`;
 
-                    // FIX: Auto-center the row when hovered so the title never gets pushed out of view
+                    // Auto-center the row when hovered so the title never gets pushed out of view
                     wrapper.addEventListener('mouseenter', function() {
                         const rect = this.getBoundingClientRect();
-                        // If the row is too close to the top or bottom, smoothly center it
                         if (rect.top < 100 || rect.bottom > window.innerHeight - 100) {
                             this.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
@@ -219,7 +209,6 @@
                     if (track.previewMedia && track.previewMedia !== "") {
                         const ext = track.previewMedia.split('.').pop().toLowerCase();
                         if (ext === 'mp4' || ext === 'webm') {
-                            // Autoplay is explicitly set here so the video runs inside the accordion
                             mediaContent = `<video src="${track.previewMedia}" loop muted playsinline autoplay></video>`;
                         } else {
                             mediaContent = `<img src="${track.previewMedia}" alt="${track.trackTitle}">`;
@@ -239,7 +228,6 @@
                     wrapper.innerHTML = rowText + dropdownHTML;
                     projectListContainer.appendChild(wrapper);
                     
-                    // Observe the wrapper for scroll animations
                     scrollObserver.observe(wrapper);
                 });
             })

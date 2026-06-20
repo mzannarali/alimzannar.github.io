@@ -184,17 +184,16 @@ body {
     position: relative; z-index: 10; text-decoration: none; color: inherit; cursor: pointer;
 }
 .project-row .row-title { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-.project-row:hover .row-title { transform: translateX(1.5vw); }
-.project-row:hover { color: #000; border-color: #000; }
-.project-row span { pointer-events: none; }
+.project-wrapper:hover .project-row .row-title { transform: translateX(1.5vw); }
+.project-wrapper:hover .project-row { color: #000; }
 .project-row .desc { font-size: 1rem; font-weight: 400; align-self: center; color: #666; text-transform: none; transition: color 0.4s; }
-.project-row:hover .desc { color: #000; }
+.project-wrapper:hover .project-row .desc { color: #000; }
 
 /* =========================================
    INDEX: DROPDOWN ACCORDION ENGINE
    ========================================= */
 .project-wrapper {
-    display: block; /* Wraps everything as a clickable link */
+    display: block; 
     text-decoration: none;
     color: inherit;
     border-bottom: 1px solid #e5e5e5;
@@ -202,40 +201,19 @@ body {
     cursor: pointer;
 }
 
-.project-wrapper:hover {
-    border-color: #000;
-}
+.project-wrapper:hover { border-color: #000; }
 
-/* Redefining the row without its own border */
-.project-row {
-    display: grid;
-    grid-template-columns: 3fr 2fr 1fr;
-    padding: 3.5vh 0;
-    font-size: 2.5vw;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    pointer-events: none; /* Lets the wrapper handle the hover/click */
-}
-
-.project-row .row-title { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-.project-wrapper:hover .project-row .row-title { transform: translateX(1.5vw); }
-.project-wrapper:hover .project-row { color: #000; }
-.project-row .desc { font-size: 1rem; font-weight: 400; align-self: center; color: #666; text-transform: none; transition: color 0.4s; }
-.project-wrapper:hover .project-row .desc { color: #000; }
-
-/* The Animated Dropdown Magic */
 .project-dropdown {
     display: grid;
-    grid-template-rows: 0fr; /* Mathematical baseline for closed state */
+    grid-template-rows: 0fr; 
     transition: grid-template-rows 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;
 }
 
 .project-wrapper:hover .project-dropdown {
-    grid-template-rows: 1fr; /* Mathematically expands to fit the inner content */
+    grid-template-rows: 1fr; 
 }
 
-/* The Cinematic Horizontal Container */
 .dropdown-inner {
     min-height: 0; 
     width: 100%;
@@ -244,7 +222,7 @@ body {
     overflow: hidden;
     margin-bottom: 0;
     opacity: 0;
-    position: relative; /* REQUIRED FOR THE BADGE */
+    position: relative; 
     transition: margin-bottom 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
 }
 
@@ -267,13 +245,11 @@ body {
     transform: scale(1); 
 }
 
-/* Secondary Hover: Dims the video when the mouse moves over it */
 .dropdown-inner:hover video, 
 .dropdown-inner:hover img {
     filter: brightness(0.7); 
 }
 
-/* The [ EXPLORE TRACK ] UI Indicator */
 .track-hover-indicator {
     position: absolute;
     top: 20px;
@@ -286,7 +262,7 @@ body {
     font-family: "Courier New", Courier, monospace;
     opacity: 0;
     transform: translateY(-10px);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; /* Delayed so it drops in after the video opens */
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; 
     z-index: 5;
     pointer-events: none;
 }
@@ -296,29 +272,9 @@ body {
     transform: translateY(0);
 }
 
-/* Inverts the badge when the video is hovered */
 .dropdown-inner:hover .track-hover-indicator {
     background-color: #fff;
     color: #000;
-}
-
-.project-wrapper:hover .dropdown-inner {
-    margin-bottom: 3.5vh; /* Adds spacing below the video when open */
-    opacity: 1;
-}
-
-.dropdown-inner video, .dropdown-inner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Forces media to fill the wide rectangle without distortion */
-    display: block;
-    transform: scale(1.05); /* Slight zoom for physics effect */
-    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.project-wrapper:hover .dropdown-inner video,
-.project-wrapper:hover .dropdown-inner img {
-    transform: scale(1); /* Smoothly snaps to true scale on reveal */
 }
 
 /* =========================================
@@ -351,38 +307,27 @@ body {
     border-bottom: 1px solid #000; font-size: 0.75rem; font-weight: 700; color: #666;
 }
 .meta-group span { display: block; color: #000; margin-top: 5px; font-size: 1rem; font-weight: 600; }
+
 /* =========================================
    INSTITUTIONAL LOGOS (STATIC & MODAL)
    ========================================= */
 .inst-logo-container {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    flex-wrap: wrap; 
+    display: flex; gap: 15px; align-items: center; flex-wrap: wrap; margin-top: 10px;
 }
-
 .inst-logo {
-    height: 36px; 
-    width: auto;
-    object-fit: contain;
-    /* Removed transparency and hover physics to make them solid and static */
+    height: 36px; width: auto; object-fit: contain;
 }
 
 .modal-logos-container {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-    margin-bottom: 2vh;
-    align-items: center;
-    flex-wrap: wrap;
+    display: flex; gap: 15px; margin-top: 10px; margin-bottom: 2vh; align-items: center; flex-wrap: wrap;
 }
-
 .modal-logo {
-    height: 28px; /* Slightly smaller than header logos for visual hierarchy */
-    width: auto;
-    object-fit: contain;
+    height: 28px; width: auto; object-fit: contain;
 }
 
+/* =========================================
+   VAULT GRID DISPLAY
+   ========================================= */
 .vault-grid {
     padding: 10vh 30px 15vh 30px; display: grid;
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 4vw;
@@ -392,7 +337,7 @@ body {
 /* Fluid Hover Stacking Logic & Aspect Ratio Lock */
 .media-wrapper {
     width: 100%; 
-    aspect-ratio: 16 / 9; /* FORCES EVERY ITEM TO BE EXACTLY THE SAME PROPORTION */
+    aspect-ratio: 16 / 9; 
     background-color: #000; 
     position: relative; 
     overflow: hidden;
@@ -403,7 +348,7 @@ body {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%; 
-    object-fit: cover; /* CROPS IMAGES/VIDEOS PERFECTLY TO FILL THE BOX */
+    object-fit: cover; 
     display: block; background-color: #f4f4f4;
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
     transform: scale(1.001); 
