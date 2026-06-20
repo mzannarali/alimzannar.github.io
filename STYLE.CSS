@@ -237,14 +237,69 @@ body {
 
 /* The Cinematic Horizontal Container */
 .dropdown-inner {
-    min-height: 0; /* Required for CSS grid animation */
+    min-height: 0; 
     width: 100%;
-    aspect-ratio: 21 / 9; /* Ultra-wide horizontal proportion */
+    aspect-ratio: 21 / 9; 
     background-color: #000;
     overflow: hidden;
     margin-bottom: 0;
     opacity: 0;
+    position: relative; /* REQUIRED FOR THE BADGE */
     transition: margin-bottom 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+}
+
+.project-wrapper:hover .dropdown-inner {
+    margin-bottom: 3.5vh; 
+    opacity: 1;
+}
+
+.dropdown-inner video, .dropdown-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+    transform: scale(1.05); 
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.project-wrapper:hover .dropdown-inner video,
+.project-wrapper:hover .dropdown-inner img {
+    transform: scale(1); 
+}
+
+/* Secondary Hover: Dims the video when the mouse moves over it */
+.dropdown-inner:hover video, 
+.dropdown-inner:hover img {
+    filter: brightness(0.7); 
+}
+
+/* The [ EXPLORE TRACK ] UI Indicator */
+.track-hover-indicator {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #000;
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: "Courier New", Courier, monospace;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; /* Delayed so it drops in after the video opens */
+    z-index: 5;
+    pointer-events: none;
+}
+
+.project-wrapper:hover .track-hover-indicator {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Inverts the badge when the video is hovered */
+.dropdown-inner:hover .track-hover-indicator {
+    background-color: #fff;
+    color: #000;
 }
 
 .project-wrapper:hover .dropdown-inner {
