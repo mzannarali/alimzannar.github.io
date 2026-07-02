@@ -211,7 +211,7 @@
         "institutionLogos": [
             "assets/logo/ICD.svg",
             "assets/logo/ITKE.svg",
-            "assets/logo/IntCDC.jpg"
+            "assets/logo/IntCDC.svg"
         ],
         "previewMedia": "assets/videos/fabrication-preview.mp4",
         "heroLines": [
@@ -227,7 +227,7 @@
                 "description": "Research exploring the complex geometric logic and pathfinding syntax required for robotic fibre winding. The study translates artistic geometries into fabricatable KUKA kinematic simulations.",
                 "videoSrc": "assets/videos/robotic-skirt.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.svg"]
             },
             {
                 "title": "Human-Robot Collaborative Wax Deposition",
@@ -236,7 +236,7 @@
                 "description": "An adaptive robotic path feedback loop designed for complex wax aggregation. The system utilizes custom end-effectors and real-time data to allow human intervention during autonomous robotic deposition.",
                 "videoSrc": "assets/videos/wax-deposition.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.svg"]
             }
         ]
     },
@@ -249,7 +249,7 @@
         "institutionLogos": [
             "assets/logo/ICD.svg",
             "assets/logo/ITKE.svg",
-            "assets/logo/IntCDC.jpg"
+            "assets/logo/IntCDC.svg"
         ],
         "previewMedia": "assets/videos/physics-preview.mp4",
         "heroLines": [
@@ -265,7 +265,7 @@
                 "description": "A form-finding algorithm generating differentiated net topologies. The computational pipeline dynamically adjusts rope mesh networks based on structural tension requirements and anchor distribution prior to physical actuation.",
                 "videoSrc": "assets/videos/differentiated-nets.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.svg"]
             },
             {
                 "title": "Continuous Network Structural Analysis",
@@ -274,7 +274,7 @@
                 "description": "Finite Element Analysis (FEA) applied to a large-scale net installation. The simulation analyzes joint stress and predicts the large-deformation behavior of continuous ropes under dynamic loads.",
                 "videoSrc": "assets/videos/karamba-net.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.svg"]
             },
             {
                 "title": "Structural Shell & Playground Optimization",
@@ -283,7 +283,7 @@
                 "description": "Utilized Karamba3D to structurally optimize both lightweight shells and complex playground installations. The script iterates through material thicknesses and rib configurations to minimize mass while ensuring structural integrity.",
                 "videoSrc": "assets/videos/karamba-playground.gif",
                 "gallery": ["assets/images/karamba-playground-01.webp","assets/images/karamba-playground-02.webp"],
-                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.svg"]
             },
             {
                 "title": "Agent-Based Emergency Propagation",
@@ -292,7 +292,7 @@
                 "description": "An agent-based model (ABM) simulating fire propagation through a forest density map. The agents react dynamically to topological vectors, fuel loads, and wind data to accurately map high-risk propagation zones.",
                 "videoSrc": "assets/videos/agent-fire.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.svg"]
             }
         ]
     }

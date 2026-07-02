@@ -141,7 +141,9 @@ body {
 }
 
 :root[data-theme="dark"] .nav-logo,
-:root[data-theme="dark"] .bio-logo {
+:root[data-theme="dark"] .bio-logo,
+:root[data-theme="dark"] .inst-logo,
+:root[data-theme="dark"] .modal-logo {
     filter: invert(1);
 }
 
