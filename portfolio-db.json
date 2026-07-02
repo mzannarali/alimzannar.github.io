@@ -6,7 +6,7 @@
         "timeline": "2024–2026",
         "institution": "Professional Practice (BAD)",
         "institutionLogos": [
-            "assets/logo/BAD.jpg"
+            "assets/logo/BAD.svg"
         ],
         "previewMedia": "assets/videos/rationalization-preview.mp4",
         "heroLines": [
@@ -22,7 +22,7 @@
                 "description": "Professional work executed at BAD. Developed a custom computational workflow to generate high-density parametric facade perforations using custom bitmaps. This optimized viewport performance by eliminating the need to render heavy geometric breps during the design phase.",
                 "videoSrc": "assets/videos/kosen-bitmap.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/BAD.jpg"]
+                "projectLogos": ["assets/logo/BAD.svg"]
             },
             {
                 "title": "Fresco Beirut: Algorithmic Mosaic Panelization",
@@ -33,7 +33,7 @@
                 "gallery": [
                     "assets/images/fresco-render.jpg"
                 ],
-                "projectLogos": ["assets/logo/BAD.jpg"]
+                "projectLogos": ["assets/logo/BAD.svg"]
             },
             {
                 "title": "Azha North Coast: Parametric Wave Facade",
@@ -44,7 +44,7 @@
                 "gallery": [
                     "assets/images/azha-published.jpg"
                 ],
-                "projectLogos": ["assets/logo/BAD.jpg"]
+                "projectLogos": ["assets/logo/BAD.svg"]
             }
         ]
     },
@@ -55,9 +55,9 @@
         "timeline": "2025–2026",
         "institution": "Applied Practice & Research",
         "institutionLogos": [
-            "assets/logo/BAD.jpg",
-            "assets/logo/ICD.jpg",
-            "assets/logo/ITKE.jpg"
+            "assets/logo/BAD.svg",
+            "assets/logo/ICD.svg",
+            "assets/logo/ITKE.svg"
         ],
         "previewMedia": "assets/videos/pipeline-preview.mp4",
         "heroLines": [
@@ -73,7 +73,7 @@
                 "description": "A seamless data pipeline translating complex, rationalized NURBS geometry and data trees from Grasshopper directly into native, schedule-ready Revit families and adaptive components.",
                 "videoSrc": "assets/videos/rhino-inside.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/BAD.jpg"]
+                "projectLogos": ["assets/logo/BAD.svg"]
             },
             {
                 "title": "Tower of Gabon: AI-Driven Visualization Pipeline",
@@ -84,7 +84,7 @@
                 "gallery": [
                     "assets/images/gabon-render.jpg"
                 ],
-                "projectLogos": ["assets/logo/BAD.jpg"]
+                "projectLogos": ["assets/logo/BAD.svg"]
             },
             {
                 "title": "Cross-Platform Kinematic Simulation",
@@ -93,7 +93,7 @@
                 "description": "A custom data-connector workflow linking Grasshopper geometry directly to Blender's robust physics engine to accurately simulate the complex motion and collision mechanics of dynamic net installations.",
                 "videoSrc": "assets/videos/blender-connector.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg"]
             }
         ]
     },
@@ -104,7 +104,7 @@
         "timeline": "2024–2026",
         "institution": "Professional Practice (BAD)",
         "institutionLogos": [
-            "assets/logo/BAD.jpg"
+            "assets/logo/BAD.svg"
         ],
         "previewMedia": "assets/videos/optimization-preview.mp4",
         "heroLines": [
@@ -120,7 +120,7 @@
                 "description": "A voxel-based computational massing optimization for a three-tower residential project in the Raouche area of Beirut. The evolutionary solver iterations systematically maximized direct sea views while strictly adhering to complex plot constraints.",
                 "videoSrc": "assets/videos/raouche-voxel.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/BAD.jpg"]
+                "projectLogos": ["assets/logo/BAD.svg"]
             },
             {
                 "title": "2211 Developments: View Analytics & Field Lines",
@@ -129,7 +129,7 @@
                 "description": "A programmatic positioning script that maximizes view visibility between multiple circular towers, coupled with a parametric facade system driven entirely by invisible magnetic field lines.",
                 "videoSrc": "assets/videos/2211-views.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/BAD.jpg"]
+                "projectLogos": ["assets/logo/BAD.svg"]
             },
             {
                 "title": "Ovium: Atrium Solar Gain Analytics",
@@ -138,7 +138,7 @@
                 "description": "Environmental simulation and optimization of an interior atrium designed to maximize natural daylight distribution while mitigating excessive heat gains.",
                 "videoSrc": "assets/videos/ovium-solar.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/BAD.jpg"]
+                "projectLogos": ["assets/logo/BAD.svg"]
             },
             {
                 "title": "Momo: Utility & Documentation Automation",
@@ -147,7 +147,7 @@
                 "description": "A suite of custom studio tools developed to automate tedious AEC workflows. Features include batch PDF plan extraction directly from 3D tower geometry and automated viewport visualization sizing for consistent design reviews.",
                 "videoSrc": "assets/videos/momo-automation.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/BAD.jpg"]
+                "projectLogos": ["assets/logo/BAD.svg"]
             }
         ]
     },
@@ -158,9 +158,9 @@
         "timeline": "2024–2026",
         "institution": "Academic & Professional Research",
         "institutionLogos": [
-            "assets/logo/BAD.jpg",
-            "assets/logo/ICD.jpg",
-            "assets/logo/ITKE.jpg"
+            "assets/logo/BAD.svg",
+            "assets/logo/ICD.svg",
+            "assets/logo/ITKE.svg"
         ],
         "previewMedia": "assets/videos/spatial-preview.mp4",
         "heroLines": [
@@ -187,7 +187,7 @@
                 "description": "A generative masterplan framework heavily influenced by vector field lines and prevailing environmental data to strictly maximize residential views over a coastal beach site.",
                 "videoSrc": "assets/videos/saadiyat-masterplan.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/BAD.jpg"]
+                "projectLogos": ["assets/logo/BAD.svg"]
             },
             {
                 "title": "Socio-Economic Swarm Aggregation",
@@ -209,8 +209,8 @@
         "timeline": "2024–2026",
         "institution": "ICD/ITKE / University of Stuttgart",
         "institutionLogos": [
-            "assets/logo/ICD.jpg",
-            "assets/logo/ITKE.jpg",
+            "assets/logo/ICD.svg",
+            "assets/logo/ITKE.svg",
             "assets/logo/IntCDC.jpg"
         ],
         "previewMedia": "assets/videos/fabrication-preview.mp4",
@@ -227,7 +227,7 @@
                 "description": "Research exploring the complex geometric logic and pathfinding syntax required for robotic fibre winding. The study translates artistic geometries into fabricatable KUKA kinematic simulations.",
                 "videoSrc": "assets/videos/robotic-skirt.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
             },
             {
                 "title": "Human-Robot Collaborative Wax Deposition",
@@ -236,7 +236,7 @@
                 "description": "An adaptive robotic path feedback loop designed for complex wax aggregation. The system utilizes custom end-effectors and real-time data to allow human intervention during autonomous robotic deposition.",
                 "videoSrc": "assets/videos/wax-deposition.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
             }
         ]
     },
@@ -247,8 +247,8 @@
         "timeline": "2024–2026",
         "institution": "ITECH / University of Stuttgart",
         "institutionLogos": [
-            "assets/logo/ICD.jpg",
-            "assets/logo/ITKE.jpg",
+            "assets/logo/ICD.svg",
+            "assets/logo/ITKE.svg",
             "assets/logo/IntCDC.jpg"
         ],
         "previewMedia": "assets/videos/physics-preview.mp4",
@@ -265,7 +265,7 @@
                 "description": "A form-finding algorithm generating differentiated net topologies. The computational pipeline dynamically adjusts rope mesh networks based on structural tension requirements and anchor distribution prior to physical actuation.",
                 "videoSrc": "assets/videos/differentiated-nets.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
             },
             {
                 "title": "Continuous Network Structural Analysis",
@@ -274,7 +274,7 @@
                 "description": "Finite Element Analysis (FEA) applied to a large-scale net installation. The simulation analyzes joint stress and predicts the large-deformation behavior of continuous ropes under dynamic loads.",
                 "videoSrc": "assets/videos/karamba-net.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
             },
             {
                 "title": "Structural Shell & Playground Optimization",
@@ -283,7 +283,7 @@
                 "description": "Utilized Karamba3D to structurally optimize both lightweight shells and complex playground installations. The script iterates through material thicknesses and rib configurations to minimize mass while ensuring structural integrity.",
                 "videoSrc": "assets/videos/karamba-playground.gif",
                 "gallery": ["assets/images/karamba-playground-01.webp","assets/images/karamba-playground-02.webp"],
-                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
             },
             {
                 "title": "Agent-Based Emergency Propagation",
@@ -292,7 +292,7 @@
                 "description": "An agent-based model (ABM) simulating fire propagation through a forest density map. The agents react dynamically to topological vectors, fuel loads, and wind data to accurately map high-risk propagation zones.",
                 "videoSrc": "assets/videos/agent-fire.mp4",
                 "gallery": [],
-                "projectLogos": ["assets/logo/ICD.jpg", "assets/logo/ITKE.jpg", "assets/logo/IntCDC.jpg"]
+                "projectLogos": ["assets/logo/ICD.svg", "assets/logo/ITKE.svg", "assets/logo/IntCDC.jpg"]
             }
         ]
     }
