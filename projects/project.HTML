@@ -32,6 +32,7 @@
     <header class="hero project-hero">
         <h1 class="visually-hidden" id="seo-title">PROJECT VAULT</h1>
         <canvas id="bg-wave"></canvas>
+        <div class="portfolio-badge">[ SELECTED WORKS / RESEARCH VAULT ]</div>
     </header>
 
     <section class="project-meta reveal-up" id="dynamic-meta"></section>
@@ -122,6 +123,10 @@
             targetMouseX = e.clientX; 
             targetMouseY = e.clientY; 
         });
+        document.addEventListener('mouseleave', () => {
+            targetMouseX = -1000;
+            targetMouseY = -1000;
+        });
         document.addEventListener('touchstart', (e) => { 
             targetMouseX = e.touches[0].clientX; 
             targetMouseY = e.touches[0].clientY; 
@@ -129,6 +134,10 @@
         document.addEventListener('touchmove', (e) => { 
             targetMouseX = e.touches[0].clientX; 
             targetMouseY = e.touches[0].clientY; 
+        }, {passive: true});
+        document.addEventListener('touchend', () => {
+            targetMouseX = -1000;
+            targetMouseY = -1000;
         }, {passive: true});
 
         // =========================================
@@ -326,11 +335,6 @@
                 }
                 
                 ctx.fillStyle = this.colorStr;
-                ctx.font = `bold ${this.size}px "Space Mono"`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                
-                // Draw ASCII character instead of a solid rectangle
                 ctx.fillText(char, this.x, this.y);
             }
         }
@@ -404,6 +408,11 @@
 
         function animate(timestamp) {
             ctx.clearRect(0, 0, width, height);
+            
+            // Set state properties once per frame for high performance rendering
+            ctx.font = `bold 16px "Space Mono"`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
             
             // Generate animated wave phase
             const timePhase = timestamp * 0.00003;

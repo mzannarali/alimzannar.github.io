@@ -540,7 +540,7 @@ body {
    ========================================= */
 .project-hero { 
     padding: 16vh 30px 4vh 30px; 
-    min-height: auto;
+    min-height: 55vh;
 }
 
 /* Dynamic sub-page header */
@@ -1070,6 +1070,15 @@ body {
     .contact-links a .link-reveal { font-size: 0.95rem; max-width: 100%; opacity: 1; padding-left: 0; } 
 
     .project-hero h1 { font-size: 10vw; }
+    .project-hero {
+        padding: 12vh 20px 4vh 20px;
+        min-height: 45vh;
+    }
+    .portfolio-badge {
+        bottom: 20px;
+        left: 20px;
+        font-size: 0.75rem;
+    }
     .project-meta { grid-template-columns: 1fr; gap: 15px; padding: 15px 20px; }
     .vault-grid { grid-template-columns: 1fr; gap: 30px; padding: 4vh 20px 10vh 20px; }
     .vault-item-meta { flex-direction: column; gap: 5px; }
