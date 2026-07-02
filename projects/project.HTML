@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Vault | Ali Mzannar</title>
     
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
     <link rel="icon" type="image/svg+xml" href="../assets/logo/am-logo.svg">
     <link rel="stylesheet" href="../STYLE.CSS">
 </head>
@@ -13,15 +18,22 @@
     <nav class="home-nav reveal-up">
         <div class="nav-left">
             <a href="../">← INDEX</a>
+            <span class="nav-divider">|</span>
+            <img src="../assets/logo/am-logo.svg" alt="AMz Logo" class="nav-logo">
         </div>
         <div class="nav-right">
             <span>ALI MZANNAR</span>
             <span class="nav-divider">|</span>
-            <img src="../assets/logo/am-logo.svg" alt="AMz Logo" class="nav-logo">
+            <button class="theme-switch-btn" id="theme-toggle">DARK</button>
         </div>
     </nav>
 
-    <header class="hero project-hero" id="dynamic-hero"></header>
+    <!-- Visually hidden headings for SEO; no visible layout spacers to prevent clashing -->
+    <header class="hero project-hero">
+        <h1 class="visually-hidden" id="seo-title">PROJECT VAULT</h1>
+        <canvas id="bg-wave"></canvas>
+    </header>
+
     <section class="project-meta reveal-up" id="dynamic-meta"></section>
     <section class="vault-grid" id="dynamic-vault-grid"></section>
 
@@ -34,13 +46,24 @@
         </div>
     </footer>
 
+    <!-- Expandable Clip-Path Modal Viewer -->
     <div id="data-modal" class="modal-overlay">
         <div class="modal-header">
             <span class="modal-id">SYS.DATA.VIEWER</span>
             <button id="close-modal">CLOSE [X]</button>
         </div>
         <div class="modal-content">
-            <div class="modal-media" id="modal-media-container"></div>
+            <!-- Left Panel: Slide Carousel -->
+            <div class="modal-media">
+                <div class="carousel-container" id="carousel-container">
+                    <div class="carousel-track" id="carousel-track"></div>
+                    <button class="carousel-arrow prev" id="carousel-prev">&lsaquo;</button>
+                    <button class="carousel-arrow next" id="carousel-next">&rsaquo;</button>
+                </div>
+                <div class="carousel-dots" id="carousel-dots"></div>
+            </div>
+            
+            <!-- Right Panel: Project Specs -->
             <div class="modal-data">
                 <h2 id="modal-title">TITLE</h2>
                 
@@ -62,9 +85,17 @@
         </div>
     </div>
 
+    <!-- Fullscreen Image Zoom Lightbox Overlay -->
+    <div id="lightbox" class="lightbox-overlay">
+        <button class="lightbox-close" id="lightbox-close">CLOSE [X]</button>
+        <div class="lightbox-content">
+            <img src="" class="lightbox-img" id="lightbox-img" alt="Enlarged Grid View">
+        </div>
+    </div>
+
     <script>
         // =========================================
-        // DYNAMIC URL ROUTING ENGINE
+        // 1. DYNAMIC URL ROUTING ENGINE
         // =========================================
         const urlParams = new URLSearchParams(window.location.search);
         const CURRENT_TRACK_ID = urlParams.get('id'); 
@@ -77,67 +108,421 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('is-revealed');
             });
-        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        }, { threshold: 0.05, rootMargin: "0px 0px -50px 0px" });
 
         document.querySelectorAll('.reveal-up').forEach(el => scrollObserver.observe(el));
 
-        const chars = "█▓▒░#@%&01";
-        const GRID_SIZE = 14; 
-        let mouseX = -1000; let mouseY = -1000;
+        // =========================================
+        // 2. CORE MOUSE TRACKING
+        // =========================================
+        let targetMouseX = -1000;
+        let targetMouseY = -1000;
 
-        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-        document.addEventListener('touchstart', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
-        document.addEventListener('touchmove', (e) => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
+        document.addEventListener('mousemove', (e) => { 
+            targetMouseX = e.clientX; 
+            targetMouseY = e.clientY; 
+        });
+        document.addEventListener('touchstart', (e) => { 
+            targetMouseX = e.touches[0].clientX; 
+            targetMouseY = e.touches[0].clientY; 
+        }, {passive: true});
+        document.addEventListener('touchmove', (e) => { 
+            targetMouseX = e.touches[0].clientX; 
+            targetMouseY = e.touches[0].clientY; 
+        }, {passive: true});
 
-        let allChars = []; 
-        function buildVoxels(element) {
-            const text = element.innerText; element.innerHTML = ''; 
-            const isArabic = /[\u0600-\u06FF]/.test(text);
-            const pieces = isArabic ? [text] : text.split('');
-            pieces.forEach((char) => {
-                if (char === ' ') { element.appendChild(document.createTextNode(' ')); return; }
-                const wrapper = document.createElement('span'); wrapper.className = 'char-voxel';
-                const base = document.createElement('span'); base.className = 'base'; base.innerText = char;
-                wrapper.appendChild(base); element.appendChild(wrapper);
+        // =========================================
+        // 3. THEME TOGGLER
+        // =========================================
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        if (localStorage.getItem('portfolio-theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeToggle.innerText = 'LIGHT';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.innerText = 'DARK';
+                localStorage.setItem('portfolio-theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.innerText = 'LIGHT';
+                localStorage.setItem('portfolio-theme', 'dark');
+            }
+            if (typeof initAttractor === 'function') initAttractor();
+        });
 
-                const rect = base.getBoundingClientRect();
-                const cols = Math.ceil((rect.width || 10) / GRID_SIZE); const rows = Math.ceil((rect.height || 20) / GRID_SIZE);
-                const grid = document.createElement('span'); grid.className = 'voxel-grid';
-                grid.style.gridTemplateColumns = `repeat(${cols}, ${GRID_SIZE}px)`; grid.style.gridTemplateRows = `repeat(${rows}, ${GRID_SIZE}px)`;
-                for(let i=0; i < (cols * rows); i++){
-                    const b = document.createElement('b'); b.innerText = chars[Math.floor(Math.random() * chars.length)]; grid.appendChild(b);
+        // =========================================
+        // 4. COLOR GRADIENT GENERATOR
+        // =========================================
+        function getColorFromFactor(factor) {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            factor = Math.max(0, Math.min(1, factor));
+            
+            let r1, g1, b1, r2, g2, b2, r3, g3, b3;
+            if (isDark) {
+                // Dark Theme: Cool Cyan (0,230,255) -> Purple (200,0,255) -> Red (255,40,0)
+                r1 = 0;   g1 = 230; b1 = 255;
+                r2 = 200; g2 = 0;   b2 = 255;
+                r3 = 255; g3 = 40;  b3 = 0;
+            } else {
+                // Light Theme: Cold Deep Blue (0,60,255) -> Violet (100,0,255) -> Pink-Red (255,0,90)
+                r1 = 0;   g1 = 60;  b1 = 255;
+                r2 = 100; g2 = 0;   b2 = 255;
+                r3 = 255; g3 = 0;   b3 = 90;
+            }
+            
+            let r, g, b;
+            if (factor < 0.5) {
+                const t = factor * 2;
+                r = Math.round(r1 + (r2 - r1) * t);
+                g = Math.round(g1 + (g2 - g1) * t);
+                b = Math.round(b1 + (b2 - b1) * t);
+            } else {
+                const t = (factor - 0.5) * 2;
+                r = Math.round(r2 + (r3 - r2) * t);
+                g = Math.round(g2 + (g3 - g2) * t);
+                b = Math.round(b2 + (b3 - b2) * t);
+            }
+            return { r, g, b, str: `rgb(${r},${g},${b})` };
+        }
+
+        // =========================================
+        // 5. DEFORMABLE VOXEL MESH TYPOGRAPHY
+        // =========================================
+        const canvas = document.getElementById('bg-wave');
+        const ctx = canvas.getContext('2d');
+        const hero = document.querySelector('.hero');
+        let width = canvas.width = hero.clientWidth;
+        let height = canvas.height = hero.clientHeight;
+
+        const offscreenCanvas = document.createElement('canvas');
+        const octx = offscreenCanvas.getContext('2d');
+
+        let particles = [];
+        let offscreenData = null;
+        const gridSpacing = 16; // High resolution pixel grid
+        let cols = 0;
+        let rows = 0;
+        let heroLine0Text = "";
+        let heroLine1Text = "";
+        let heroLine2Text = "";
+
+        const dataLabels = ["T:", "S:", "V:", "P:", "X:"];
+
+        class Particle {
+            constructor(gridX, gridY) {
+                this.x = gridX;
+                this.y = gridY;
+                this.gridX = gridX;
+                this.gridY = gridY;
+                this.vx = 0;
+                this.vy = 0;
+                this.baseSize = 16; // Exact grid match
+                this.size = this.baseSize;
+                this.colorStr = '';
+                this.densityFactor = 0;
+                
+                // Multilingual Algorithm Text
+                const algChars = "ALGORITHMalgaritmoخوارزمية算法アルゴリズム";
+                this.isLangChar = Math.random() < 0.02;
+                this.langChar = algChars[Math.floor(Math.random() * algChars.length)];
+                
+                this.spring = 0.08; // Smooth, elastic return
+                this.damping = 0.82; // Friction to stop oscillation
+                
+                this.isGlitching = false;
+                this.glitchChar = '';
+            }
+            
+            triggerGlitch() {
+                const glitchStr = "<>/\\|[]{}*+";
+                this.glitchChar = glitchStr[Math.floor(Math.random() * glitchStr.length)];
+                this.isGlitching = true;
+                setTimeout(() => { this.isGlitching = false; }, 150);
+            }
+            
+            update(timePhase) {
+                // Fluid Morphing Wave Logic
+                const nx = this.x * 0.002;
+                const ny = this.y * 0.002;
+                // Complex wave mixing diagonal flow and varying frequencies
+                const wave1 = Math.sin(nx * Math.PI + timePhase * 1.2 + ny);
+                const wave2 = Math.cos(ny * Math.PI - timePhase * 0.8 + nx * 0.5);
+                const baseFactor = (wave1 + wave2) * 0.5; // -1.0 to 1.0
+                // Normalize to 0 - 1 range
+                let normalizedBase = (baseFactor + 1.0) * 0.5; 
+
+                let heatShift = 0;
+                
+                if (targetMouseX !== -1000 && targetMouseY !== -1000) {
+                    const heroRect = canvas.getBoundingClientRect();
+                    const mx = targetMouseX - heroRect.left;
+                    const my = targetMouseY - heroRect.top;
+                    const dx = mx - this.x;
+                    const dy = my - this.y;
+                    const distMouse = Math.sqrt(dx * dx + dy * dy);
+                    
+                    const interactionRadius = 250;
+                    if (distMouse < interactionRadius) {
+                        // Data Flashlight: Boost density and color based on proximity
+                        let intensity = Math.pow(1.0 - (distMouse / interactionRadius), 1.5);
+                        heatShift = intensity * 2.0; // Massive boost to push into densest ASCII characters
+                        
+                        // Scramble data if close to cursor core
+                        if (distMouse < 80 && Math.random() < 0.4) {
+                            this.triggerGlitch();
+                        }
+                    }
                 }
-                wrapper.appendChild(grid);
-            });
-            allChars = document.querySelectorAll('.char-voxel');
+                
+                // Edge Perturbation for SDF lookup
+                // Warping the lookup coordinates algorithmically
+                const warpX = Math.sin(ny * 10 + timePhase * 3) * 8;
+                const warpY = Math.cos(nx * 10 - timePhase * 2) * 8;
+                const lookupX = Math.round(this.x + warpX);
+                const lookupY = Math.round(this.y + warpY);
+                
+                let textLuminance = 0;
+                if (offscreenData && lookupX >= 0 && lookupX < width && lookupY >= 0 && lookupY < height) {
+                    const idx = (lookupY * width + lookupX) * 4; // R channel for luminance
+                    textLuminance = offscreenData[idx] / 255.0; // 0.0 to 1.0
+                }
+                
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+                // Combine ambient wave + flashlight heat + typographic density
+                let finalFactor = Math.max(0, Math.min(0.99, normalizedBase + heatShift + (textLuminance * 2.0)));
+                this.densityFactor = finalFactor;
+                
+                // Optical Color Blending: Ambient -> High Heat -> White (at typographic core)
+                if (textLuminance > 0.3) {
+                    const baseColor = getColorFromFactor(finalFactor);
+                    const targetColor = isDark ? {r:255,g:255,b:255} : {r:0,g:0,b:0};
+                    const mix = Math.min(1.0, (textLuminance - 0.3) * 1.5);
+                    const r = Math.round(baseColor.r + (targetColor.r - baseColor.r) * mix);
+                    const g = Math.round(baseColor.g + (targetColor.g - baseColor.g) * mix);
+                    const b = Math.round(baseColor.b + (targetColor.b - baseColor.b) * mix);
+                    this.colorStr = `rgb(${r},${g},${b})`;
+                } else {
+                    this.colorStr = getColorFromFactor(finalFactor).str;
+                }
+            }
+            
+            draw() {
+                const densityStr = " .:-=+*#%@";
+                
+                let char = '';
+                if (this.isGlitching) {
+                    char = this.glitchChar;
+                } else if (this.isLangChar && this.densityFactor > 0.4) {
+                    char = this.langChar;
+                } else {
+                    const charIndex = Math.floor(this.densityFactor * (densityStr.length - 0.01));
+                    char = densityStr[charIndex];
+                }
+                
+                ctx.fillStyle = this.colorStr;
+                ctx.font = `bold ${this.size}px "Space Mono"`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // Draw ASCII character instead of a solid rectangle
+                ctx.fillText(char, this.x, this.y);
+            }
         }
 
-        function animateTextVoxels() {
-            allChars.forEach(charEl => {
-                const rect = charEl.getBoundingClientRect();
-                const dist = Math.max(Math.abs(mouseX - (rect.left + rect.width / 2)), Math.abs(mouseY - (rect.top + rect.height / 2)));
-                if (dist < 200) { 
-                    charEl.classList.add('is-fractured');
-                    if(Math.random() > 0.95) charEl.querySelectorAll('b').forEach(v => { v.innerText = chars[Math.floor(Math.random() * chars.length)]; });
-                } else { charEl.classList.remove('is-fractured'); }
-            });
-            requestAnimationFrame(animateTextVoxels);
+        // Logo Loading
+        const logoImg = new Image();
+        logoImg.src = '../assets/logo/am-logo.svg'; // Correct path for subpages
+        let logoLoaded = false;
+        logoImg.onload = () => {
+            logoLoaded = true;
+            renderOffscreen();
+        };
+
+        function renderOffscreen() {
+            offscreenCanvas.width = width;
+            offscreenCanvas.height = height;
+            octx.clearRect(0, 0, width, height);
+
+            if (!logoLoaded) return;
+
+            // SVG viewBox is 225x200, use these as intrinsic dimensions
+            const imgW = logoImg.naturalWidth || 225;
+            const imgH = logoImg.naturalHeight || 200;
+            const scale = Math.min(width * 0.55, height * 0.65) / Math.max(imgW, imgH);
+            const w = imgW * scale;
+            const h = imgH * scale;
+            const dx = (width - w) / 2;
+            const dy = (height - h) / 2;
+            
+            octx.shadowColor = '#FFFFFF';
+            octx.shadowBlur = 8; 
+            
+            octx.drawImage(logoImg, dx, dy, w, h);
+            
+            octx.shadowBlur = 0;
+            octx.drawImage(logoImg, dx, dy, w, h);
+            
+            // Force composite to white
+            octx.globalCompositeOperation = 'source-in';
+            octx.fillStyle = '#FFFFFF';
+            octx.fillRect(0, 0, width, height);
+            octx.globalCompositeOperation = 'source-over'; // Reset
+
+            offscreenData = octx.getImageData(0, 0, width, height).data;
         }
-        animateTextVoxels();
+
+        function initAttractor() {
+            const hero = document.querySelector('.hero');
+            width = canvas.width = hero.offsetWidth;
+            height = canvas.height = hero.offsetHeight;
+            
+            offscreenCanvas.width = width;
+            offscreenCanvas.height = height;
+
+            particles = [];
+            cols = Math.floor(width / gridSpacing);
+            rows = Math.floor(height / gridSpacing);
+            const offsetX = (width - cols * gridSpacing) / 2;
+            const offsetY = (height - rows * gridSpacing) / 2;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const x = offsetX + c * gridSpacing + gridSpacing / 2;
+                    const y = offsetY + r * gridSpacing + gridSpacing / 2;
+                    particles.push(new Particle(x, y));
+                }
+            }
+            
+            renderOffscreen();
+        }
+
+        function animate(timestamp) {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Generate animated wave phase
+            const timePhase = timestamp * 0.00003;
+            
+            // Update and Draw particles, no connecting strokes
+            particles.forEach(p => {
+                p.update(timePhase);
+                p.draw();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        window.addEventListener('resize', initAttractor);
+
+        // =========================================
+        // 6. RESPONSIVE CAROUSEL & LIGHTBOX MODAL
+        // =========================================
+        const modal = document.getElementById('data-modal');
+        const closeModal = document.getElementById('close-modal');
+        
+        const carouselTrack = document.getElementById('carousel-track');
+        const carouselPrev = document.getElementById('carousel-prev');
+        const carouselNext = document.getElementById('carousel-next');
+        const carouselDots = document.getElementById('carousel-dots');
+        
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        let currentSlideIndex = 0;
+        let totalSlides = 0;
+
+        function updateCarouselControls() {
+            if (totalSlides <= 1) {
+                carouselPrev.style.display = 'none';
+                carouselNext.style.display = 'none';
+                carouselDots.style.display = 'none';
+            } else {
+                carouselPrev.style.display = 'flex';
+                carouselNext.style.display = 'flex';
+                carouselDots.style.display = 'flex';
+            }
+        }
+
+        function goToSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= totalSlides) index = totalSlides - 1;
+            currentSlideIndex = index;
+            carouselTrack.style.transform = `translate3d(-${currentSlideIndex * 100}%, 0, 0)`;
+            
+            const dots = carouselDots.querySelectorAll('.carousel-dot-btn');
+            dots.forEach((dot, idx) => {
+                if (idx === currentSlideIndex) {
+                    dot.classList.add('is-active');
+                } else {
+                    dot.classList.remove('is-active');
+                }
+            });
+        }
+
+        carouselPrev.addEventListener('click', () => goToSlide(currentSlideIndex - 1));
+        carouselNext.addEventListener('click', () => goToSlide(currentSlideIndex + 1));
+
+        // Lightbox Functions
+        function openLightbox(src) {
+            lightboxImg.src = src;
+            lightbox.classList.add('is-active');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('is-active');
+            setTimeout(() => { lightboxImg.src = ''; }, 300);
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target === lightboxImg) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (lightbox.classList.contains('is-active')) {
+                    closeLightbox();
+                } else if (modal.classList.contains('is-active')) {
+                    closeModal.click();
+                }
+            } else if (modal.classList.contains('is-active') && totalSlides > 1) {
+                if (e.key === 'ArrowLeft') carouselPrev.click();
+                if (e.key === 'ArrowRight') carouselNext.click();
+            }
+        });
+
+        // =========================================
+        // 8. MODAL BINDING & DEEP LINK ROUTER
+        // =========================================
+        function openModalForItem(itemTitle) {
+            const itemElement = Array.from(document.querySelectorAll('.vault-item'))
+                .find(el => el.getAttribute('data-title') === itemTitle);
+            
+            if (itemElement) {
+                itemElement.click();
+            }
+        }
 
         function attachModalLogic() {
-            const modal = document.getElementById('data-modal');
-            const closeModal = document.getElementById('close-modal');
             const mTitle = document.getElementById('modal-title');
             const mLogos = document.getElementById('modal-logos');
             const mSoftware = document.getElementById('modal-software');
             const mTeam = document.getElementById('modal-team');
             const mDesc = document.getElementById('modal-desc');
-            const mMedia = document.getElementById('modal-media-container');
 
             document.querySelectorAll('.vault-item').forEach(item => {
                 item.addEventListener('click', () => {
-                    mTitle.innerText = item.getAttribute('data-title');
+                    const title = item.getAttribute('data-title');
+                    mTitle.innerText = title;
                     mSoftware.innerText = item.getAttribute('data-software');
                     mTeam.innerText = item.getAttribute('data-team');
                     mDesc.innerText = item.getAttribute('data-desc');
@@ -150,19 +535,18 @@
                         });
                     }
 
-                    mMedia.innerHTML = ''; 
+                    // Build Slides for Carousel
+                    carouselTrack.innerHTML = '';
+                    carouselDots.innerHTML = '';
+                    const slides = [];
 
                     const videoSrc = item.getAttribute('data-video');
                     if (videoSrc && videoSrc !== "") {
                         const ext = videoSrc.split('.').pop().toLowerCase();
                         if (ext === 'mp4' || ext === 'webm') {
-                            const vid = document.createElement('video');
-                            vid.src = videoSrc; vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
-                            mMedia.appendChild(vid);
+                            slides.push({ type: 'video', src: videoSrc });
                         } else {
-                            const img = document.createElement('img'); 
-                            img.src = videoSrc;
-                            mMedia.appendChild(img);
+                            slides.push({ type: 'image', src: videoSrc });
                         }
                     }
 
@@ -170,12 +554,49 @@
                     if (galleryRaw && galleryRaw !== "") {
                         galleryRaw.split(',').forEach(imgSrc => {
                             if (imgSrc) {
-                                const img = document.createElement('img'); 
-                                img.src = `../${imgSrc}`;
-                                mMedia.appendChild(img);
+                                slides.push({ type: 'image', src: `../${imgSrc}` });
                             }
                         });
                     }
+
+                    if (slides.length === 0) {
+                        const coverImg = item.querySelector('.vault-cover');
+                        if (coverImg && coverImg.src) {
+                            slides.push({ type: 'image', src: coverImg.src });
+                        }
+                    }
+
+                    totalSlides = slides.length;
+                    currentSlideIndex = 0;
+
+                    slides.forEach((slide, idx) => {
+                        const slideDiv = document.createElement('div');
+                        slideDiv.className = 'carousel-slide';
+                        
+                        if (slide.type === 'video') {
+                            const vid = document.createElement('video');
+                            vid.src = slide.src; vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
+                            slideDiv.appendChild(vid);
+                        } else {
+                            const img = document.createElement('img'); 
+                            img.src = slide.src;
+                            img.addEventListener('click', () => openLightbox(slide.src));
+                            slideDiv.appendChild(img);
+                        }
+                        
+                        carouselTrack.appendChild(slideDiv);
+
+                        const dot = document.createElement('button');
+                        dot.className = `carousel-dot-btn ${idx === 0 ? 'is-active' : ''}`;
+                        dot.addEventListener('click', () => goToSlide(idx));
+                        carouselDots.appendChild(dot);
+                    });
+
+                    updateCarouselControls();
+                    goToSlide(0);
+
+                    // Update URL Hash for direct deep-linking
+                    window.location.hash = encodeURIComponent(title);
 
                     modal.classList.add('is-active');
                     document.body.style.overflow = 'hidden';
@@ -184,11 +605,21 @@
 
             closeModal.addEventListener('click', () => {
                 modal.classList.remove('is-active');
-                document.body.style.overflow = 'auto'; 
-                setTimeout(() => { mMedia.innerHTML = ''; }, 400); 
+                document.body.style.overflow = 'auto';
+                
+                // Clear URL hash
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+                
+                setTimeout(() => { 
+                    carouselTrack.innerHTML = ''; 
+                    carouselDots.innerHTML = '';
+                }, 400); 
             });
         }
 
+        // =========================================
+        // 9. FETCH & POPULATE VAULT
+        // =========================================
         fetch('../portfolio-db.json')
             .then(response => response.json())
             .then(data => {
@@ -197,15 +628,40 @@
 
                 document.title = `${trackData.trackTitle} | Ali Mzannar`;
 
-                document.getElementById('dynamic-hero').innerHTML = `
-                    <div class="hero-text-mask"><h1 class="hero-title reveal-up">${trackData.heroLines[0]}</h1></div>
-                    <div class="hero-text-mask"><h1 class="hero-title indent reveal-up">${trackData.heroLines[1]}</h1></div>
-                    <div class="hero-text-mask"><h1 class="hero-title reveal-up">${trackData.heroLines[2]}</h1></div>
-                `;
-                document.querySelectorAll('.hero-title').forEach(h1 => {
-                    buildVoxels(h1);
-                    scrollObserver.observe(h1);
-                }); 
+                // Split track title into three lines for the hero
+                if (trackData.trackId === 'geometry-rationalization') {
+                    heroLine0Text = "GEOMETRY";
+                    heroLine1Text = "RATIONALIZATION &";
+                    heroLine2Text = "CONSTRUCTABILITY";
+                } else if (trackData.trackId === 'behavioral-physics-simulation') {
+                    heroLine0Text = "BEHAVIORAL SYSTEMS &";
+                    heroLine1Text = "PHYSICS SIMULATION";
+                    heroLine2Text = "FORM FINDING";
+                } else if (trackData.trackId === 'material-computation-fabrication') {
+                    heroLine0Text = "MATERIAL COMPUTATION &";
+                    heroLine1Text = "ROBOTIC FABRICATION";
+                    heroLine2Text = "ASSEMBLY";
+                } else {
+                    const words = trackData.trackTitle.split(' ');
+                    if (words.length >= 3) {
+                        heroLine0Text = words[0];
+                        heroLine1Text = words[1];
+                        heroLine2Text = words.slice(2).join(' ');
+                    } else if (words.length === 2) {
+                        heroLine0Text = words[0];
+                        heroLine1Text = words[1];
+                    } else {
+                        heroLine1Text = words[0];
+                    }
+                }
+
+                // Update SEO fallback title in DOM
+                const seoTitle = document.getElementById('seo-title');
+                if (seoTitle) {
+                    seoTitle.innerText = `${heroLine0Text} ${heroLine1Text} ${heroLine2Text}`;
+                }
+
+                initAttractor();
 
                 let logosHTML = "";
                 if (trackData.institutionLogos && trackData.institutionLogos.length > 0) {
@@ -217,16 +673,14 @@
                 document.getElementById('dynamic-meta').innerHTML = `
                     <div class="meta-group">TYPOLOGY<span>${trackData.typology}</span></div>
                     <div class="meta-group">TIMELINE<span>${trackData.timeline}</span></div>
-                    <div class="meta-group">
-                        ${logosHTML}
-                    </div>
+                    <div class="meta-group">INSTITUTION / PRACTICE${logosHTML}</div>
                 `;
 
-               const gridContainer = document.getElementById('dynamic-vault-grid');
+                const gridContainer = document.getElementById('dynamic-vault-grid');
                 trackData.vaultItems.forEach((item, index) => {
                     const article = document.createElement('article');
                     article.className = 'vault-item reveal-up';
-                    article.style.transitionDelay = `${(index % 3) * 0.1}s`; 
+                    article.style.transitionDelay = `${(index % 3) * 0.08}s`; 
                     
                     const correctedVideo = item.videoSrc ? `../${item.videoSrc}` : "";
                     const galleryString = item.gallery ? item.gallery.join(',') : (item.renderSrc ? item.renderSrc : "");
@@ -242,22 +696,19 @@
 
                     let mediaHTML = "";
                     
-                    // 1. Static Cover Image Layer (Lowest Z-Index)
                     if (item.gallery && item.gallery.length > 0) {
                         mediaHTML += `<img src="../${item.gallery[0]}" class="vault-cover" alt="${item.title}">`;
                     } else if (item.renderSrc) {
                         mediaHTML += `<img src="../${item.renderSrc}" class="vault-cover" alt="${item.title}">`;
                     } else {
-                        mediaHTML += `<div class="vault-cover"></div>`; // Fallback blank cover
+                        mediaHTML += `<div class="vault-cover"></div>`;
                     }
 
-                    // 2. Animated Hover Layer (Video or GIF, fades in over the cover)
                     if (correctedVideo) {
                         const ext = correctedVideo.split('.').pop().toLowerCase();
                         if (ext === 'mp4' || ext === 'webm') {
                             mediaHTML += `<video src="${correctedVideo}" class="vault-hover-media" loop muted playsinline preload="metadata"></video>`;
                         } else {
-                            // Automatically supports .gif files as images that fade in and play visually
                             mediaHTML += `<img src="${correctedVideo}" class="vault-hover-media" alt="${item.title}">`;
                         }
                     }
@@ -273,16 +724,15 @@
                         </div>
                     `;
                     
-                    // Plays the video ONLY when hovered over
                     article.addEventListener('mouseenter', () => {
                         const vid = article.querySelector('video.vault-hover-media');
-                        if(vid) vid.play();
+                        if(vid) vid.play().catch(e => console.log("Play interrupted: ", e));
                     });
                     article.addEventListener('mouseleave', () => {
                         const vid = article.querySelector('video.vault-hover-media');
                         if(vid) {
                             vid.pause();
-                            vid.currentTime = 0; // Resets video back to start smoothly
+                            vid.currentTime = 0;
                         }
                     });
 
@@ -291,8 +741,14 @@
                 });
 
                 attachModalLogic(); 
+
+                // Deep linking check
+                if (window.location.hash) {
+                    const hashedTitle = decodeURIComponent(window.location.hash.substring(1));
+                    setTimeout(() => openModalForItem(hashedTitle), 800);
+                }
             })
-            .catch(err => console.error("Database error:", err));
+            .catch(err => console.error("Database loading error:", err));
     </script>
 </body>
 </html>
